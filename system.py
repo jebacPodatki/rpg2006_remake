@@ -153,7 +153,7 @@ class ConsoleSelector(ActionSelector):
             print(msg + ': ', end = " ")
             selected_targets = [targets[int(input()) - 1]]
         else:
-            selected_targets = targets
+            selected_targets = []
                             
         if action == 1:
             return Action(ACTION_ATTACK, character, selected_targets, '')
@@ -197,7 +197,8 @@ class PrintLogger(Logger):
         else:
             print(attacker.sheet.name + ' casts ' + spell_name, end = ' ')
     def on_spell_effect(self, targets, effect):
-        pass
+        if effect == 'raise':
+            print('and creates ' + str(len(targets)) + ' ' + targets[0].sheet.name + 's')
     def on_magic_block(self, character : Character):
         print(COLOR, end = " ")
         print('who effectively resists magic')
@@ -284,8 +285,11 @@ class Fight:
         if attacker.stats.mp < spell.mp_cost:
             return
         self.logger.on_cast_spell(attacker, targets, spell.name)
-        for target in targets:
-            self.magic_on_target(attacker, target, spell)
+        if len(targets) > 0:
+            for target in targets:
+                self.magic_on_target(attacker, target, spell)
+        else:
+            self.magic_on_target(attacker, [], spell)
                 
     def processAction(self, action : Action):
         if action.type == ACTION_WAIT:
@@ -309,6 +313,8 @@ class Fight:
             for i in range(current_character.sheet.attack_number):
                 action = selector.select(current_character, self.characters, helper)
                 self.processAction(action)
+                if action.type == ACTION_WAIT:
+                    break
         self.current += 1
         if self.current >= len(self.characters):
             self.current = 0
