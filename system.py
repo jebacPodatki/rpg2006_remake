@@ -19,6 +19,8 @@ class CharacterSheet:
         self.defence = 10
         self.power = 10
         self.will = 10
+        self.initiative = 10
+        self.attack_number = 1
         self.breakage = [30, 70]
         self.dmg = [30, 50]
         self.dp = 100
@@ -222,6 +224,7 @@ class Fight:
         self.logger = logger
         for chr in characters:
             self.alive[chr.faction] += 1
+        self.characters.sort(key=lambda x: x.sheet.initiative, reverse=True)
                 
     def attack_target(self, attacker, target):
         atk_factor = attacker.sheet.attack / target.sheet.defence
@@ -303,8 +306,9 @@ class Fight:
             else:
                 selector = self.selector[1]
             helper = SpellHelper(self.library)
-            action = selector.select(current_character, self.characters, helper)
-            self.processAction(action)
+            for i in range(current_character.sheet.attack_number):
+                action = selector.select(current_character, self.characters, helper)
+                self.processAction(action)
         self.current += 1
         if self.current >= len(self.characters):
             self.current = 0
@@ -317,6 +321,7 @@ class Fight:
             
 sheet1 = CharacterSheet()
 sheet1.name = 'Barsel'
+sheet1.attack_number = 2
 
 sheet2 = CharacterSheet()
 sheet2.name = 'Abzare'
@@ -328,6 +333,7 @@ sheet3 = CharacterSheet()
 sheet3.name = 'Cersil'
 sheet3.mp = 300
 sheet3.spells = ['Raise dead']
+sheet3.initiative = 7
 
 sheet4 = CharacterSheet()
 sheet4.name = 'Dalian'
