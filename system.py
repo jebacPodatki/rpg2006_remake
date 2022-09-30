@@ -2,13 +2,18 @@ import copy
 import random
 
 class Spell:
+    TARGET_NONE = 0
+    TARGET_SINGLE_ENEMY = 1
+    TARGET_SINGLE_ALLY = 2
+    TARGET_ALL_ENEMIES = 3
+    TARGET_ALL_ALLIES = 4
     def __init__(self):
         self.name = 'Magic bolt'
         self.impact = [70, 120]
         self.dmg = [60, 90]
         self.effect = ''
         self.mp_cost = 50
-        self.single_target = True
+        self.target = Spell.TARGET_SINGLE_ENEMY
 
 class CharacterSheet:
     def __init__(self):
@@ -44,7 +49,7 @@ class Library:
         spell2.effect = 'raise'
         spell2.impact = [0, 0]
         spell2.dmg = [0, 0]
-        spell2.single_target = False
+        spell2.target = Spell.TARGET_NONE
         self.spells = {spell.name : spell, spell2.name : spell2}
         sheet = CharacterSheet()
         sheet.name = 'Skeleton'
@@ -87,17 +92,15 @@ class SpellHelper:
     def is_single_target(self, spell_name):
         if spell_name in library.spells:
             spell = library.spells[spell_name]
-            return spell.single_target
+            return spell.target == Spell.TARGET_SINGLE_ENEMY or spell.target == Spell.TARGET_SINGLE_ENEMY
         else:
             return False 
-
-
-ACTION_NONE = 0
-ACTION_ATTACK = 1
-ACTION_MAGIC = 2
-ACTION_WAIT = 3
         
 class Action:
+    ACTION_NONE = 0
+    ACTION_ATTACK = 1
+    ACTION_MAGIC = 2
+    ACTION_WAIT = 3    
     def __init__(self, type, actor : Character, targets, spell_name):
         self.type = type
         self.actor = actor
@@ -106,7 +109,7 @@ class Action:
         
 class ActionSelector:
     def select(self, character : Character, characterList, helper : SpellHelper):
-        return Action(ACTION_NONE, None, [], '')
+        return Action(Action.ACTION_NONE, None, [], '')
     
 class AISelector(ActionSelector):
     def select(self, character : Character, character_list, helper : SpellHelper):
@@ -115,7 +118,7 @@ class AISelector(ActionSelector):
             if chr.faction != character.faction and chr.is_alive():
                 targets.append(chr)
         index = random.randint(0, len(targets) - 1)
-        return Action(ACTION_ATTACK, character, [targets[index]], '')
+        return Action(Action.ACTION_ATTACK, character, [targets[index]], '')
             
 class ConsoleSelector(ActionSelector):
     def select(self, character : Character, characterList, helper : SpellHelper):
@@ -124,7 +127,7 @@ class ConsoleSelector(ActionSelector):
         print('Action: 1 - Attack, 2 - Magic, 3 - Wait.: ', end = " ")
         action = int(input())
         if action == 3:
-            return Action(ACTION_WAIT, character, None, '')
+            return Action(Action.ACTION_WAIT, character, None, '')
         selected_spell = ''
         if action == 2:
             msg = 'Choose spell: '
@@ -156,9 +159,9 @@ class ConsoleSelector(ActionSelector):
             selected_targets = []
                             
         if action == 1:
-            return Action(ACTION_ATTACK, character, selected_targets, '')
+            return Action(Action.ACTION_ATTACK, character, selected_targets, '')
         else:
-            return Action(ACTION_MAGIC, character, selected_targets, selected_spell)
+            return Action(Action.ACTION_MAGIC, character, selected_targets, selected_spell)
             
 class Logger:
     def on_attack(self, attacker : Character, targets):
@@ -180,18 +183,18 @@ class Logger:
     def on_new_turn(self, current_character : Character, characters):
         pass
     
-COLOR = '\033[0m'
-COLOR2 = '\033[92m'
 class PrintLogger(Logger):
+    COLOR = '\033[0m'
+    COLOR2 = '\033[92m'    
     def on_attack(self, attacker : Character, targets):
-        print(COLOR, end = " ")
+        print(PrintLogger.COLOR, end = " ")
         print(attacker.sheet.name + ' attacks ' + targets[0].sheet.name, end = " ")
     def on_damage(self, character : Character, damage):
         print('and deals ' + str(damage) + ' damage. ' + character.sheet.name + ' has ' + str(character.stats.hp) + ' HP now.')  
     def on_block(self, character : Character):
         print('who blocks')
     def on_cast_spell(self, attacker : Character, targets, spell_name):
-        print(COLOR, end = " ")
+        print(PrintLogger.COLOR, end = " ")
         if len(targets)  == 1:
             print(attacker.sheet.name + ' casts ' + spell_name + ' against ' + targets[0].sheet.name, end = " ")
         else:
@@ -200,18 +203,18 @@ class PrintLogger(Logger):
         if effect == 'raise':
             print('and creates ' + str(len(targets)) + ' ' + targets[0].sheet.name + 's')
     def on_magic_block(self, character : Character):
-        print(COLOR, end = " ")
+        print(PrintLogger.COLOR, end = " ")
         print('who effectively resists magic')
     def on_wait(self, character : Character):
-        print(COLOR, end = " ")
+        print(PrintLogger.COLOR, end = " ")
         print(character.sheet.name + ' is waiting.')
     def on_death(self, character : Character):
-        print(COLOR, end = " ")
+        print(PrintLogger.COLOR, end = " ")
         print(character.sheet.name + ' died')
     def on_new_turn(self, current_character : Character, characters):
         if current_character.controlled == False:
             return
-        print(COLOR2)
+        print(PrintLogger.COLOR2)
         for chr in characters:
             print('\t' + chr.sheet.name + '\t\t' + '[' + str(chr.stats.hp) + '/' + str(chr.sheet.hp) + ']')
  
@@ -292,11 +295,11 @@ class Fight:
             self.magic_on_target(attacker, [], spell)
                 
     def processAction(self, action : Action):
-        if action.type == ACTION_WAIT:
+        if action.type == Action.ACTION_WAIT:
             self.logger.on_wait(action.actor)
-        elif action.type == ACTION_ATTACK:
+        elif action.type == Action.ACTION_ATTACK:
             self.attack(action.actor, action.targets)
-        elif action.type == ACTION_MAGIC:
+        elif action.type == Action.ACTION_MAGIC:
             self.magic(action.actor, action.targets, action.spell_name)
         else:
             pass
@@ -313,7 +316,7 @@ class Fight:
             for i in range(current_character.sheet.attack_number):
                 action = selector.select(current_character, self.characters, helper)
                 self.processAction(action)
-                if action.type == ACTION_WAIT:
+                if action.type == Action.ACTION_WAIT:
                     break
         self.current += 1
         if self.current >= len(self.characters):
