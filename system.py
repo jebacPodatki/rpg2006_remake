@@ -36,6 +36,7 @@ class CharacterSheet:
         self.mp = 100
         self.attack_area = Spell.TARGET_SINGLE_ENEMY_FRONTLINE
         self.spells = ['Magic bolt']
+        self.spells_ai_chance = [30]
 
 class CharacterStats:
     def __init__(self, sheet : CharacterSheet):
@@ -56,6 +57,8 @@ class Library:
         self.spells = {spell.name : spell, spell2.name : spell2}
         sheet = CharacterSheet()
         sheet.name = 'Skeleton'
+        sheet.spells = []
+        sheet.spells_ai_chance = []
         self.sheets = {sheet.name : sheet}
     
     
@@ -180,14 +183,26 @@ class ActionSelector:
     
 class AISelector(ActionSelector):
     def select(self, character : Character, character_list, helper : ActionHelper):
-        targets = []
-        for chr in character_list:
-            if chr.faction != character.faction and chr.is_alive():
-                targets.append(chr)
-        if len(targets) == 0:
-            return Action(Action.ACTION_WAIT, character, [], '')
-        index = random.randint(0, len(targets) - 1)
-        return Action(Action.ACTION_ATTACK, character, [targets[index]], '')
+        selected_spell_name = ''
+        for i in range(0, len(character.sheet.spells)):
+            if helper.can_use(character, character.sheet.spells[i]) and \
+                random.randint(1, 100) < character.sheet.spells_ai_chance[i]:
+                selected_spell_name = character.sheet.spells[i]
+        target_groups = helper.get_possible_targets(character, selected_spell_name)
+        if len(target_groups) == 0:
+            selected_targets = []
+        elif len(target_groups) == 1:
+            if len(target_groups[0]) >= 1:
+                selected_targets = target_groups[0]
+            else:
+                selected_targets = []
+        else:
+            index = random.randint(0, len(target_groups) - 1)
+            selected_targets = target_groups[index]
+        if selected_spell_name == '':
+            return Action(Action.ACTION_ATTACK, character, selected_targets, '')
+        else:
+            return Action(Action.ACTION_MAGIC, character, selected_targets, selected_spell_name)
             
 class ConsoleSelector(ActionSelector):
     def select(self, character : Character, characterList, helper : ActionHelper):
