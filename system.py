@@ -185,7 +185,7 @@ class AISelector(ActionSelector):
             if chr.faction != character.faction and chr.is_alive():
                 targets.append(chr)
         if len(targets) == 0:
-            return Action(Action.ACTION_WAIT, None, [], '')
+            return Action(Action.ACTION_WAIT, character, [], '')
         index = random.randint(0, len(targets) - 1)
         return Action(Action.ACTION_ATTACK, character, [targets[index]], '')
             
@@ -233,9 +233,7 @@ class ConsoleSelector(ActionSelector):
                 i += 1
             print(msg + ': ', end = " ")
             selected_targets = [target_groups[int(input()) - 1][0]]
-        if len(selected_targets) == 0:
-            return Action(Action.ACTION_WAIT, None, [], '')
-        elif action == 1:
+        if action == 1:
             return Action(Action.ACTION_ATTACK, character, selected_targets, '')
         else:
             return Action(Action.ACTION_MAGIC, character, selected_targets, selected_spell)
@@ -301,13 +299,7 @@ class Fight:
         self.library = library
         self.selector = [selectorA, selectorB]
         self.current = 0
-        self.alive = [0, 0]
         self.logger = logger
-        for chr in characters:
-            if chr.faction == 1:
-                self.alive[0] += 1
-            else:
-                self.alive[1] += 1
         self.characters.sort(key=lambda x: x.sheet.initiative, reverse=True)
                 
     def attack_target(self, attacker, target):
@@ -320,7 +312,6 @@ class Fight:
             target.stats.hp -= dmg
             self.logger.on_damage(target, dmg)
             if target.stats.hp < 0:
-                self.alive[target.faction] -= 1
                 self.logger.on_death(target)
             else:
                 target.stats.dp = target.sheet.dp
@@ -342,7 +333,6 @@ class Fight:
                 skeletons = [Character(sheet, False, attacker.faction) for i in range(number)]
                 for skeleton in skeletons:
                     self.characters.append(skeleton)
-                self.alive[attacker.faction] += number
                 self.logger.on_spell_effect(skeletons, spell.effect)
             return
         atk_factor = attacker.sheet.power / target.sheet.will
@@ -354,7 +344,6 @@ class Fight:
             target.stats.hp -= dmg
             self.logger.on_damage(target, dmg)
             if target.stats.hp < 0:
-                self.alive[target.faction] -= 1
                 self.logger.on_death(target)
             else:
                 target.stats.rp = target.sheet.rp
@@ -362,8 +351,6 @@ class Fight:
             self.logger.on_magic_block(target)
             
     def magic(self, attacker, targets, spell_name):
-        if len(targets) == 0:
-            return
         if spell_name in self.library.spells:
             spell = self.library.spells[spell_name]
         else:
@@ -407,7 +394,14 @@ class Fight:
             self.current = 0
     
     def ended(self):
-        if self.alive[0] <= 0 or self.alive[1] <= 0:
+        alive = [0, 0]
+        for chr in self.characters:
+            if chr.is_alive():
+                if chr.faction == 1:
+                    alive[0] += 1
+                else:
+                    alive[1] += 1
+        if alive[0] == 0 or alive[1] == 0:
             return True
         return False
             
