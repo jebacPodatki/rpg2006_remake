@@ -2,18 +2,20 @@ import copy
 import random
 
 class Spell:
-    TARGET_NONE = 0
-    TARGET_SINGLE_ENEMY = 1
-    TARGET_SINGLE_ALLY = 2
-    TARGET_ALL_ENEMIES = 3
-    TARGET_ALL_ALLIES = 4
+    TARGET_NONE = 'none'
+    TARGET_SINGLE_ENEMY_FRONTLINE = 'single_enemy_frontline'
+    TARGET_SINGLE_ENEMY_BOTHLINE = 'single_enemy'
+    TARGET_SINGLE_ALLY = 'single_ally'
+    TARGET_ENEMIES_FRONTLINE = 'frontline_enemies'
+    TARGET_ALL_ENEMIES = 'all_enemies'
+    TARGET_ALL_ALLIES = 'all_allies'
     def __init__(self):
         self.name = 'Magic bolt'
         self.impact = [70, 120]
         self.dmg = [60, 90]
         self.effect = ''
         self.mp_cost = 50
-        self.target = Spell.TARGET_SINGLE_ENEMY
+        self.target = Spell.TARGET_SINGLE_ENEMY_BOTHLINE
 
 class CharacterSheet:
     def __init__(self):
@@ -92,7 +94,9 @@ class SpellHelper:
     def is_single_target(self, spell_name):
         if spell_name in library.spells:
             spell = library.spells[spell_name]
-            return spell.target == Spell.TARGET_SINGLE_ENEMY or spell.target == Spell.TARGET_SINGLE_ENEMY
+            return spell.target == Spell.TARGET_SINGLE_ENEMY_FRONTLINE \
+                or spell.target == Spell.TARGET_SINGLE_ENEMY_BOTHLINE \
+                or spell.target == Spell.TARGET_SINGLE_ALLY
         else:
             return False 
         
@@ -253,7 +257,6 @@ class Fight:
             self.attack_target(attacker, target)
             
     def magic_on_target(self, attacker, target, spell):
-        attacker.stats.mp -= spell.mp_cost
         if spell.effect == 'raise':
             sheet = self.library.sheets['Skeleton']
             number = int(attacker.sheet.power / 5)
@@ -287,6 +290,7 @@ class Fight:
             return
         if attacker.stats.mp < spell.mp_cost:
             return
+        attacker.stats.mp -= spell.mp_cost        
         self.logger.on_cast_spell(attacker, targets, spell.name)
         if len(targets) > 0:
             for target in targets:
@@ -342,7 +346,7 @@ sheet3 = CharacterSheet()
 sheet3.name = 'Cersil'
 sheet3.mp = 300
 sheet3.spells = ['Raise dead']
-sheet3.initiative = 7
+sheet3.initiative = 75
 
 sheet4 = CharacterSheet()
 sheet4.name = 'Dalian'
