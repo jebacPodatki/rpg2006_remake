@@ -34,6 +34,7 @@ class CharacterSheet:
         self.rp = 100
         self.hp = 100
         self.mp = 100
+        self.attack_area = Spell.TARGET_SINGLE_ENEMY_FRONTLINE
         self.spells = ['Magic bolt']
 
 class CharacterStats:
@@ -59,11 +60,14 @@ class Library:
     
     
 class Character:
+    FRONT_LINE = 1
+    BACK_LINE = 2
     def __init__(self, sheet : CharacterSheet, controlled : bool, faction):
         self.sheet = copy.deepcopy(sheet)
         self.stats = CharacterStats(sheet)
         self.controlled = controlled
         self.faction = faction
+        self.line = Character.FRONT_LINE
     def reset(self):
         self.stats = CharacterStats(self.sheet)
     def is_alive(self):
@@ -79,12 +83,13 @@ def printChar(chr : Character):
     print('HP: ' + str(chr.stats.hp) + '/' + str(chr.sheet.hp))
     print('DP: ' + str(chr.stats.dp) + '/' + str(chr.sheet.dp))
     
-class SpellHelper:
-    def __init__(self, library : Library):
+class ActionHelper:
+    def __init__(self, library : Library, characters):
         self.library = library
+        self.characters = characters
     def can_use(self, character : Character, spell_name):
         if spell_name in library.spells:
-            spell = library.spells[spell_name]
+            spell = self.library.spells[spell_name]
             if character.stats.mp >= spell.mp_cost:
                 return True
             else:
@@ -92,14 +97,72 @@ class SpellHelper:
         else:
             return False
     def is_single_target(self, spell_name):
-        if spell_name in library.spells:
-            spell = library.spells[spell_name]
+        if spell_name in self.library.spells:
+            spell = self.library.spells[spell_name]
             return spell.target == Spell.TARGET_SINGLE_ENEMY_FRONTLINE \
                 or spell.target == Spell.TARGET_SINGLE_ENEMY_BOTHLINE \
                 or spell.target == Spell.TARGET_SINGLE_ALLY
         else:
-            return False 
+            return False
         
+    def is_frontline_empty(self, faction):
+        for chr in self.characters:
+            if chr.is_alive() and chr.faction == faction and chr.line == Character.FRONT_LINE:
+                return False
+        return True
+
+    def _get_possible_targets(self, character : Character, target_type):
+        if target_type == Spell.TARGET_NONE:
+            return []
+        elif target_type == Spell.TARGET_ALL_ALLIES or target_type == Spell.TARGET_ALL_ENEMIES:
+            all = []
+            if target_type == Spell.TARGET_ALL_ALLIES:
+                target_faction = character.faction
+            else:
+                target_faction = -character.faction
+            for chr in self.characters:
+                if chr.faction == target_faction and chr.alive():
+                    all.append(chr)
+            return [all]
+        elif target_type == Spell.TARGET_SINGLE_ALLY or target_type == Spell.TARGET_SINGLE_ENEMY_BOTHLINE:
+            targets = []
+            if target_type == Spell.TARGET_SINGLE_ALLY:
+                target_faction = character.faction
+            else:
+                target_faction = -character.faction
+            for chr in self.characters:
+                if chr.faction == target_faction and chr.is_alive():
+                    targets.append([chr])
+            return targets
+        elif target_type == Spell.TARGET_ENEMIES_FRONTLINE:
+            if self.is_frontline_empty(-character.faction):
+                return self.get_possible_targets(character, Spell.TARGET_ALL_ENEMIES)
+            all = []
+            for chr in self.characters:
+                if chr.faction == -character.faction and chr.alive() and chr.line == Character.FRONT_LINE:
+                    all.append(chr)
+            return [all]
+        elif target_type == Spell.TARGET_SINGLE_ENEMY_FRONTLINE:
+            if self.is_frontline_empty(-character.faction):
+                return self.get_possible_targets(character, Spell.TARGET_SINGLE_ENEMY_BOTHLINE)
+            targets = []
+            for chr in self.characters:
+                if chr.faction == -character.faction and chr.is_alive() and chr.line == Character.FRONT_LINE:
+                    targets.append([chr])
+            return targets
+
+    def get_possible_targets(self, character : Character, spell_name = ''):
+        if spell_name == '':
+            target_type = character.sheet.attack_area
+        else:
+            if spell_name in library.spells:
+                spell = library.spells[spell_name]
+            else:
+                return []
+            target_type = spell.target
+        return self._get_possible_targets(character, target_type)
+
+
 class Action:
     ACTION_NONE = 0
     ACTION_ATTACK = 1
@@ -112,20 +175,22 @@ class Action:
         self.spell_name = spell_name
         
 class ActionSelector:
-    def select(self, character : Character, characterList, helper : SpellHelper):
+    def select(self, character : Character, characterList, helper : ActionHelper):
         return Action(Action.ACTION_NONE, None, [], '')
     
 class AISelector(ActionSelector):
-    def select(self, character : Character, character_list, helper : SpellHelper):
+    def select(self, character : Character, character_list, helper : ActionHelper):
         targets = []
         for chr in character_list:
             if chr.faction != character.faction and chr.is_alive():
                 targets.append(chr)
+        if len(targets) == 0:
+            return Action(Action.ACTION_WAIT, None, [], '')
         index = random.randint(0, len(targets) - 1)
         return Action(Action.ACTION_ATTACK, character, [targets[index]], '')
             
 class ConsoleSelector(ActionSelector):
-    def select(self, character : Character, characterList, helper : SpellHelper):
+    def select(self, character : Character, characterList, helper : ActionHelper):
         print('\033[94m')
         print('Current character: ' + character.sheet.name)
         print('Action: 1 - Attack, 2 - Magic, 3 - Wait.: ', end = " ")
@@ -146,23 +211,31 @@ class ConsoleSelector(ActionSelector):
             else:
                 print("No spells", end = " ")
                 action = 1
-        targets = []
-        for chr in characterList:
-            if chr.faction != character.faction:
-                targets.append(chr)
-        if action == 1 or helper.is_single_target(selected_spell) == True:
+        target_groups = helper.get_possible_targets(character, selected_spell)
+        if len(target_groups) == 0:
+            selected_targets = []
+        elif len(target_groups) == 1:
+            if len(target_groups[0]) >= 1:
+                selected_targets = target_groups[0]
+            else:
+                selected_targets = []
+        else:
             msg = 'Choose target: '
             i = 1
-            for target in targets:
-                if target.is_alive():
-                    msg += str(i) + ' - ' + target.sheet.name + ', '
+            for target_group in target_groups:
+                if len(target_group) == 1:
+                    msg += str(i) + ' - ' + target_group[0].sheet.name + ', '
+                else:
+                    msg += str(i) + ' - ('
+                    for target in target_group:
+                        msg += target.sheet.name + ', '
+                    msg += '),'
                 i += 1
             print(msg + ': ', end = " ")
-            selected_targets = [targets[int(input()) - 1]]
-        else:
-            selected_targets = []
-                            
-        if action == 1:
+            selected_targets = [target_groups[int(input()) - 1][0]]
+        if len(selected_targets) == 0:
+            return Action(Action.ACTION_WAIT, None, [], '')
+        elif action == 1:
             return Action(Action.ACTION_ATTACK, character, selected_targets, '')
         else:
             return Action(Action.ACTION_MAGIC, character, selected_targets, selected_spell)
@@ -231,7 +304,10 @@ class Fight:
         self.alive = [0, 0]
         self.logger = logger
         for chr in characters:
-            self.alive[chr.faction] += 1
+            if chr.faction == 1:
+                self.alive[0] += 1
+            else:
+                self.alive[1] += 1
         self.characters.sort(key=lambda x: x.sheet.initiative, reverse=True)
                 
     def attack_target(self, attacker, target):
@@ -252,6 +328,8 @@ class Fight:
             self.logger.on_block(target)
             
     def attack(self, attacker, targets):
+        if len(targets) == 0:
+            return
         self.logger.on_attack(attacker, targets)
         for target in targets:
             self.attack_target(attacker, target)
@@ -284,13 +362,15 @@ class Fight:
             self.logger.on_magic_block(target)
             
     def magic(self, attacker, targets, spell_name):
+        if len(targets) == 0:
+            return
         if spell_name in self.library.spells:
             spell = self.library.spells[spell_name]
         else:
             return
         if attacker.stats.mp < spell.mp_cost:
             return
-        attacker.stats.mp -= spell.mp_cost        
+        attacker.stats.mp -= spell.mp_cost
         self.logger.on_cast_spell(attacker, targets, spell.name)
         if len(targets) > 0:
             for target in targets:
@@ -316,7 +396,7 @@ class Fight:
                 selector = self.selector[0]
             else:
                 selector = self.selector[1]
-            helper = SpellHelper(self.library)
+            helper = ActionHelper(self.library, self.characters)
             for i in range(current_character.sheet.attack_number):
                 action = selector.select(current_character, self.characters, helper)
                 self.processAction(action)
@@ -346,14 +426,14 @@ sheet3 = CharacterSheet()
 sheet3.name = 'Cersil'
 sheet3.mp = 300
 sheet3.spells = ['Raise dead']
-sheet3.initiative = 75
+sheet3.initiative = 7
 
 sheet4 = CharacterSheet()
 sheet4.name = 'Dalian'
 
-character = Character(sheet1, True, 0)
+character = Character(sheet1, True, -1)
 character2 = Character(sheet2, False, 1)
-character3 = Character(sheet3, True, 0)
+character3 = Character(sheet3, True, -1)
 character4 = Character(sheet4, False, 1)
 
 printChar(character)
