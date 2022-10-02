@@ -54,7 +54,13 @@ class Library:
         spell2.impact = [0, 0]
         spell2.dmg = [0, 0]
         spell2.target = Spell.TARGET_NONE
-        self.spells = {spell.name : spell, spell2.name : spell2}
+        spell3 = Spell()
+        spell3.name = 'Fireball'
+        spell3.impact = [60, 120]
+        spell3.dmg = [80, 160]
+        spell3.target = Spell.TARGET_ALL_ENEMIES
+        spell3.mp_cost = 80
+        self.spells = {spell.name : spell, spell2.name : spell2, spell3.name : spell3}
         sheet = CharacterSheet()
         sheet.name = 'Skeleton'
         sheet.spells = []
@@ -124,7 +130,7 @@ class ActionHelper:
             else:
                 target_faction = -character.faction
             for chr in self.characters:
-                if chr.faction == target_faction and chr.alive():
+                if chr.faction == target_faction and chr.is_alive():
                     all.append(chr)
             return [all]
         elif target_type == Spell.TARGET_SINGLE_ALLY or target_type == Spell.TARGET_SINGLE_ENEMY_BOTHLINE:
@@ -142,7 +148,7 @@ class ActionHelper:
                 return self.get_possible_targets(character, Spell.TARGET_ALL_ENEMIES)
             all = []
             for chr in self.characters:
-                if chr.faction == -character.faction and chr.alive() and chr.line == Character.FRONT_LINE:
+                if chr.faction == -character.faction and chr.is_alive() and chr.line == Character.FRONT_LINE:
                     all.append(chr)
             return [all]
         elif target_type == Spell.TARGET_SINGLE_ENEMY_FRONTLINE:
@@ -285,7 +291,7 @@ class ConsoleEventReceiver(EventReceiver):
         print('who blocks')
     def on_cast_spell(self, attacker : Character, targets, spell_name):
         print(ConsoleEventReceiver.COLOR, end = " ")
-        if len(targets)  == 1:
+        if len(targets) == 1:
             print(attacker.sheet.name + ' casts ' + spell_name + ' against ' + targets[0].sheet.name, end = " ")
         else:
             print(attacker.sheet.name + ' casts ' + spell_name, end = ' ')
@@ -434,7 +440,8 @@ sheet2.hp = 140
 sheet3 = CharacterSheet()
 sheet3.name = 'Cersil'
 sheet3.mp = 300
-sheet3.spells = ['Raise dead']
+sheet3.spells = ['Raise dead', 'Fireball']
+sheet3.spells_ai_chance = [20, 20]
 sheet3.initiative = 7
 
 sheet4 = CharacterSheet()
