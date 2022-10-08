@@ -6,7 +6,7 @@ class Spell:
     TARGET_SINGLE_ENEMY_FRONTLINE = 'single_enemy_frontline'
     TARGET_SINGLE_ENEMY_BOTHLINE = 'single_enemy'
     TARGET_SINGLE_ALLY = 'single_ally'
-    TARGET_ENEMIES_FRONTLINE = 'frontline_enemies'
+    TARGET_ALL_ENEMIES_FRONTLINE = 'all_enemies_frontline'
     TARGET_ALL_ENEMIES = 'all_enemies'
     TARGET_ALL_ALLIES = 'all_allies'
     def __init__(self):
@@ -35,6 +35,7 @@ class CharacterSheet:
         self.hp = 100
         self.mp = 100
         self.attack_area = Spell.TARGET_SINGLE_ENEMY_FRONTLINE
+        self.distant = False
         self.spells = ['Magic bolt']
         self.spells_ai_chance = [30]
 
@@ -120,7 +121,7 @@ class ActionHelper:
                 return False
         return True
 
-    def _get_possible_targets(self, character : Character, target_type):
+    def __get_possible_targets(self, character : Character, target_type, with_spell : bool):
         if target_type == Spell.TARGET_NONE:
             return []
         elif target_type == Spell.TARGET_ALL_ALLIES or target_type == Spell.TARGET_ALL_ENEMIES:
@@ -143,9 +144,11 @@ class ActionHelper:
                 if chr.faction == target_faction and chr.is_alive():
                     targets.append([chr])
             return targets
-        elif target_type == Spell.TARGET_ENEMIES_FRONTLINE:
+        elif target_type == Spell.TARGET_ALL_ENEMIES_FRONTLINE:
             if self.is_frontline_empty(-character.faction):
                 return self.get_possible_targets(character, Spell.TARGET_ALL_ENEMIES)
+            if character.line == Character.BACK_LINE and not character.sheet.distant and with_spell == False:
+                return []
             all = []
             for chr in self.characters:
                 if chr.faction == -character.faction and chr.is_alive() and chr.line == Character.FRONT_LINE:
@@ -154,6 +157,8 @@ class ActionHelper:
         elif target_type == Spell.TARGET_SINGLE_ENEMY_FRONTLINE:
             if self.is_frontline_empty(-character.faction):
                 return self.get_possible_targets(character, Spell.TARGET_SINGLE_ENEMY_BOTHLINE)
+            if character.line == Character.BACK_LINE and not character.sheet.distant and with_spell == False:
+                return []
             targets = []
             for chr in self.characters:
                 if chr.faction == -character.faction and chr.is_alive() and chr.line == Character.FRONT_LINE:
@@ -169,7 +174,7 @@ class ActionHelper:
             else:
                 return []
             target_type = spell.target
-        return self._get_possible_targets(character, target_type)
+        return self.__get_possible_targets(character, target_type)
 
 
 class Action:
@@ -322,6 +327,7 @@ class Fight:
         self.current = 0
         self.logger = logger
         self.characters.sort(key=lambda x: x.sheet.initiative, reverse=True)
+        self.helper = ActionHelper(self.library, self.characters)
                 
     def attack_target(self, attacker, target):
         atk_factor = attacker.sheet.attack / target.sheet.defence
@@ -404,9 +410,8 @@ class Fight:
                 selector = self.selector[0]
             else:
                 selector = self.selector[1]
-            helper = ActionHelper(self.library, self.characters)
             for i in range(current_character.sheet.attack_number):
-                action = selector.select(current_character, self.characters, helper)
+                action = selector.select(current_character, self.characters, self.helper)
                 self.processAction(action)
                 if action.type == Action.ACTION_WAIT:
                     break
