@@ -166,6 +166,7 @@ class ActionHelper:
             return targets
 
     def get_possible_targets(self, character : Character, spell_name = ''):
+        uses_spell = False
         if spell_name == '':
             target_type = character.sheet.attack_area
         else:
@@ -174,7 +175,8 @@ class ActionHelper:
             else:
                 return []
             target_type = spell.target
-        return self.__get_possible_targets(character, target_type)
+            uses_spell = True
+        return self.__get_possible_targets(character, target_type, uses_spell)
 
 
 class Action:
