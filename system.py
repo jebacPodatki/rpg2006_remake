@@ -72,6 +72,8 @@ class Library:
 class Character:
     FRONT_LINE = 1
     BACK_LINE = 2
+    RED_FACTION = -1
+    BLUE_FACTION = 1
     def __init__(self, sheet : CharacterSheet, controlled : bool, faction):
         self.sheet = copy.deepcopy(sheet)
         self.stats = CharacterStats(sheet)
@@ -213,7 +215,10 @@ class AISelector(ActionSelector):
             index = random.randint(0, len(target_groups) - 1)
             selected_targets = target_groups[index]
         if selected_spell_name == '':
-            return Action(Action.ACTION_ATTACK, character, selected_targets, '')
+            if len(selected_targets) == 0:
+                return Action(Action.ACTION_WAIT, character, [], '')
+            else:
+                return Action(Action.ACTION_ATTACK, character, selected_targets, '')
         else:
             return Action(Action.ACTION_MAGIC, character, selected_targets, selected_spell_name)
             
@@ -291,7 +296,7 @@ class ConsoleEventReceiver(EventReceiver):
     COLOR2 = '\033[92m'    
     def on_attack(self, attacker : Character, targets):
         print(ConsoleEventReceiver.COLOR, end = " ")
-        print(attacker.sheet.name + ' attacks ' + targets[0].sheet.name, end = " ")
+        print(attacker.sheet.name + ' attacks ' + targets[0].sheet.name, end = ' ')
     def on_damage(self, character : Character, damage):
         print('and deals ' + str(damage) + ' damage. ' + character.sheet.name + ' has ' + str(character.stats.hp) + ' HP now.')  
     def on_block(self, character : Character):
@@ -299,7 +304,7 @@ class ConsoleEventReceiver(EventReceiver):
     def on_cast_spell(self, attacker : Character, targets, spell_name):
         print(ConsoleEventReceiver.COLOR, end = " ")
         if len(targets) == 1:
-            print(attacker.sheet.name + ' casts ' + spell_name + ' against ' + targets[0].sheet.name, end = " ")
+            print(attacker.sheet.name + ' casts ' + spell_name + ' against ' + targets[0].sheet.name, end = ' ')
         else:
             print(attacker.sheet.name + ' casts ' + spell_name, end = ' ')
     def on_spell_effect(self, targets, effect):
@@ -393,6 +398,17 @@ class Fight:
                 self.magic_on_target(attacker, target, spell)
         else:
             self.magic_on_target(attacker, [], spell)
+
+    def change_line(self, actor : Character):
+        if actor.line == Character.FRONT_LINE:
+            actor.line = Character.BACK_LINE
+        else:
+            actor.line = Character.FRONT_LINE
+
+    def move_all_to_frontline(self, faction : int):
+        for chr in self.characters:
+            if chr.faction == faction:
+                chr.line = Character.FRONT_LINE
                 
     def processAction(self, action : Action):
         if action.type == Action.ACTION_WAIT:
@@ -417,6 +433,10 @@ class Fight:
                 self.processAction(action)
                 if action.type == Action.ACTION_WAIT:
                     break
+                if self.helper.is_frontline_empty(Character.BLUE_FACTION):
+                    self.move_all_to_frontline(Character.BLUE_FACTION)
+                if self.helper.is_frontline_empty(Character.RED_FACTION):
+                    self.move_all_to_frontline(Character.RED_FACTION)
         self.current += 1
         if self.current >= len(self.characters):
             self.current = 0
@@ -425,7 +445,7 @@ class Fight:
         alive = [0, 0]
         for chr in self.characters:
             if chr.is_alive():
-                if chr.faction == 1:
+                if chr.faction == Character.BLUE_FACTION:
                     alive[0] += 1
                 else:
                     alive[1] += 1
@@ -454,10 +474,11 @@ sheet3.initiative = 7
 sheet4 = CharacterSheet()
 sheet4.name = 'Dalian'
 
-character = Character(sheet1, True, -1)
-character2 = Character(sheet2, False, 1)
-character3 = Character(sheet3, True, -1)
-character4 = Character(sheet4, False, 1)
+character = Character(sheet1, True, Character.RED_FACTION)
+character2 = Character(sheet2, False, Character.BLUE_FACTION)
+character3 = Character(sheet3, True, Character.RED_FACTION)
+character4 = Character(sheet4, False, Character.BLUE_FACTION)
+character4.line = Character.BACK_LINE
 
 printChar(character)
 printChar(character2)
