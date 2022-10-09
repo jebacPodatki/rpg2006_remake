@@ -1,0 +1,50 @@
+import copy
+from system.core.spell import Spell
+
+class CharacterSheet:
+    def __init__(self):
+        self.name = ''
+        self.strength = 10
+        self.endurance = 10
+        self.attack = 10
+        self.defence = 10
+        self.power = 10
+        self.will = 10
+        self.initiative = 10
+        self.attack_number = 1
+        self.breakage = [30, 70]
+        self.dmg = [30, 50]
+        self.dp = 100
+        self.rp = 100
+        self.hp = 100
+        self.mp = 100
+        self.attack_area = Spell.TARGET_SINGLE_ENEMY_FRONTLINE
+        self.distant = False
+        self.spells = ['Magic bolt']
+        self.spells_ai_chance = [30]
+
+class CharacterStats:
+    def __init__(self, sheet : CharacterSheet):
+        self.dp = sheet.dp
+        self.rp = sheet.rp
+        self.hp = sheet.hp
+        self.mp = sheet.mp
+
+class Character:
+    FRONT_LINE = 1
+    BACK_LINE = 2
+    RED_FACTION = -1
+    BLUE_FACTION = 1
+    def __init__(self, sheet : CharacterSheet, controlled : bool, faction):
+        self.sheet = copy.deepcopy(sheet)
+        self.stats = CharacterStats(sheet)
+        self.controlled = controlled
+        self.faction = faction
+        self.line = Character.FRONT_LINE
+    def reset(self):
+        self.stats = CharacterStats(self.sheet)
+    def is_alive(self):
+        if self.stats.hp > 0:
+            return True
+        else:
+            return False
