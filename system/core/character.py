@@ -1,6 +1,8 @@
 import copy
 from system.core.action.target import *
+from misc.decorators import *
 
+@deserialize()
 class CharacterSheet:
     def __init__(self):
         self.name = ''

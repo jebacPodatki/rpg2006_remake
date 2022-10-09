@@ -4,9 +4,9 @@ from misc.decorators import *
 @deserialize()
 class Spell:
     def __init__(self):
-        self.name = 'Magic bolt'
-        self.impact = [70, 120]
-        self.dmg = [60, 90]
+        self.name = ''
+        self.impact = [0, 0]
+        self.dmg = [0, 0]
         self.effect = ''
-        self.mp_cost = 50
-        self.target = ActionTarget.TARGET_SINGLE_ENEMY_BOTHLINE
+        self.mp_cost = 0
+        self.target = ActionTarget.TARGET_NONE
