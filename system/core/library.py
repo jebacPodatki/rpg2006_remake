@@ -1,22 +1,17 @@
-from system.core.spell import Spell
+import json
+from system.core.spell import *
 from system.core.character import *
 
 class Library:
-    def __init__(self):
-        spell = Spell()
-        spell2 = Spell()
-        spell2.name = 'Raise dead'
-        spell2.effect = 'raise'
-        spell2.impact = [0, 0]
-        spell2.dmg = [0, 0]
-        spell2.target = Spell.TARGET_NONE
-        spell3 = Spell()
-        spell3.name = 'Fireball'
-        spell3.impact = [60, 120]
-        spell3.dmg = [80, 160]
-        spell3.target = Spell.TARGET_ALL_ENEMIES
-        spell3.mp_cost = 80
-        self.spells = {spell.name : spell, spell2.name : spell2, spell3.name : spell3}
+    def __load_spells(self, path : str):
+        f = open(path, "r")
+        source = json.load(f)
+        for s in source:
+            spell = Spell(s)
+            self.spells[spell.name] = spell
+    def __init__(self, spell_path : str):
+        self.spells = {}
+        self.__load_spells(spell_path)
         sheet = CharacterSheet()
         sheet.name = 'Skeleton'
         sheet.spells = []

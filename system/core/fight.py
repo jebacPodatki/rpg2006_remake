@@ -1,8 +1,10 @@
 import random
-from system.core.spell import Spell
+from system.core.spell import *
 from system.core.character import *
 from system.core.library import Library
-from system.core.action import *
+from system.core.action.action import *
+from system.core.action.helper import *
+from system.core.action.selector import *
 from system.event.event_receiver import EventReceiver
 
 class Fight:

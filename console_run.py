@@ -42,7 +42,7 @@ character4.line = Character.BACK_LINE
 printChar(character)
 printChar(character2)
 
-library = Library()
+library = Library('json/spells.json')
 ai = AISelector()
 console_selector = ConsoleSelector()
 logger = ConsoleEventReceiver()

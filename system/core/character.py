@@ -1,5 +1,5 @@
 import copy
-from system.core.spell import Spell
+from system.core.action.target import *
 
 class CharacterSheet:
     def __init__(self):
@@ -18,7 +18,7 @@ class CharacterSheet:
         self.rp = 100
         self.hp = 100
         self.mp = 100
-        self.attack_area = Spell.TARGET_SINGLE_ENEMY_FRONTLINE
+        self.attack_area = ActionTarget.TARGET_SINGLE_ENEMY_FRONTLINE
         self.distant = False
         self.spells = ['Magic bolt']
         self.spells_ai_chance = [30]

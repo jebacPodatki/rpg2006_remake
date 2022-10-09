@@ -1,11 +1,13 @@
-from system.core.action import *
+from system.core.action.action import *
+from system.core.action.selector import *
+from system.core.action.helper import *
 from system.core.character import *
 
 class ConsoleSelector(ActionSelector):
-    def select(self, character : Character, characterList, helper : ActionHelper):
+    def select(self, character : Character, characterList, helper):
         print('\033[94m')
         print('Current character: ' + character.sheet.name)
-        print('Action: 1 - Attack, 2 - Magic, 3 - Wait, 4 - Move.: ', end = " ")
+        print('Action: 1 - Attack, 2 - Magic, 3 - Wait, 4 - Move.: ', end = ' ')
         action = int(input())
         if action == 3:
             return Action(Action.ACTION_WAIT, character, [], '')

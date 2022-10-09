@@ -1,9 +1,11 @@
 import random
-from system.core.action import *
+from system.core.action.action import *
+from system.core.action.selector import *
+from system.core.action.helper import *
 from system.core.character import *
 
 class AISelector(ActionSelector):
-    def select(self, character : Character, character_list, helper : ActionHelper):
+    def select(self, character : Character, character_list, helper):
         selected_spell_name = ''
         for i in range(0, len(character.sheet.spells)):
             if helper.can_use(character, character.sheet.spells[i]) and \

@@ -1,0 +1,26 @@
+[
+    {
+        "name" : "Magic bolt",
+        "impact" : [70, 120],
+        "dmg" : [60, 90],
+        "effect" : "",
+        "mp_cost" : 50,
+        "target" : "single_enemy"
+    },
+    {
+        "name" : "Raise dead",
+        "impact" : [0, 0],
+        "dmg" : [0, 0],
+        "effect" : "raise",
+        "mp_cost" : 50,
+        "target" : "none"
+    },
+    {
+        "name" : "Fireball",
+        "impact" : [60, 120],
+        "dmg" : [80, 160],
+        "effect" : "",
+        "mp_cost" : 80,
+        "target" : "all_enemies"
+    }     
+]

@@ -1,18 +1,7 @@
-from system.core.spell import Spell
+from system.core.spell import *
 from system.core.library import Library
-from system.core.character import Character
-
-class Action:
-    ACTION_NONE = 0
-    ACTION_ATTACK = 1
-    ACTION_MAGIC = 2
-    ACTION_WAIT = 3
-    ACTION_MOVE = 4
-    def __init__(self, type, actor : Character, targets, spell_name):
-        self.type = type
-        self.actor = actor
-        self.targets = targets
-        self.spell_name = spell_name
+from system.core.action.target import *
+from system.core.character import *
 
 class ActionHelper:
     def __init__(self, library : Library, characters):
@@ -41,9 +30,9 @@ class ActionHelper:
     def is_single_target(self, spell_name):
         if spell_name in self.library.spells:
             spell = self.library.spells[spell_name]
-            return spell.target == Spell.TARGET_SINGLE_ENEMY_FRONTLINE \
-                or spell.target == Spell.TARGET_SINGLE_ENEMY_BOTHLINE \
-                or spell.target == Spell.TARGET_SINGLE_ALLY
+            return spell.target == ActionTarget.TARGET_SINGLE_ENEMY_FRONTLINE \
+                or spell.target == ActionTarget.TARGET_SINGLE_ENEMY_BOTHLINE \
+                or spell.target == ActionTarget.TARGET_SINGLE_ALLY
         else:
             return False
         
@@ -60,11 +49,11 @@ class ActionHelper:
         return True
 
     def __get_possible_targets(self, character : Character, target_type, with_spell : bool):
-        if target_type == Spell.TARGET_NONE:
+        if target_type == ActionTarget.TARGET_NONE:
             return []
-        elif target_type == Spell.TARGET_ALL_ALLIES or target_type == Spell.TARGET_ALL_ENEMIES:
+        elif target_type == ActionTarget.TARGET_ALL_ALLIES or target_type == ActionTarget.TARGET_ALL_ENEMIES:
             all = []
-            if target_type == Spell.TARGET_ALL_ALLIES:
+            if target_type == ActionTarget.TARGET_ALL_ALLIES:
                 target_faction = character.faction
             else:
                 target_faction = -character.faction
@@ -72,9 +61,9 @@ class ActionHelper:
                 if chr.faction == target_faction and chr.is_alive():
                     all.append(chr)
             return [all]
-        elif target_type == Spell.TARGET_SINGLE_ALLY or target_type == Spell.TARGET_SINGLE_ENEMY_BOTHLINE:
+        elif target_type == ActionTarget.TARGET_SINGLE_ALLY or target_type == ActionTarget.TARGET_SINGLE_ENEMY_BOTHLINE:
             targets = []
-            if target_type == Spell.TARGET_SINGLE_ALLY:
+            if target_type == ActionTarget.TARGET_SINGLE_ALLY:
                 target_faction = character.faction
             else:
                 target_faction = -character.faction
@@ -82,9 +71,9 @@ class ActionHelper:
                 if chr.faction == target_faction and chr.is_alive():
                     targets.append([chr])
             return targets
-        elif target_type == Spell.TARGET_ALL_ENEMIES_FRONTLINE:
+        elif target_type == ActionTarget.TARGET_ALL_ENEMIES_FRONTLINE:
             if self.is_frontline_empty(-character.faction):
-                return self.get_possible_targets(character, Spell.TARGET_ALL_ENEMIES)
+                return self.get_possible_targets(character, ActionTarget.TARGET_ALL_ENEMIES)
             if character.line == Character.BACK_LINE and not character.sheet.distant and with_spell == False:
                 return []
             all = []
@@ -92,9 +81,9 @@ class ActionHelper:
                 if chr.faction == -character.faction and chr.is_alive() and chr.line == Character.FRONT_LINE:
                     all.append(chr)
             return [all]
-        elif target_type == Spell.TARGET_SINGLE_ENEMY_FRONTLINE:
+        elif target_type == ActionTarget.TARGET_SINGLE_ENEMY_FRONTLINE:
             if self.is_frontline_empty(-character.faction):
-                return self.get_possible_targets(character, Spell.TARGET_SINGLE_ENEMY_BOTHLINE)
+                return self.get_possible_targets(character, ActionTarget.TARGET_SINGLE_ENEMY_BOTHLINE)
             if character.line == Character.BACK_LINE and not character.sheet.distant and with_spell == False:
                 return []
             targets = []
@@ -115,7 +104,3 @@ class ActionHelper:
             target_type = spell.target
             uses_spell = True
         return self.__get_possible_targets(character, target_type, uses_spell)
-
-class ActionSelector:
-    def select(self, character : Character, characterList, helper : ActionHelper):
-        return Action(Action.ACTION_NONE, None, [], '')
