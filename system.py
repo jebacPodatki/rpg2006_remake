@@ -108,6 +108,17 @@ class ActionHelper:
                 return False
         else:
             return False
+    def can_move(self, character : Character):
+        if character.line == Character.FRONT_LINE:
+            if self.is_backline_empty(character.faction):
+                return False
+            possible = True
+            character.line = Character.BACK_LINE
+            if self.is_frontline_empty(character.faction):
+                possible = False
+            character.line = Character.FRONT_LINE
+            return possible
+        return True
     def is_single_target(self, spell_name):
         if spell_name in self.library.spells:
             spell = self.library.spells[spell_name]
@@ -120,6 +131,12 @@ class ActionHelper:
     def is_frontline_empty(self, faction):
         for chr in self.characters:
             if chr.is_alive() and chr.faction == faction and chr.line == Character.FRONT_LINE:
+                return False
+        return True
+
+    def is_backline_empty(self, faction):
+        for chr in self.characters:
+            if chr.is_alive() and chr.faction == faction and chr.line == Character.BACK_LINE:
                 return False
         return True
 
@@ -185,7 +202,8 @@ class Action:
     ACTION_NONE = 0
     ACTION_ATTACK = 1
     ACTION_MAGIC = 2
-    ACTION_WAIT = 3    
+    ACTION_WAIT = 3
+    ACTION_MOVE = 4
     def __init__(self, type, actor : Character, targets, spell_name):
         self.type = type
         self.actor = actor
@@ -226,10 +244,15 @@ class ConsoleSelector(ActionSelector):
     def select(self, character : Character, characterList, helper : ActionHelper):
         print('\033[94m')
         print('Current character: ' + character.sheet.name)
-        print('Action: 1 - Attack, 2 - Magic, 3 - Wait.: ', end = " ")
+        print('Action: 1 - Attack, 2 - Magic, 3 - Wait, 4 - Move.: ', end = " ")
         action = int(input())
         if action == 3:
-            return Action(Action.ACTION_WAIT, character, None, '')
+            return Action(Action.ACTION_WAIT, character, [], '')
+        if action == 4:
+            if helper.can_move(character):
+                return Action(Action.ACTION_MOVE, character, [], '')
+            else:
+                return Action(Action.ACTION_WAIT, character, [], '')
         selected_spell = ''
         if action == 2:
             msg = 'Choose spell: '
@@ -290,19 +313,21 @@ class EventReceiver:
         pass
     def on_new_turn(self, current_character : Character, characters):
         pass
+    def on_move(self, character : Character):
+        pass
     
 class ConsoleEventReceiver(EventReceiver):
     COLOR = '\033[0m'
     COLOR2 = '\033[92m'    
     def on_attack(self, attacker : Character, targets):
-        print(ConsoleEventReceiver.COLOR, end = " ")
+        print(ConsoleEventReceiver.COLOR, end = ' ')
         print(attacker.sheet.name + ' attacks ' + targets[0].sheet.name, end = ' ')
     def on_damage(self, character : Character, damage):
         print('and deals ' + str(damage) + ' damage. ' + character.sheet.name + ' has ' + str(character.stats.hp) + ' HP now.')  
     def on_block(self, character : Character):
         print('who blocks')
     def on_cast_spell(self, attacker : Character, targets, spell_name):
-        print(ConsoleEventReceiver.COLOR, end = " ")
+        print(ConsoleEventReceiver.COLOR, end = ' ')
         if len(targets) == 1:
             print(attacker.sheet.name + ' casts ' + spell_name + ' against ' + targets[0].sheet.name, end = ' ')
         else:
@@ -311,13 +336,13 @@ class ConsoleEventReceiver(EventReceiver):
         if effect == 'raise':
             print('and creates ' + str(len(targets)) + ' ' + targets[0].sheet.name + 's')
     def on_magic_block(self, character : Character):
-        print(ConsoleEventReceiver.COLOR, end = " ")
+        print(ConsoleEventReceiver.COLOR, end = ' ')
         print('who effectively resists magic')
     def on_wait(self, character : Character):
-        print(ConsoleEventReceiver.COLOR, end = " ")
+        print(ConsoleEventReceiver.COLOR, end = ' ')
         print(character.sheet.name + ' is waiting.')
     def on_death(self, character : Character):
-        print(ConsoleEventReceiver.COLOR, end = " ")
+        print(ConsoleEventReceiver.COLOR, end = ' ')
         print(character.sheet.name + ' died')
     def on_new_turn(self, current_character : Character, characters):
         if current_character.controlled == False:
@@ -325,6 +350,13 @@ class ConsoleEventReceiver(EventReceiver):
         print(ConsoleEventReceiver.COLOR2)
         for chr in characters:
             print('\t' + chr.sheet.name + '\t\t' + '[' + str(chr.stats.hp) + '/' + str(chr.sheet.hp) + ']')
+    def on_move(self, character : Character):
+        print(ConsoleEventReceiver.COLOR, end = ' ')
+        if character.line == Character.FRONT_LINE:
+            line = 'front line'
+        else:
+            line = "back line"
+        print(character.sheet.name + ' moved to ' + line)
  
 class Fight:
     def __init__(self, characters, library : Library, selectorA : ActionSelector, selectorB : ActionSelector, logger):
@@ -399,11 +431,12 @@ class Fight:
         else:
             self.magic_on_target(attacker, [], spell)
 
-    def change_line(self, actor : Character):
+    def move(self, actor : Character):
         if actor.line == Character.FRONT_LINE:
             actor.line = Character.BACK_LINE
         else:
             actor.line = Character.FRONT_LINE
+        self.logger.on_move(actor)
 
     def move_all_to_frontline(self, faction : int):
         for chr in self.characters:
@@ -417,6 +450,8 @@ class Fight:
             self.attack(action.actor, action.targets)
         elif action.type == Action.ACTION_MAGIC:
             self.magic(action.actor, action.targets, action.spell_name)
+        elif action.type == Action.ACTION_MOVE:
+            self.move(action.actor)
         else:
             pass
                 
@@ -477,6 +512,7 @@ sheet4.name = 'Dalian'
 character = Character(sheet1, True, Character.RED_FACTION)
 character2 = Character(sheet2, False, Character.BLUE_FACTION)
 character3 = Character(sheet3, True, Character.RED_FACTION)
+character3.line = Character.BACK_LINE
 character4 = Character(sheet4, False, Character.BLUE_FACTION)
 character4.line = Character.BACK_LINE
 
