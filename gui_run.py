@@ -1,10 +1,8 @@
-from pstats import Stats
 import pygame
 
 class Attributes:
     barImg = 'pngs/bar.png'
 
-#bazowa, potrzebne?
 class Drawable:
     def draw(screen):
         pass
@@ -82,12 +80,12 @@ def main():
     bar.update(0.8, 0.5, 0.2)
     
     #
-    img1 = pygame.image.load('pngs/czl.png')
+    img1 = pygame.image.load('pngs/human.png')
     img2 = pygame.image.load('pngs/elf.png')
-    img3 = pygame.image.load('pngs/krasn.png') 
-    img4 = pygame.image.load('pngs/poldemon.png')
-    img5 = pygame.image.load('pngs/nekro.png') 
-    img6 = pygame.image.load('pngs/szkielet.png')
+    img3 = pygame.image.load('pngs/dwarf.png') 
+    img4 = pygame.image.load('pngs/half-demon.png')
+    img5 = pygame.image.load('pngs/necro.png') 
+    img6 = pygame.image.load('pngs/skeleton.png')
     X = 200
     Y = 100   
     
