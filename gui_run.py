@@ -1,4 +1,5 @@
 import pygame
+from gui.config import *
 
 class Attributes:
     barImg = 'pngs/bar.png'
@@ -29,49 +30,15 @@ class CharacterBars(Drawable):
         screen.blit(self.img, (self.x, self.y))
         screen.blit(self.img, (self.x, self.y + self.delta))
         screen.blit(self.img, (self.x, self.y + 2*self.delta))
-        
-class CharacterStats:
-    dmgMin = 10
-    dmgMax = 20
-    hp = 100
-    
-class Character:
-    def __init__(stats : CharacterStats, controlled : bool, faction):
-        self.baseStats = copy.deepcopy(stats)
-        self.stats = copy.deepcopy(stats)
-        self.controlled = controlled
-        self.faction = faction
-    def reset():
-        self.stats = copy.deepcopy(self.baseStats)
-
-
-ACTION_NONE = 0
-ACTION_ATTACK = 1
-ACTION_MAGIC = 2
-ACTION_WAIT = 3
-        
-class Action:
-    def __init(type, target : Character, skill):
-        self.type = type
-        self.target = target
-        self.skill = skill
-        
-class ActionSelector:
-    def select(character : Character, characterList):
-        return Action(ACTION_NONE, None, 0)
-    
-class AISelector(ActionSelector):
-    def select(character : Character, characterList):
-        for chr in characterList:
-            if chr.faction != character.faction:
-                return Action(ACTION_ATTACK, chr, 0)
-        
 
 def main():    
     pygame.init()    
     pygame.display.set_caption("RPG2006 Remake")
-     
-    screen = pygame.display.set_mode((800,600))     
+
+    config = Config('json/config.json')
+    
+    mode = (config.window_size[0], config.window_size[1])
+    screen = pygame.display.set_mode(mode)
     running = True
     
     #
