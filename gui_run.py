@@ -1,5 +1,6 @@
 import pygame
 from gui.config import *
+from gui.gui_console import *
 
 class Attributes:
     barImg = 'pngs/bar.png'
@@ -54,12 +55,22 @@ def main():
     img5 = pygame.image.load('pngs/necro.png') 
     img6 = pygame.image.load('pngs/skeleton.png')
     X = 200
-    Y = 100   
+    Y = 100
+    
+    #
+    console = GUIConsole(config)
+    kkk = 0
+    console.print_on('console test' + str(kkk))
     
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False                     
+                running = False 
+            if event.type == pygame.KEYDOWN:
+                keys = pygame.key.get_pressed()
+                if keys[pygame.K_UP]:
+                    console.print_on('hehe' + str(kkk))
+                    kkk += 1                                  
             
         screen.fill((0, 0, 0))                
         pygame.draw.rect(screen, (20, 20, 20), (X - 10, Y - 10, 330, 400), 2)  
@@ -72,7 +83,10 @@ def main():
         screen.blit(img6, (X, Y + 100))
         screen.blit(img6, (X + 80, Y + 100)) 
         screen.blit(img6, (X + 160, Y + 100)) 
-        screen.blit(img6, (X + 240, Y + 100))                                                          
+        screen.blit(img6, (X + 240, Y + 100))
+
+        console.draw(screen)
+                                                              
         pygame.display.update()
      
 

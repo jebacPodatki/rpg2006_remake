@@ -3,7 +3,7 @@ from system.core.character import *
 
 class GUIEventReceiver(EventReceiver):
     def __init__(self):
-        pass    
+        pass
     def on_attack(self, attacker : Character, targets):
         pass
     def on_damage(self, character : Character, damage):
