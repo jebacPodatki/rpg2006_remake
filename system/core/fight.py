@@ -36,9 +36,10 @@ class Fight:
     def __attack(self, attacker, targets):
         if len(targets) == 0:
             return
-        self.logger.on_attack(attacker, targets)
-        for target in targets:
-            self.__attack_target(attacker, target)
+        for i in range(attacker.sheet.attack_number):
+            self.logger.on_attack(attacker, targets)
+            for target in targets:
+                self.__attack_target(attacker, target)
 
     def __magic_on_target(self, attacker, target, spell):
         if spell.effect == 'raise':
