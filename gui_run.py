@@ -69,10 +69,10 @@ def main():
             if event.type == pygame.KEYDOWN:
                 keys = pygame.key.get_pressed()
                 if keys[pygame.K_UP]:
-                    console.print_on('hehe' + str(kkk))
+                    console.print_on('ABCDEFGHIJKLMNOPSRTWIZDUERHUU' + str(kkk))
                     kkk += 1                                  
             
-        screen.fill((0, 0, 0))                
+        screen.fill((0, 0, 0))
         pygame.draw.rect(screen, (20, 20, 20), (X - 10, Y - 10, 330, 400), 2)  
         bar.draw(screen)
         screen.blit(img1, (X, Y + 300))
