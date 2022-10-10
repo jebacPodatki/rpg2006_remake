@@ -17,7 +17,7 @@ class Fight:
         self.characters.sort(key=lambda x: x.sheet.initiative, reverse=True)
         self.helper = ActionHelper(self.library, self.characters)
 
-    def attack_target(self, attacker, target):
+    def __attack_target(self, attacker, target):
         atk_factor = attacker.sheet.attack / target.sheet.defence
         atk = atk_factor * random.randint(attacker.sheet.breakage[0], attacker.sheet.breakage[1])
         target.stats.dp -= atk
@@ -33,14 +33,14 @@ class Fight:
         else:
             self.logger.on_block(target)
 
-    def attack(self, attacker, targets):
+    def __attack(self, attacker, targets):
         if len(targets) == 0:
             return
         self.logger.on_attack(attacker, targets)
         for target in targets:
-            self.attack_target(attacker, target)
+            self.__attack_target(attacker, target)
 
-    def magic_on_target(self, attacker, target, spell):
+    def __magic_on_target(self, attacker, target, spell):
         if spell.effect == 'raise':
             sheet = self.library.sheets['Skeleton']
             number = int(attacker.sheet.power / 5)
@@ -65,7 +65,7 @@ class Fight:
         else:
             self.logger.on_magic_block(target)
 
-    def magic(self, attacker, targets, spell_name):
+    def __magic(self, attacker, targets, spell_name):
         if spell_name in self.library.spells:
             spell = self.library.spells[spell_name]
         else:
@@ -76,11 +76,11 @@ class Fight:
         self.logger.on_cast_spell(attacker, targets, spell.name)
         if len(targets) > 0:
             for target in targets:
-                self.magic_on_target(attacker, target, spell)
+                self.__magic_on_target(attacker, target, spell)
         else:
-            self.magic_on_target(attacker, [], spell)
+            self.__magic_on_target(attacker, [], spell)
 
-    def move(self, actor : Character):
+    def __move(self, actor : Character):
         if actor.line == Character.FRONT_LINE:
             actor.line = Character.BACK_LINE
         else:
@@ -92,15 +92,15 @@ class Fight:
             if chr.faction == faction:
                 chr.line = Character.FRONT_LINE
 
-    def processAction(self, action : Action):
+    def __processAction(self, action : Action):
         if action.type == Action.ACTION_WAIT:
             self.logger.on_wait(action.actor)
         elif action.type == Action.ACTION_ATTACK:
-            self.attack(action.actor, action.targets)
+            self.__attack(action.actor, action.targets)
         elif action.type == Action.ACTION_MAGIC:
-            self.magic(action.actor, action.targets, action.spell_name)
+            self.__magic(action.actor, action.targets, action.spell_name)
         elif action.type == Action.ACTION_MOVE:
-            self.move(action.actor)
+            self.__move(action.actor)
         else:
             pass
 
@@ -114,13 +114,13 @@ class Fight:
                 selector = self.selector[1]
             for i in range(current_character.sheet.attack_number):
                 action = selector.select(current_character, self.characters, self.helper)
-                self.processAction(action)
+                self.__processAction(action)
                 if action.type == Action.ACTION_WAIT:
                     break
                 if self.helper.is_frontline_empty(Character.BLUE_FACTION):
-                    self.move_all_to_frontline(Character.BLUE_FACTION)
+                    self.__move_all_to_frontline(Character.BLUE_FACTION)
                 if self.helper.is_frontline_empty(Character.RED_FACTION):
-                    self.move_all_to_frontline(Character.RED_FACTION)
+                    self.__move_all_to_frontline(Character.RED_FACTION)
         self.current += 1
         if self.current >= len(self.characters):
             self.current = 0

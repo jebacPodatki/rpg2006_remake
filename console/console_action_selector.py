@@ -32,7 +32,8 @@ class ConsoleSelector(ActionSelector):
                 action = 1
         target_groups = helper.get_possible_targets(character, selected_spell)
         if len(target_groups) == 0:
-            selected_targets = []       1:
+            selected_targets = []
+        elif len(target_groups) == 1:
             if len(target_groups[0]) >= 1:
                 selected_targets = target_groups[0]
             else:
