@@ -87,7 +87,7 @@ class Fight:
             actor.line = Character.FRONT_LINE
         self.logger.on_move(actor)
 
-    def move_all_to_frontline(self, faction : int):
+    def __move_all_to_frontline(self, faction : int):
         for chr in self.characters:
             if chr.faction == faction:
                 chr.line = Character.FRONT_LINE
