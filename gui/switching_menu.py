@@ -13,11 +13,13 @@ class SwitchingMenu:
                                  config.menu_font_color_unselected[2])
         self.content = []
         self.selected_index = 0
+
     def reset(self, lines):
         for line in lines:
             selected = self.font.render(line, 1, self.color_selected)
             unselected = self.font.render(line, 1, self.color_unselected)
             self.content.append([unselected, selected])
+
     def draw(self, screen):
         delta_y = 0
         for i in range(len(self.content)):
@@ -27,6 +29,7 @@ class SwitchingMenu:
                 line = self.content[i][0]
             screen.blit(line, (self.config.menu_pos[0], self.config.menu_pos[1] + delta_y))
             delta_y += self.config.menu_interline_size
+
     def on_event(self, event):
         if event.type == pygame.KEYDOWN:
             keys = pygame.key.get_pressed()

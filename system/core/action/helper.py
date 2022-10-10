@@ -7,6 +7,7 @@ class ActionHelper:
     def __init__(self, library : Library, characters):
         self.library = library
         self.characters = characters
+
     def can_use(self, character : Character, spell_name):
         if spell_name in self.library.spells:
             spell = self.library.spells[spell_name]
@@ -16,6 +17,7 @@ class ActionHelper:
                 return False
         else:
             return False
+
     def can_move(self, character : Character):
         if character.line == Character.FRONT_LINE:
             if self.is_backline_empty(character.faction):
@@ -27,6 +29,7 @@ class ActionHelper:
             character.line = Character.FRONT_LINE
             return possible
         return True
+
     def is_single_target(self, spell_name):
         if spell_name in self.library.spells:
             spell = self.library.spells[spell_name]

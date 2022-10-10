@@ -16,11 +16,11 @@ class Fight:
         self.logger = logger
         self.characters.sort(key=lambda x: x.sheet.initiative, reverse=True)
         self.helper = ActionHelper(self.library, self.characters)
-                
+
     def attack_target(self, attacker, target):
         atk_factor = attacker.sheet.attack / target.sheet.defence
-        atk = atk_factor * random.randint(attacker.sheet.breakage[0], attacker.sheet.breakage[1])        
-        target.stats.dp -= atk        
+        atk = atk_factor * random.randint(attacker.sheet.breakage[0], attacker.sheet.breakage[1])
+        target.stats.dp -= atk
         if target.stats.dp <= 0:
             dmg_factor = attacker.sheet.strength / target.sheet.endurance
             dmg = dmg_factor * random.randint(attacker.sheet.dmg[0], attacker.sheet.dmg[1])
@@ -32,7 +32,7 @@ class Fight:
                 target.stats.dp = target.sheet.dp
         else:
             self.logger.on_block(target)
-            
+
     def attack(self, attacker, targets):
         if len(targets) == 0:
             return

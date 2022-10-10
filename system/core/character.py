@@ -37,14 +37,17 @@ class Character:
     BACK_LINE = 2
     RED_FACTION = -1
     BLUE_FACTION = 1
+
     def __init__(self, sheet : CharacterSheet, controlled : bool, faction):
         self.sheet = copy.deepcopy(sheet)
         self.stats = CharacterStats(sheet)
         self.controlled = controlled
         self.faction = faction
         self.line = Character.FRONT_LINE
+
     def reset(self):
         self.stats = CharacterStats(self.sheet)
+
     def is_alive(self):
         if self.stats.hp > 0:
             return True
