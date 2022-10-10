@@ -4,7 +4,7 @@ from system.core.action.selector import *
 from system.core.action.helper import *
 from system.core.character import *
 
-class AISelector(ActionSelector):
+class AIActionSelector(ActionSelector):
     def select(self, character : Character, character_list, helper):
         selected_spell_name = ''
         for i in range(0, len(character.sheet.spells)):

@@ -2,8 +2,8 @@ from system.core.character import *
 from system.core.library import Library
 from system.core.fight import Fight
 from system.ai.ai import *
-from console.console_action_selector import *
-from console.console_event_receiver import *
+from console.action_selector import *
+from console.event_receiver import *
 
 def printChar(chr : Character):
     print('name: ' + str(chr.sheet.name))
@@ -24,8 +24,8 @@ character4.line = Character.BACK_LINE
 printChar(character)
 printChar(character2)
 
-ai = AISelector()
-console_selector = ConsoleSelector()
+ai = AIActionSelector()
+console_selector = ConsoleActionSelector()
 logger = ConsoleEventReceiver()
 
 fight = Fight([character, character2, character3, character4], library, console_selector, ai, logger)

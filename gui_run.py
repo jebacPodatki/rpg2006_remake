@@ -1,7 +1,7 @@
 import pygame
 from gui.config import *
-from gui.gui_console import *
-from gui.switching_menu import *
+from gui.widgets.console import *
+from gui.widgets.switching_menu import *
 
 class Attributes:
     barImg = 'pngs/bar.png'
