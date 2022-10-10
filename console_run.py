@@ -31,4 +31,4 @@ logger = ConsoleEventReceiver()
 fight = Fight([character, character2, character3, character4], library, console_selector, ai, logger)
 
 while fight.ended() == False:
-    fight.turn()
+    fight.process()

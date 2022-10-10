@@ -95,35 +95,43 @@ class Fight:
     def __processAction(self, action : Action):
         if action.type == Action.ACTION_WAIT:
             self.logger.on_wait(action.actor)
+            action.actor.stats.action_number = 0
         elif action.type == Action.ACTION_ATTACK:
             self.__attack(action.actor, action.targets)
+            action.actor.stats.action_number -= 1
         elif action.type == Action.ACTION_MAGIC:
             self.__magic(action.actor, action.targets, action.spell_name)
+            action.actor.stats.action_number = 0
         elif action.type == Action.ACTION_MOVE:
             self.__move(action.actor)
+            action.actor.stats.action_number = 0
         else:
             pass
 
-    def turn(self):
+    def __new_turn(self):
+        self.current += 1
+        if self.current >= len(self.characters):
+            self.current = 0
         current_character = self.characters[self.current]
         if current_character.is_alive():
+            current_character.stats.action_number = current_character.sheet.action_number
             self.logger.on_new_turn(current_character, self.characters)
+
+    def process(self):
+        if self.current == -1 or self.characters[self.current].stats.action_number == 0:
+            self.__new_turn()
+        current_character = self.characters[self.current]
+        if current_character.is_alive():
             if current_character.controlled == True:
                 selector = self.selector[0]
             else:
                 selector = self.selector[1]
-            for i in range(current_character.sheet.action_number):
-                action = selector.select(current_character, self.characters, self.helper)
-                self.__processAction(action)
-                if action.type == Action.ACTION_WAIT:
-                    break
-                if self.helper.is_frontline_empty(Character.BLUE_FACTION):
-                    self.__move_all_to_frontline(Character.BLUE_FACTION)
-                if self.helper.is_frontline_empty(Character.RED_FACTION):
-                    self.__move_all_to_frontline(Character.RED_FACTION)
-        self.current += 1
-        if self.current >= len(self.characters):
-            self.current = 0
+            action = selector.select(current_character, self.characters, self.helper)
+            self.__processAction(action)
+            if self.helper.is_frontline_empty(Character.BLUE_FACTION):
+                self.__move_all_to_frontline(Character.BLUE_FACTION)
+            if self.helper.is_frontline_empty(Character.RED_FACTION):
+                self.__move_all_to_frontline(Character.RED_FACTION)
 
     def ended(self):
         alive = [0, 0]

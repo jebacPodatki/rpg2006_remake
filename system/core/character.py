@@ -31,6 +31,7 @@ class CharacterStats:
         self.rp = sheet.rp
         self.hp = sheet.hp
         self.mp = sheet.mp
+        self.action_number = sheet.action_number
 
 class Character:
     FRONT_LINE = 1
