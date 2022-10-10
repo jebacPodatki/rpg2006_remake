@@ -1,6 +1,6 @@
 {
     "window_size" : [800, 600],
-    "console_size" : [200, 100],    
+    "console_size" : [200, 100],
     "console_pos" : [550, 100],
     "console_font" : "comicsans",
     "console_font_size" : 25,

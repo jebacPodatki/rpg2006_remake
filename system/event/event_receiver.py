@@ -4,7 +4,7 @@ class EventReceiver:
     def on_attack(self, attacker : Character, targets):
         pass
     def on_damage(self, character : Character, damage):
-        pass    
+        pass
     def on_block(self, character : Character):
         pass
     def on_cast_spell(self, attacker : Character, targets, spell_name):
@@ -12,7 +12,7 @@ class EventReceiver:
     def on_spell_effect(self, targets, effect):
         pass
     def on_magic_block(self, character : Character):
-        pass     
+        pass
     def on_wait(self, character : Character):
         pass
     def on_death(self, character : Character):

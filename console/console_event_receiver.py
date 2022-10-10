@@ -3,12 +3,12 @@ from system.core.character import *
 
 class ConsoleEventReceiver(EventReceiver):
     COLOR = '\033[0m'
-    COLOR2 = '\033[92m'    
+    COLOR2 = '\033[92m'
     def on_attack(self, attacker : Character, targets):
         print(ConsoleEventReceiver.COLOR, end = ' ')
         print(attacker.sheet.name + ' attacks ' + targets[0].sheet.name, end = ' ')
     def on_damage(self, character : Character, damage):
-        print('and deals ' + str(damage) + ' damage. ' + character.sheet.name + ' has ' + str(character.stats.hp) + ' HP now.')  
+        print('and deals ' + str(damage) + ' damage. ' + character.sheet.name + ' has ' + str(character.stats.hp) + ' HP now.')
     def on_block(self, character : Character):
         print('who blocks')
     def on_cast_spell(self, attacker : Character, targets, spell_name):

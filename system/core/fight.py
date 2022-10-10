@@ -39,7 +39,7 @@ class Fight:
         self.logger.on_attack(attacker, targets)
         for target in targets:
             self.attack_target(attacker, target)
-            
+
     def magic_on_target(self, attacker, target, spell):
         if spell.effect == 'raise':
             sheet = self.library.sheets['Skeleton']
@@ -52,7 +52,7 @@ class Fight:
             return
         atk_factor = attacker.sheet.power / target.sheet.will
         atk = atk_factor * random.randint(spell.impact[0], spell.impact[1])
-        target.stats.rp -= atk        
+        target.stats.rp -= atk
         if target.stats.rp <= 0:
             dmg_factor = attacker.sheet.power / target.sheet.will
             dmg = dmg_factor * random.randint(spell.dmg[0], spell.dmg[1])
@@ -64,7 +64,7 @@ class Fight:
                 target.stats.rp = target.sheet.rp
         else:
             self.logger.on_magic_block(target)
-            
+
     def magic(self, attacker, targets, spell_name):
         if spell_name in self.library.spells:
             spell = self.library.spells[spell_name]
@@ -91,7 +91,7 @@ class Fight:
         for chr in self.characters:
             if chr.faction == faction:
                 chr.line = Character.FRONT_LINE
-                
+
     def processAction(self, action : Action):
         if action.type == Action.ACTION_WAIT:
             self.logger.on_wait(action.actor)
@@ -103,7 +103,7 @@ class Fight:
             self.move(action.actor)
         else:
             pass
-                
+
     def turn(self):
         current_character = self.characters[self.current]
         if current_character.is_alive():
@@ -124,7 +124,7 @@ class Fight:
         self.current += 1
         if self.current >= len(self.characters):
             self.current = 0
-    
+
     def ended(self):
         alive = [0, 0]
         for chr in self.characters:

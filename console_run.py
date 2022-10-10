@@ -7,7 +7,7 @@ from console.console_event_receiver import *
 
 def printChar(chr : Character):
     print('name: ' + str(chr.sheet.name))
-    print('breakage: ' + str(chr.sheet.breakage[0]) + ' - ' + str(chr.sheet.breakage[1]))  
+    print('breakage: ' + str(chr.sheet.breakage[0]) + ' - ' + str(chr.sheet.breakage[1]))
     print('damage: ' + str(chr.sheet.dmg[0]) + ' - ' + str(chr.sheet.dmg[1]))
     print('HP: ' + str(chr.stats.hp) + '/' + str(chr.sheet.hp))
     print('DP: ' + str(chr.stats.dp) + '/' + str(chr.sheet.dp))

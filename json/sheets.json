@@ -1,4 +1,4 @@
-[  
+[
     {
         "name" : "Abzare",
         "strength" : 10,
@@ -19,7 +19,7 @@
         "distant" : false,
         "spells" : ["Magic bolt"],
         "spells_ai_chance" : [30]
-    },      
+    },
     {
         "name" : "Barsel",
         "strength" : 10,
@@ -103,5 +103,5 @@
         "distant" : false,
         "spells" : ["Magic bolt"],
         "spells_ai_chance" : [30]
-    }    
+    }
 ]

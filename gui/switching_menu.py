@@ -9,8 +9,8 @@ class SwitchingMenu:
                                config.menu_font_color_selected[1],
                                config.menu_font_color_selected[2])
         self.color_unselected = (config.menu_font_color_unselected[0],
-                               config.menu_font_color_unselected[1],
-                               config.menu_font_color_unselected[2])
+                                 config.menu_font_color_unselected[1],
+                                 config.menu_font_color_unselected[2])
         self.content = []
         self.selected_index = 0
     def reset(self, lines):
@@ -31,6 +31,6 @@ class SwitchingMenu:
         if event.type == pygame.KEYDOWN:
             keys = pygame.key.get_pressed()
             if keys[pygame.K_UP]:
-                self.selected_index = (self.selected_index - 1) % len(self.content)           
+                self.selected_index = (self.selected_index - 1) % len(self.content)
             if keys[pygame.K_DOWN] :
-                self.selected_index = (self.selected_index + 1) % len(self.content)        
+                self.selected_index = (self.selected_index + 1) % len(self.content)

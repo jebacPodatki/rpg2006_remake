@@ -24,7 +24,7 @@ class ConsoleSelector(ActionSelector):
                 if helper.can_use(character, spell):
                     msg += str(i) + ' - ' + spell + ', '
                     i += 1
-            if i > 1:                
+            if i > 1:
                 print(msg + ': ', end = " ")
                 selected_spell = character.sheet.spells[int(input()) - 1]
             else:
@@ -32,8 +32,7 @@ class ConsoleSelector(ActionSelector):
                 action = 1
         target_groups = helper.get_possible_targets(character, selected_spell)
         if len(target_groups) == 0:
-            selected_targets = []
-        elif len(target_groups) == 1:
+            selected_targets = []       1:
             if len(target_groups[0]) >= 1:
                 selected_targets = target_groups[0]
             else:
@@ -55,4 +54,4 @@ class ConsoleSelector(ActionSelector):
         if action == 1:
             return Action(Action.ACTION_ATTACK, character, selected_targets, '')
         else:
-            return Action(Action.ACTION_MAGIC, character, selected_targets, selected_spell) 
+            return Action(Action.ACTION_MAGIC, character, selected_targets, selected_spell)

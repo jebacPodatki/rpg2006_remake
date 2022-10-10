@@ -35,7 +35,7 @@ class ActionHelper:
                 or spell.target == ActionTarget.TARGET_SINGLE_ALLY
         else:
             return False
-        
+
     def is_frontline_empty(self, faction):
         for chr in self.characters:
             if chr.is_alive() and chr.faction == faction and chr.line == Character.FRONT_LINE:
