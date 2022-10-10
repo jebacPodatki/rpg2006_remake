@@ -13,7 +13,7 @@ class CharacterSheet:
         self.power = 10
         self.will = 10
         self.initiative = 10
-        self.attack_number = 1
+        self.action_number = 1
         self.breakage = [30, 70]
         self.dmg = [30, 50]
         self.dp = 100

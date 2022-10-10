@@ -112,7 +112,7 @@ class Fight:
                 selector = self.selector[0]
             else:
                 selector = self.selector[1]
-            for i in range(current_character.sheet.attack_number):
+            for i in range(current_character.sheet.action_number):
                 action = selector.select(current_character, self.characters, self.helper)
                 self.__processAction(action)
                 if action.type == Action.ACTION_WAIT:
