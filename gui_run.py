@@ -1,6 +1,7 @@
 import pygame
 from gui.config import *
 from gui.gui_console import *
+from gui.switching_menu import *
 
 class Attributes:
     barImg = 'pngs/bar.png'
@@ -62,6 +63,9 @@ def main():
     kkk = 0
     console.print_on('console test' + str(kkk))
     
+    menu = SwitchingMenu(config)
+    menu.reset(['Attack', 'Magic', 'Move'])
+    
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -70,7 +74,8 @@ def main():
                 keys = pygame.key.get_pressed()
                 if keys[pygame.K_UP]:
                     console.print_on('ABCDEFGHIJKLMNOPSRTWIZDUERHUU' + str(kkk))
-                    kkk += 1                                  
+                    kkk += 1
+            menu.on_event(event)                               
             
         screen.fill((0, 0, 0))
         pygame.draw.rect(screen, (20, 20, 20), (X - 10, Y - 10, 330, 400), 2)  
@@ -86,6 +91,7 @@ def main():
         screen.blit(img6, (X + 240, Y + 100))
 
         console.draw(screen)
+        menu.draw(screen)
                                                               
         pygame.display.update()
      

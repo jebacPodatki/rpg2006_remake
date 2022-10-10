@@ -12,3 +12,9 @@ class Config:
         self.console_font_color = [0, 0, 0]
         self.console_max_lines = 0
         self.console_interline_size = 0
+        self.menu_pos = [0, 0]
+        self.menu_font = ''
+        self.menu_font_size = 0
+        self.menu_font_color_selected = [0, 0, 0]
+        self.menu_font_color_unselected = [0, 0, 0]
+        self.menu_interline_size = 0

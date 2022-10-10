@@ -6,5 +6,11 @@
     "console_font_size" : 25,
     "console_font_color" : [200, 200, 200],
     "console_max_lines" : 5,
-    "console_interline_size" : 20
+    "console_interline_size" : 20,
+    "menu_pos" : [50, 100],
+    "menu_font" : "comicsans",
+    "menu_font_size" : 25,
+    "menu_font_color_selected" : [240, 80, 80],
+    "menu_font_color_unselected" : [240, 240, 240],
+    "menu_interline_size" : 20
 }
