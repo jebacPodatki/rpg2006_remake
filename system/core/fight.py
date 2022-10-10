@@ -127,6 +127,8 @@ class Fight:
             else:
                 selector = self.selector[1]
             action = selector.select(current_character, self.characters, self.helper)
+            if action.type == Action.ACTION_NONE:
+                return
             self.__processAction(action)
             if self.helper.is_frontline_empty(Character.BLUE_FACTION):
                 self.__move_all_to_frontline(Character.BLUE_FACTION)
