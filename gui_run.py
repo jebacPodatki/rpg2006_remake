@@ -63,8 +63,19 @@ def main():
     kkk = 0
     console.print_on('console test' + str(kkk))
 
+    root_node = RootNode()
+    sub_node = root_node.add_child('Attack')
+    sub_node.add_child('Barsel')
+    sub_node.add_child('Abzare')
+    sub_node = root_node.add_child('Magic')
+    subsub_node = sub_node.add_child('Magic bolt')
+    subsub_node.add_child('Barsel')
+    subsub_node.add_child('Abzare')
+    sub_node.add_child('Fireball')
+    root_node.add_child('Move')
+
     menu = SwitchingMenu(config)
-    menu.reset(['Attack', 'Magic', 'Move'])
+    menu.set_root_node(root_node)
 
     while running:
         for event in pygame.event.get():
