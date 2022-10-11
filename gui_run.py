@@ -77,6 +77,8 @@ def main():
     menu = SwitchingMenu(config)
     menu.set_root_node(root_node)
 
+    objects = [console, menu]
+
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -101,8 +103,8 @@ def main():
         screen.blit(img6, (X + 160, Y + 100))
         screen.blit(img6, (X + 240, Y + 100))
 
-        console.draw(screen)
-        menu.draw(screen)
+        for object in objects:
+            object.draw(screen)
 
         pygame.display.update()
 

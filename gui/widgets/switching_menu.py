@@ -1,5 +1,6 @@
 import pygame
 from gui.config import *
+from gui.drawable import *
 
 class Node:
     def __init__(self, name : str, parent = None):
@@ -27,7 +28,7 @@ class RootNode(Node):
         self.children.append(child)
         return child
 
-class SwitchingMenu:
+class SwitchingMenu(DrawableObjectInterface):
     def __init__(self, config : Config):
         self.config = config
         self.font = pygame.font.SysFont(config.menu_font, config.menu_font_size)
@@ -63,7 +64,7 @@ class SwitchingMenu:
         self.root_node = root_node
         self.__set_current_node(self.root_node)
 
-    def draw(self, screen):
+    def draw(self, screen : pygame.Surface):
         delta_y = 0
         for i in range(len(self.content)):
             if i == self.selected_index:
