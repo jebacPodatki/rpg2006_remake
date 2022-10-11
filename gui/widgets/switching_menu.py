@@ -2,31 +2,39 @@ import pygame
 from gui.config import *
 from gui.drawable import *
 
-class Node:
+class BaseNode:
     def __init__(self, name : str, parent = None):
         self.name = name
-        self.parent = parent
-        self.children = []
+        self.__parent = parent
+        self.__children = []
+    def get_children(self):
+        return self.__children
+    def get_parent(self):
+        return self.__parent
 
-class SwitchingNode(Node):
+class LeafNode(BaseNode):
     def __init__(self, name : str, functor = None, parent = None):
-        super(SwitchingNode, self).__init__(name, parent)
+        super(BaseNode, self).__init__(name, parent)
         self.__functor = functor
-    def add_child(self, name : str, functor = None):
-        child = SwitchingNode(name, functor, self)
-        self.children.append(child)
-        return child
     def __call(self):
         if self.__functor != None:
             self.__functor()
 
-class RootNode(Node):
-    def __init__(self):
-        super(RootNode, self).__init__('', None)
-    def add_child(self, name : str, functor = None):
-        child = SwitchingNode(name, functor, self)
-        self.children.append(child)
+class Node(BaseNode):
+    def __init__(self, name : str, parent = None):
+        super(Node, self).__init__(name, parent)
+    def add_child(self, name : str, functor):
+        child = LeafNode(name, functor, self)
+        self.get_children().append(child)
         return child
+    def add_child(self, name : str):
+        child = Node(name, self)
+        self.get_children().append(child)
+        return child
+
+class RootNode(Node):
+    def __init__(self, name : str):
+        super(RootNode, self).__init__(name, None)
 
 class SwitchingMenu(DrawableObjectInterface):
     def __init__(self, config : Config):
