@@ -5,10 +5,11 @@ from system.core.library import Library
 from system.core.action.action import *
 from system.core.action.helper import *
 from system.core.action.selector import *
-from system.event.event_receiver import EventReceiver
+from system.event.event_receiver import EventReceiverInterface
 
 class Fight:
-    def __init__(self, characters, library : Library, selectorA : ActionSelector, selectorB : ActionSelector, logger):
+    def __init__(self, characters, library : Library, selectorA : ActionSelectorInterface,
+                 selectorB : ActionSelectorInterface, logger):
         self.characters = characters
         self.library = library
         self.selector = [selectorA, selectorB]

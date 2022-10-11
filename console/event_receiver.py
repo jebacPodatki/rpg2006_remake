@@ -1,7 +1,7 @@
 from system.event.event_receiver import *
 from system.core.character import *
 
-class ConsoleEventReceiver(EventReceiver):
+class ConsoleEventReceiver(EventReceiverInterface):
     COLOR = '\033[0m'
     COLOR2 = '\033[92m'
     def on_attack(self, attacker : Character, targets):

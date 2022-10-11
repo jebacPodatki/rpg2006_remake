@@ -3,7 +3,7 @@ from system.core.action.selector import *
 from system.core.action.helper import *
 from system.core.character import *
 
-class ConsoleActionSelector(ActionSelector):
+class ConsoleActionSelector(ActionSelectorInterface):
     def select(self, character : Character, characterList, helper):
         print('\033[94m')
         print('Current character: ' + character.sheet.name)
