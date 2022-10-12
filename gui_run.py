@@ -66,7 +66,7 @@ def main():
     Y = 100
 
     #
-    console = GUIConsole(config)
+    console = Console(config)
     kkk = 0
     console.print_on('console test' + str(kkk))
 
@@ -94,7 +94,7 @@ def main():
 
     ai = AIActionSelector()
     selector = InteractiveActionSelector(menu)
-    logger = GUIEventReceiver()
+    logger = SystemEventReceiver()
     fight = Fight([character, character2, character3, character4], library, selector, ai, logger)
 
     objects = [console, menu]

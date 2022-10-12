@@ -1,7 +1,7 @@
 from system.event.event_receiver import *
 from system.core.character import *
 
-class GUIEventReceiver(EventReceiverInterface):
+class SystemEventReceiver(EventReceiverInterface):
     def __init__(self):
         pass
     def on_attack(self, attacker : Character, targets):

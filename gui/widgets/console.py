@@ -2,7 +2,7 @@ import pygame
 from gui.config import *
 from gui.drawable import *
 
-class GUIConsole(DrawableObjectInterface):
+class Console(DrawableObjectInterface):
     def __calculate_character_per_line_limit(self, console_width : int):
         single_ch_width = self.font.size('A')[0]
         self.character_per_line_limit = int(console_width / single_ch_width)

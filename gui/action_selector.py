@@ -45,7 +45,7 @@ class InteractiveActionSelector(InteractiveActionSelectorInterface):
         elif action_type == Action.ACTION_MAGIC:
             node.add_leaf_child('NONE', ActionInvoker(self, Action(action_type, character, [], spell_name)))
 
-    def populate_with_spells_nodes(self, node : Node, character : Character, helper):
+    def populate_with_spell_nodes(self, node : Node, character : Character, helper):
         for spell in character.sheet.spells:
             if helper.can_use(character, spell):
                 subnode = node.add_child(spell)
@@ -61,7 +61,7 @@ class InteractiveActionSelector(InteractiveActionSelectorInterface):
             attack_node = root_node.add_child('Attack')
             self.populate_with_target_nodes(attack_node, character, Action.ACTION_ATTACK, '', helper)
             magic_node = root_node.add_child('Magic')
-            self.populate_with_spells_nodes(magic_node, character, helper)
+            self.populate_with_spell_nodes(magic_node, character, helper)
             root_node.add_leaf_child('Move', ActionInvoker(self, Action(Action.ACTION_MOVE, character, [], '')))
             root_node.add_leaf_child('Wait', ActionInvoker(self, Action(Action.ACTION_WAIT, character, [], '')))
             root_node.add_child('*')
