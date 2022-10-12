@@ -57,7 +57,7 @@ class InteractiveActionSelector(InteractiveActionSelectorInterface):
             self.selected_action = None
             return action
         if self.menu_filled == False:
-            root_node = RootNode('')
+            root_node = RootNode('Current: ' + character.sheet.name)
             attack_node = root_node.add_child('Attack')
             self.populate_with_target_nodes(attack_node, character, Action.ACTION_ATTACK, '', helper)
             magic_node = root_node.add_child('Magic')

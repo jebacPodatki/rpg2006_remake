@@ -10,7 +10,9 @@
     "menu_pos" : [50, 100],
     "menu_font" : "comicsans",
     "menu_font_size" : 25,
+    "menu_font_color_root" : [40, 80, 200],
     "menu_font_color_selected" : [240, 80, 80],
     "menu_font_color_unselected" : [240, 240, 240],
-    "menu_interline_size" : 20
+    "menu_interline_size" : 20,
+    "menu_indent" : 5
 }

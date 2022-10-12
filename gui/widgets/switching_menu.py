@@ -50,9 +50,13 @@ class SwitchingMenu(DrawableObjectInterface):
         self.color_unselected = (config.menu_font_color_unselected[0],
                                  config.menu_font_color_unselected[1],
                                  config.menu_font_color_unselected[2])
+        self.color_root = (config.menu_font_color_root[0],
+                            config.menu_font_color_root[1],
+                            config.menu_font_color_root[2])
         self.content = []
         self.selected_index = 0
         self.root_node = RootNode('')
+        self.root_line = ''
         self.current_node = None
 
     def __reset(self, lines):
@@ -77,16 +81,21 @@ class SwitchingMenu(DrawableObjectInterface):
 
     def set_root_node(self, root_node : RootNode):
         self.root_node = root_node
+        if root_node != None:
+            self.root_line = self.font.render(root_node.name, 1, self.color_root)
         self.__set_current_node(self.root_node)
 
     def draw(self, screen : pygame.Surface):
-        delta_y = 0
+        if self.root_node == None:
+            return
+        screen.blit(self.root_line, (self.config.menu_pos[0], self.config.menu_pos[1]))
+        delta_y = self.config.menu_interline_size
         for i in range(len(self.content)):
             if i == self.selected_index:
                 line = self.content[i][1]
             else:
                 line = self.content[i][0]
-            screen.blit(line, (self.config.menu_pos[0], self.config.menu_pos[1] + delta_y))
+            screen.blit(line, (self.config.menu_pos[0] + self.config.menu_indent, self.config.menu_pos[1] + delta_y))
             delta_y += self.config.menu_interline_size
 
     def on_event(self, event):
