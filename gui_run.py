@@ -68,7 +68,7 @@ def main():
     #
     console = Console(config)
     kkk = 0
-    console.print_on('console test' + str(kkk))
+    console.print_on_line('console test' + str(kkk))
 
     root_node = RootNode('L')
     sub_node = root_node.add_child('Attack')
@@ -106,7 +106,7 @@ def main():
             if event.type == pygame.KEYDOWN:
                 keys = pygame.key.get_pressed()
                 if keys[pygame.K_UP]:
-                    console.print_on('ABCDEFGHIJKLMNOPSRTWIZDUERHUU' + str(kkk))
+                    console.print_on_line('ABCDEFGHIJKLMNOPSRTWIZDUERHUU' + str(kkk))
                     kkk += 1
             menu.on_event(event)
 
