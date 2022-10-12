@@ -23,7 +23,10 @@ class ConsoleEventReceiver(EventReceiverInterface):
 
     def on_spell_effect(self, targets, effect):
         if effect == 'raise':
-            print('and creates ' + str(len(targets)) + ' ' + targets[0].sheet.name + 's')
+            if str(len(targets)) > 1:
+                print('and creates ' + str(len(targets)) + ' ' + targets[0].sheet.name + 's')
+            elif str(len(targets)) == 1:
+                print('and creates ' + targets[0].sheet.name)
 
     def on_magic_block(self, character : Character):
         print(ConsoleEventReceiver.COLOR, end = ' ')
