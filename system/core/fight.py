@@ -128,7 +128,7 @@ class Fight:
                 selector = self.selector[0]
             else:
                 selector = self.selector[1]
-            action = selector.select(current_character, self.characters, self.helper)
+            action = selector.select(current_character, self.helper)
             if action.type == Action.ACTION_NONE:
                 return
             self.__processAction(action)

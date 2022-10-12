@@ -4,7 +4,7 @@ from system.core.action.helper import *
 from system.core.character import *
 
 class ConsoleActionSelector(ActionSelectorInterface):
-    def select(self, character : Character, characterList, helper):
+    def select(self, character : Character, helper):
         print('\033[94m')
         print('Current character: ' + character.sheet.name)
         print('Action: 1 - Attack, 2 - Magic, 3 - Wait, 4 - Move.: ', end = ' ')
