@@ -1,7 +1,14 @@
 import pygame
 from gui.config import *
+from gui.action_selector import *
+from gui.event_receiver import *
 from gui.widgets.console import *
 from gui.widgets.switching_menu import *
+
+from system.core.character import *
+from system.core.library import Library
+from system.core.fight import Fight
+from system.ai.ai import *
 
 class Attributes:
     barImg = 'pngs/bar.png'
@@ -63,7 +70,7 @@ def main():
     kkk = 0
     console.print_on('console test' + str(kkk))
 
-    root_node = RootNode()
+    root_node = RootNode('L')
     sub_node = root_node.add_child('Attack')
     sub_node.add_child('Barsel')
     sub_node.add_child('Abzare')
@@ -76,6 +83,19 @@ def main():
 
     menu = SwitchingMenu(config)
     menu.set_root_node(root_node)
+
+    library = Library('json/spells.json', 'json/sheets.json')
+    character = Character(library.sheets['Barsel'], True, Character.RED_FACTION)
+    character2 = Character(library.sheets['Abzare'], False, Character.BLUE_FACTION)
+    character3 = Character(library.sheets['Cersil'], True, Character.RED_FACTION)
+    character3.line = Character.BACK_LINE
+    character4 = Character(library.sheets['Dalian'], False, Character.BLUE_FACTION)
+    character4.line = Character.BACK_LINE
+
+    ai = AIActionSelector()
+    selector = InteractiveActionSelector(menu)
+    logger = GUIEventReceiver()
+    fight = Fight([character, character2, character3, character4], library, selector, ai, logger)
 
     objects = [console, menu]
 
@@ -105,6 +125,9 @@ def main():
 
         for object in objects:
             object.draw(screen)
+
+        if fight.ended() == False:
+            fight.process()
 
         pygame.display.update()
 

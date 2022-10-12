@@ -11,19 +11,23 @@ class BaseNode:
         return self.__children
     def get_parent(self):
         return self.__parent
+    def is_callable(self):
+        return False
 
 class LeafNode(BaseNode):
     def __init__(self, name : str, functor = None, parent = None):
-        super(BaseNode, self).__init__(name, parent)
+        super(LeafNode, self).__init__(name, parent)
         self.__functor = functor
-    def __call(self):
+    def __call__(self):
         if self.__functor != None:
             self.__functor()
+    def is_callable(self):
+        return True
 
 class Node(BaseNode):
     def __init__(self, name : str, parent = None):
         super(Node, self).__init__(name, parent)
-    def add_child(self, name : str, functor):
+    def add_leaf_child(self, name : str, functor):
         child = LeafNode(name, functor, self)
         self.get_children().append(child)
         return child
@@ -48,7 +52,7 @@ class SwitchingMenu(DrawableObjectInterface):
                                  config.menu_font_color_unselected[2])
         self.content = []
         self.selected_index = 0
-        self.root_node = RootNode()
+        self.root_node = RootNode('')
         self.current_node = None
 
     def __reset(self, lines):
@@ -61,10 +65,13 @@ class SwitchingMenu(DrawableObjectInterface):
     def __set_current_node(self, current_node):
         self.current_node = current_node
         self.selected_index = 0
+        if current_node == None:
+            self.content = []
+            return
         names = []
-        for node in current_node.children:
+        for node in current_node.get_children():
             names.append(node.name)
-        if current_node.parent != None:
+        if current_node.get_parent() != None:
             names.append('<- Back')
         self.__reset(names)
 
@@ -84,13 +91,21 @@ class SwitchingMenu(DrawableObjectInterface):
 
     def on_event(self, event):
         if event.type == pygame.KEYDOWN:
+            if len(self.content) == 0:
+                return
             keys = pygame.key.get_pressed()
             if keys[pygame.K_UP]:
                 self.selected_index = (self.selected_index - 1) % len(self.content)
             if keys[pygame.K_DOWN] :
                 self.selected_index = (self.selected_index + 1) % len(self.content)
             if keys[pygame.K_RETURN] :
+                if self.current_node == None:
+                    return
                 if self.selected_index == len(self.content) - 1:
-                    self.__set_current_node(self.current_node.parent)
+                    self.__set_current_node(self.current_node.get_parent())
                 else:
-                    self.__set_current_node(self.current_node.children[self.selected_index])
+                    selected_node = self.current_node.get_children()[self.selected_index]
+                    if selected_node.is_callable() == True:
+                        selected_node()
+                    else:
+                        self.__set_current_node(selected_node)
