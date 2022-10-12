@@ -52,7 +52,7 @@ def main():
 
     #
     attrs = Attributes()
-    bar = CharacterBars(attrs, 200, 530)
+    bar = CharacterBars(attrs, 550, 100)
     bar.update(0.8, 0.5, 0.2)
 
     #

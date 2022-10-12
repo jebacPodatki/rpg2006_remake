@@ -36,7 +36,7 @@ class Console(DrawableObjectInterface):
 
     def draw(self, screen : pygame.Surface):
         pygame.draw.rect(screen, (90, 90, 90), self.console_rect, 3)
-        delta_y = 2
+        delta_y = 5
         for line in self.content:
-            screen.blit(line, (self.config.console_pos[0] + 4, self.config.console_pos[1] + delta_y))
+            screen.blit(line, (self.config.console_pos[0] + 5, self.config.console_pos[1] + delta_y))
             delta_y += self.config.console_interline_size
