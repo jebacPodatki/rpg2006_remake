@@ -24,7 +24,7 @@ class Fight:
         target.stats.dp -= atk
         if target.stats.dp <= 0:
             dmg_factor = attacker.sheet.strength / target.sheet.endurance
-            dmg = dmg_factor * random.randint(attacker.sheet.dmg[0], attacker.sheet.dmg[1])
+            dmg = int(dmg_factor * random.randint(attacker.sheet.dmg[0], attacker.sheet.dmg[1]))
             target.stats.hp -= dmg
             self.logger.on_damage(target, dmg)
             if target.stats.hp < 0:
@@ -57,7 +57,7 @@ class Fight:
         target.stats.rp -= atk
         if target.stats.rp <= 0:
             dmg_factor = attacker.sheet.power / target.sheet.will
-            dmg = dmg_factor * random.randint(spell.dmg[0], spell.dmg[1])
+            dmg = int(dmg_factor * random.randint(spell.dmg[0], spell.dmg[1]))
             target.stats.hp -= dmg
             self.logger.on_damage(target, dmg)
             if target.stats.hp < 0:
