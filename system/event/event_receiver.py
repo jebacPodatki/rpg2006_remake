@@ -3,13 +3,13 @@ from system.core.character import Character
 class EventReceiverInterface:
     def on_attack(self, attacker : Character, targets):
         pass
-    def on_damage(self, character : Character, damage):
+    def on_damage(self, character : Character, damage : int):
         pass
     def on_block(self, character : Character):
         pass
-    def on_cast_spell(self, attacker : Character, targets, spell_name):
+    def on_cast_spell(self, attacker : Character, targets, spell_name : str):
         pass
-    def on_spell_effect(self, targets, effect):
+    def on_spell_effect(self, targets, effect : str):
         pass
     def on_magic_block(self, character : Character):
         pass

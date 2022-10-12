@@ -8,24 +8,24 @@ class ConsoleEventReceiver(EventReceiverInterface):
         print(ConsoleEventReceiver.COLOR, end = ' ')
         print(attacker.sheet.name + ' attacks ' + targets[0].sheet.name, end = ' ')
 
-    def on_damage(self, character : Character, damage):
+    def on_damage(self, character : Character, damage : int):
         print('and deals ' + str(damage) + ' damage. ' + character.sheet.name + ' has ' + str(character.stats.hp) + ' HP now.')
 
     def on_block(self, character : Character):
         print('who blocks')
 
-    def on_cast_spell(self, attacker : Character, targets, spell_name):
+    def on_cast_spell(self, attacker : Character, targets, spell_name : str):
         print(ConsoleEventReceiver.COLOR, end = ' ')
         if len(targets) == 1:
             print(attacker.sheet.name + ' casts ' + spell_name + ' against ' + targets[0].sheet.name, end = ' ')
         else:
             print(attacker.sheet.name + ' casts ' + spell_name, end = ' ')
 
-    def on_spell_effect(self, targets, effect):
+    def on_spell_effect(self, targets, effect : str):
         if effect == 'raise':
-            if str(len(targets)) > 1:
+            if len(targets) > 1:
                 print('and creates ' + str(len(targets)) + ' ' + targets[0].sheet.name + 's')
-            elif str(len(targets)) == 1:
+            elif len(targets) == 1:
                 print('and creates ' + targets[0].sheet.name)
 
     def on_magic_block(self, character : Character):

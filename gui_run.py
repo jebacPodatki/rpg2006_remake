@@ -67,8 +67,6 @@ def main():
 
     #
     console = Console(config)
-    kkk = 0
-    console.print_on_line('console test' + str(kkk))
 
     root_node = RootNode('L')
     sub_node = root_node.add_child('Attack')
@@ -94,7 +92,7 @@ def main():
 
     ai = AIActionSelector()
     selector = InteractiveActionSelector(menu)
-    logger = SystemEventReceiver()
+    logger = SystemEventReceiver(console)
     fight = Fight([character, character2, character3, character4], library, selector, ai, logger)
 
     objects = [console, menu]
@@ -103,11 +101,6 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-            if event.type == pygame.KEYDOWN:
-                keys = pygame.key.get_pressed()
-                if keys[pygame.K_UP]:
-                    console.print_on_line('ABCDEFGHIJKLMNOPSRTWIZDUERHUU' + str(kkk))
-                    kkk += 1
             menu.on_event(event)
 
         screen.fill((0, 0, 0))
