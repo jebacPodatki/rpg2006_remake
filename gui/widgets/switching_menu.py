@@ -78,11 +78,10 @@ class SwitchingMenu(DrawableObjectInterface):
         if current_node.get_parent() != None:
             names.append('<- Back')
         self.__reset(names)
+        self.root_line = self.font.render(self.current_node.name, 1, self.color_root)
 
     def set_root_node(self, root_node : RootNode):
         self.root_node = root_node
-        if root_node != None:
-            self.root_line = self.font.render(root_node.name, 1, self.color_root)
         self.__set_current_node(self.root_node)
 
     def draw(self, screen : pygame.Surface):
