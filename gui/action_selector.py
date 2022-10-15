@@ -42,14 +42,16 @@ class InteractiveActionSelector(InteractiveActionSelectorInterface):
             for target_group in target_groups:
                 node_name = self.target_group_to_string(target_group)
                 node.add_leaf_child(node_name, ActionInvoker(self, Action(action_type, character, target_group, spell_name)))
+            node.add_returning_child()
         elif action_type == Action.ACTION_MAGIC:
-            node.add_leaf_child('NONE', ActionInvoker(self, Action(action_type, character, [], spell_name)))
+            node.add_leaf_child('Cast without target', ActionInvoker(self, Action(action_type, character, [], spell_name)))
 
     def populate_with_spell_nodes(self, node : Node, character : Character, helper):
         for spell in character.sheet.spells:
             if helper.can_use(character, spell):
                 subnode = node.add_child(spell)
                 self.populate_with_target_nodes(subnode, character, Action.ACTION_MAGIC, spell, helper)
+        node.add_returning_child()
 
     def select(self, character : Character, helper):
         if self.selected_action != None:
@@ -64,7 +66,6 @@ class InteractiveActionSelector(InteractiveActionSelectorInterface):
             self.populate_with_spell_nodes(magic_node, character, helper)
             root_node.add_leaf_child('Move', ActionInvoker(self, Action(Action.ACTION_MOVE, character, [], '')))
             root_node.add_leaf_child('Wait', ActionInvoker(self, Action(Action.ACTION_WAIT, character, [], '')))
-            root_node.add_child('*')
             self.menu.set_root_node(root_node)
             self.menu_filled = True
         return Action(Action.ACTION_NONE, None, [], '')

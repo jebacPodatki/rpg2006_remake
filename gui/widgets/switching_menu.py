@@ -3,7 +3,7 @@ from gui.config import *
 from gui.drawable import *
 
 class BaseNode:
-    def __init__(self, name : str, parent = None):
+    def __init__(self, name : str, parent):
         self.name = name
         self.__parent = parent
         self.__children = []
@@ -13,9 +13,11 @@ class BaseNode:
         return self.__parent
     def is_callable(self):
         return False
+    def is_backnode(self):
+        return False
 
 class LeafNode(BaseNode):
-    def __init__(self, name : str, functor = None, parent = None):
+    def __init__(self, name : str, parent, functor = None):
         super(LeafNode, self).__init__(name, parent)
         self.__functor = functor
     def __call__(self):
@@ -24,11 +26,21 @@ class LeafNode(BaseNode):
     def is_callable(self):
         return True
 
+class BackNode(BaseNode):
+    def __init__(self, parent):
+        super(BackNode, self).__init__('<- Back', parent)
+    def is_backnode(self):
+        return True
+
 class Node(BaseNode):
     def __init__(self, name : str, parent = None):
         super(Node, self).__init__(name, parent)
     def add_leaf_child(self, name : str, functor):
-        child = LeafNode(name, functor, self)
+        child = LeafNode(name, self, functor)
+        self.get_children().append(child)
+        return child
+    def add_returning_child(self):
+        child = BackNode(self)
         self.get_children().append(child)
         return child
     def add_child(self, name : str):
@@ -75,8 +87,6 @@ class SwitchingMenu(DrawableObjectInterface):
         names = []
         for node in current_node.get_children():
             names.append(node.name)
-        if current_node.get_parent() != None:
-            names.append('<- Back')
         self.__reset(names)
         self.root_line = self.font.render(self.current_node.name, 1, self.color_root)
 
@@ -109,11 +119,10 @@ class SwitchingMenu(DrawableObjectInterface):
             if keys[pygame.K_RETURN] :
                 if self.current_node == None:
                     return
-                if self.selected_index == len(self.content) - 1:
+                selected_node = self.current_node.get_children()[self.selected_index]
+                if selected_node.is_backnode():
                     self.__set_current_node(self.current_node.get_parent())
+                elif selected_node.is_callable() == True:
+                    selected_node()
                 else:
-                    selected_node = self.current_node.get_children()[self.selected_index]
-                    if selected_node.is_callable() == True:
-                        selected_node()
-                    else:
-                        self.__set_current_node(selected_node)
+                    self.__set_current_node(selected_node)
