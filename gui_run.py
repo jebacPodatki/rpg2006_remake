@@ -4,6 +4,7 @@ from gui.action_selector import *
 from gui.event_receiver import *
 from gui.widgets.console import *
 from gui.widgets.switching_menu import *
+from gui.widgets.character_hud import *
 
 from system.core.character import *
 from system.core.library import Library
@@ -95,7 +96,11 @@ def main():
     logger = SystemEventReceiver(console)
     fight = Fight([character, character2, character3, character4], library, selector, ai, logger)
 
-    objects = [console, menu]
+    #
+    hud_1 = CharacterHUD(config, character, 550, 300)
+    hud_2 = CharacterHUD(config, character3, 550, 350)
+
+    objects = [console, menu, hud_1, hud_2]
 
     while running:
         for event in pygame.event.get():
@@ -121,6 +126,9 @@ def main():
 
         if fight.ended() == False:
             fight.process()
+
+        hud_1.update()
+        hud_2.update()
 
         pygame.display.update()
 

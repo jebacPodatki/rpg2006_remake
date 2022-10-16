@@ -14,5 +14,16 @@
     "menu_font_color_selected" : [240, 80, 80],
     "menu_font_color_unselected" : [240, 240, 240],
     "menu_interline_size" : 20,
-    "menu_indent" : 5
+    "menu_indent" : 5,
+    "bar_image" : "pngs/bar_s.png",
+    "bar_short_image" : "pngs/bar_s_half.png",
+    "hud_font" : "comicsans",
+    "hud_font_size" : 25,
+    "hud_font_color" : [200, 200, 200],
+    "hud_bar_interline" : 10,
+    "hud_bar_delta_x" : 120,
+    "hud_hp_bar_color" : [250, 90, 90],
+    "hud_mp_bar_color" : [90, 90, 250],
+    "hud_dp_bar_color" : [160, 194, 150],
+    "hud_rp_bar_color" : [92, 194, 162]
 }

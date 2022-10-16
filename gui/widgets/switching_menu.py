@@ -33,7 +33,7 @@ class BackNode(BaseNode):
         return True
 
 class Node(BaseNode):
-    def __init__(self, name : str, parent = None):
+    def __init__(self, name : str, parent):
         super(Node, self).__init__(name, parent)
     def add_leaf_child(self, name : str, functor):
         child = LeafNode(name, self, functor)
