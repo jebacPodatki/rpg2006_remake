@@ -18,12 +18,12 @@ class CharacterHUD:
         self.y = y
         font = pygame.font.SysFont(config.hud_font, config.hud_font_size)
         self.name_text = font.render(character.sheet.name, 1, config.hud_font_color)
-        delta_x = self.name_text.get_width() + 5
-        self.dp_bar = AttributeBar(config, x + delta_x, y - config.hud_bar_interline, config.hud_dp_bar_color, True)
-        self.rp_bar = AttributeBar(config, x + delta_x + config.hud_bar_delta_x, y - config.hud_bar_interline,
+        delta_y = self.name_text.get_height() + 5
+        self.dp_bar = AttributeBar(config, x, y + delta_y, config.hud_dp_bar_color, True)
+        self.rp_bar = AttributeBar(config, x + config.hud_bar_delta_x, y + delta_y,
                                    config.hud_rp_bar_color, True)
-        self.hp_bar = AttributeBar(config, x + delta_x, y, config.hud_hp_bar_color, False)
-        self.mp_bar = AttributeBar(config, x + delta_x, y + config.hud_bar_interline, config.hud_mp_bar_color, False)
+        self.hp_bar = AttributeBar(config, x, y + delta_y + config.hud_bar_interline, config.hud_hp_bar_color, False)
+        self.mp_bar = AttributeBar(config, x, y + delta_y + 2 * config.hud_bar_interline, config.hud_mp_bar_color, False)
         self.update()
 
     def draw(self, screen : pygame.Surface):

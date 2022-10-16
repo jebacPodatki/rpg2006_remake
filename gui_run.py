@@ -98,7 +98,7 @@ def main():
 
     #
     hud_1 = CharacterHUD(config, character, 550, 300)
-    hud_2 = CharacterHUD(config, character3, 550, 350)
+    hud_2 = CharacterHUD(config, character3, 550, 370)
 
     objects = [console, menu, hud_1, hud_2]
 
