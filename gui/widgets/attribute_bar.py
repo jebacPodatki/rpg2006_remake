@@ -3,9 +3,8 @@ from gui.config import *
 from gui.drawable import *
 
 class AttributeBar(DrawableObjectInterface):
-    def __init__(self, config : Config, x : int, y : int, color, short : bool):
-        self.x = x
-        self.y = y
+    def __init__(self, config : Config, position = (0, 0), color = (0, 0, 0), short = False):
+        self.position = position
         self.color = color
         self.value = 1.0
         if short == False:
@@ -19,5 +18,5 @@ class AttributeBar(DrawableObjectInterface):
         self.value = value
 
     def draw(self, screen : pygame.Surface):
-        pygame.draw.rect(screen, self.color, (self.x, self.y, self.value * self.width, self.height))
-        screen.blit(self.img, (self.x, self.y))
+        pygame.draw.rect(screen, self.color, (self.position[0], self.position[1], self.value * self.width, self.height))
+        screen.blit(self.img, self.position)

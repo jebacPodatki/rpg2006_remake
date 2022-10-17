@@ -5,6 +5,7 @@ from gui.event_receiver import *
 from gui.widgets.console import *
 from gui.widgets.switching_menu import *
 from gui.widgets.character_hud import *
+from gui.widgets.character_portrait import *
 
 from system.core.character import *
 from system.core.library import Library
@@ -97,10 +98,13 @@ def main():
     fight = Fight([character, character2, character3, character4], library, selector, ai, logger)
 
     #
-    hud_1 = CharacterHUD(config, character, 550, 300)
-    hud_2 = CharacterHUD(config, character3, 550, 370)
+    hud_1 = CharacterHUD(config, character, (550, 300))
+    hud_2 = CharacterHUD(config, character3, (550, 370))
 
-    objects = [console, menu, hud_1, hud_2]
+    #
+    portrait = CharacterPortrait(config, character, (550, 480))
+
+    objects = [console, menu, hud_1, hud_2, portrait]
 
     while running:
         for event in pygame.event.get():
