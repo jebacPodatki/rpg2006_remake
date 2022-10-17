@@ -22,7 +22,7 @@ class SystemEventReceiver(EventReceiverInterface):
             self.console.print_nl(attacker.sheet.name + ' casts ' + spell_name + ' ')
 
     def on_spell_effect(self, targets, effect : str):
-        if effect == 'raise':
+        if effect == 'summon_undeads':
             if len(targets) > 1:
                 self.console.print('and creates ' + str(len(targets)) + ' ' + targets[0].sheet.name + 's.')
             elif len(targets) == 1:

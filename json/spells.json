@@ -8,10 +8,10 @@
         "target" : "single_enemy"
     },
     {
-        "name" : "Raise dead",
+        "name" : "Raise deads",
         "impact" : [0, 0],
         "dmg" : [0, 0],
-        "effect" : "raise",
+        "effect" : "summon_undeads",
         "mp_cost" : 50,
         "target" : "none"
     },

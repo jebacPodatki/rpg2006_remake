@@ -5,6 +5,7 @@ from system.core.library import Library
 from system.core.action.action import *
 from system.core.action.helper import *
 from system.core.action.selector import *
+from system.core.spellbook import *
 from system.event.event_receiver import EventReceiverInterface
 
 class Fight:
@@ -17,6 +18,7 @@ class Fight:
         self.logger = logger
         self.characters.sort(key=lambda x: x.sheet.initiative, reverse=True)
         self.helper = ActionHelper(self.library, self.characters)
+        self.spellbook = Spellbook(characters, library)
 
     def __attack_target(self, attacker, target):
         atk_factor = attacker.sheet.attack / target.sheet.defence
@@ -43,14 +45,9 @@ class Fight:
                 self.__attack_target(attacker, target)
 
     def __magic_on_target(self, attacker, target, spell):
-        if spell.effect == 'raise':
-            sheet = self.library.sheets['Skeleton']
-            number = int(attacker.sheet.power / 5)
-            if number > 0:
-                skeletons = [Character(sheet, False, attacker.faction) for i in range(number)]
-                for skeleton in skeletons:
-                    self.characters.append(skeleton)
-                self.logger.on_spell_effect(skeletons, spell.effect)
+        if spell.effect != '':
+            actors = self.spellbook.invoke_spell_effect(spell.effect, attacker, target)
+            self.logger.on_spell_effect(actors, spell.effect)
             return
         atk_factor = attacker.sheet.power / target.sheet.will
         atk = atk_factor * random.randint(spell.impact[0], spell.impact[1])

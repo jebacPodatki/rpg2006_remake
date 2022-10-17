@@ -62,7 +62,7 @@
         "mp" : 300,
         "attack_area" : "single_enemy_frontline",
         "distant" : false,
-        "spells" : ["Raise dead", "Fireball"],
+        "spells" : ["Raise deads", "Fireball"],
         "spells_ai_chance" : [20, 20]
     },
     {
