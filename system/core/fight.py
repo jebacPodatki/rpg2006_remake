@@ -18,7 +18,7 @@ class Fight:
         self.logger = logger
         self.characters.sort(key=lambda x: x.sheet.initiative, reverse=True)
         self.helper = ActionHelper(self.library, self.characters)
-        self.spellbook = Spellbook(characters, library)
+        self.spellbook = Spellbook(characters, library, self.helper)
 
     def __attack_target(self, attacker, target):
         atk_factor = attacker.sheet.attack / target.sheet.defence
