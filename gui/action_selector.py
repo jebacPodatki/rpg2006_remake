@@ -62,9 +62,11 @@ class InteractiveActionSelector(InteractiveActionSelectorInterface):
             root_node = RootNode(character.sheet.name)
             attack_node = root_node.add_child('Attack')
             self.populate_with_target_nodes(attack_node, character, Action.ACTION_ATTACK, '', helper)
-            magic_node = root_node.add_child('Magic')
+            magic_enabled = len(character.sheet.spells) > 0
+            magic_node = root_node.add_child('Magic', magic_enabled)
             self.populate_with_spell_nodes(magic_node, character, helper)
-            root_node.add_leaf_child('Move', ActionInvoker(self, Action(Action.ACTION_MOVE, character, [], '')))
+            move_enabled = helper.can_move(character)
+            root_node.add_leaf_child('Move', ActionInvoker(self, Action(Action.ACTION_MOVE, character, [], '')), move_enabled)
             root_node.add_leaf_child('Wait', ActionInvoker(self, Action(Action.ACTION_WAIT, character, [], '')))
             self.menu.set_root_node(root_node)
             self.menu_filled = True
