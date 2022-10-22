@@ -42,9 +42,9 @@ class InteractiveActionSelector(InteractiveActionSelectorInterface):
             for target_group in target_groups:
                 node_name = self.target_group_to_string(target_group)
                 node.add_leaf_child(node_name, ActionInvoker(self, Action(action_type, character, target_group, spell_name)))
-            node.add_returning_child()
         elif action_type == Action.ACTION_MAGIC:
             node.add_leaf_child('Cast without target', ActionInvoker(self, Action(action_type, character, [], spell_name)))
+        node.add_returning_child()
 
     def populate_with_spell_nodes(self, node : Node, character : Character, helper):
         for spell in character.sheet.spells:
