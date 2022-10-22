@@ -18,6 +18,7 @@ class Config:
         self.menu_font_color_root = [0, 0, 0]
         self.menu_font_color_selected = [0, 0, 0]
         self.menu_font_color_unselected = [0, 0, 0]
+        self.menu_font_color_disabled = [0, 0, 0]
         self.menu_interline_size = 0
         self.menu_indent = 10
         self.bar_image = ''

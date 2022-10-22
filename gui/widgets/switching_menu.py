@@ -3,10 +3,11 @@ from gui.config import *
 from gui.drawable import *
 
 class BaseNode:
-    def __init__(self, name : str, parent):
+    def __init__(self, name : str, parent, enabled = True):
         self.name = name
         self.__parent = parent
         self.__children = []
+        self.enabled = enabled
     def get_children(self):
         return self.__children
     def get_parent(self):
@@ -17,8 +18,8 @@ class BaseNode:
         return False
 
 class LeafNode(BaseNode):
-    def __init__(self, name : str, parent, functor = None):
-        super(LeafNode, self).__init__(name, parent)
+    def __init__(self, name : str, parent, functor = None, enabled = True):
+        super(LeafNode, self).__init__(name, parent, enabled)
         self.__functor = functor
     def __call__(self):
         if self.__functor != None:
@@ -33,18 +34,18 @@ class BackNode(BaseNode):
         return True
 
 class Node(BaseNode):
-    def __init__(self, name : str, parent):
-        super(Node, self).__init__(name, parent)
-    def add_leaf_child(self, name : str, functor):
-        child = LeafNode(name, self, functor)
+    def __init__(self, name : str, parent, enabled = True):
+        super(Node, self).__init__(name, parent, enabled)
+    def add_leaf_child(self, name : str, functor, enabled = True):
+        child = LeafNode(name, self, functor, enabled)
         self.get_children().append(child)
         return child
     def add_returning_child(self):
         child = BackNode(self)
         self.get_children().append(child)
         return child
-    def add_child(self, name : str):
-        child = Node(name, self)
+    def add_child(self, name : str, enabled = True):
+        child = Node(name, self, enabled)
         self.get_children().append(child)
         return child
 
@@ -62,6 +63,9 @@ class SwitchingMenu(DrawableObjectInterface):
         self.color_unselected = (config.menu_font_color_unselected[0],
                                  config.menu_font_color_unselected[1],
                                  config.menu_font_color_unselected[2])
+        self.color_disabled = (config.menu_font_color_disabled[0],
+                               config.menu_font_color_disabled[1],
+                               config.menu_font_color_disabled[2])
         self.color_root = (config.menu_font_color_root[0],
                             config.menu_font_color_root[1],
                             config.menu_font_color_root[2])
@@ -71,24 +75,39 @@ class SwitchingMenu(DrawableObjectInterface):
         self.root_line = ''
         self.current_node = None
 
+    def __set_next_available_index(self, step : int):
+        index = (self.selected_index + step) % len(self.current_node.get_children())
+        while self.current_node.get_children()[index].enabled == False:
+            index += step
+            index = index % len(self.current_node.get_children())
+            if index == self.selected_index:
+                self.selected_index = -1
+                return
+        self.selected_index = index
+
     def __reset(self, lines):
         self.content = []
-        for line in lines:
-            selected = self.font.render(line, 1, self.color_selected)
-            unselected = self.font.render(line, 1, self.color_unselected)
-            self.content.append([unselected, selected])
+        for (line, enabled) in lines:
+            if enabled:
+                selected = self.font.render(line, 1, self.color_selected)
+                unselected = self.font.render(line, 1, self.color_unselected)
+                self.content.append([unselected, selected])
+            else:
+                disabled = self.font.render(line, 1, self.color_disabled)
+                self.content.append([disabled])
 
     def __set_current_node(self, current_node):
         self.current_node = current_node
-        self.selected_index = 0
+        self.selected_index = -1
         if current_node == None:
             self.content = []
             return
         names = []
         for node in current_node.get_children():
-            names.append(node.name)
+            names.append((node.name, node.enabled))
         self.__reset(names)
         self.root_line = self.font.render(self.current_node.name, 1, self.color_root)
+        self.__set_next_available_index(1)
 
     def set_root_node(self, root_node : RootNode):
         self.root_node = root_node
@@ -113,9 +132,9 @@ class SwitchingMenu(DrawableObjectInterface):
                 return
             keys = pygame.key.get_pressed()
             if keys[pygame.K_UP]:
-                self.selected_index = (self.selected_index - 1) % len(self.content)
+                self.__set_next_available_index(-1)
             if keys[pygame.K_DOWN] :
-                self.selected_index = (self.selected_index + 1) % len(self.content)
+                self.__set_next_available_index(1)
             if keys[pygame.K_RETURN] :
                 if self.current_node == None:
                     return

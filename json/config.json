@@ -13,6 +13,7 @@
     "menu_font_color_root" : [40, 80, 200],
     "menu_font_color_selected" : [240, 80, 80],
     "menu_font_color_unselected" : [240, 240, 240],
+    "menu_font_color_disabled" : [40, 40, 40],
     "menu_interline_size" : 20,
     "menu_indent" : 5,
     "bar_image" : "pngs/bar_s.png",
