@@ -21,20 +21,25 @@ class ActionHelper:
             return False
 
     def can_summon(self, character : Character):
-        if self.is_frontline_full(character.faction):
+        if self.is_frontline_full(character.faction, False):
             return False
         return True
 
     def can_move(self, character : Character):
         if character.line == Character.FRONT_LINE:
-            if self.is_backline_empty(character.faction) or self.is_backline_full(character.faction):
+            if self.is_backline_empty(character.faction) or self.is_backline_full(character.faction, True):
                 return False
             possible = True
             character.line = Character.BACK_LINE
-            if self.is_frontline_empty(character.faction) or self.is_frontline_full(character.faction):
+            if self.is_frontline_empty(character.faction):
                 possible = False
             character.line = Character.FRONT_LINE
             return possible
+        elif character.line == Character.BACK_LINE:
+            if self.is_frontline_empty(character.faction) or self.is_frontline_full(character.faction, True):
+                return False
+            if not self.is_frontline_full(character.faction, False):
+                return True
         return True
 
     def is_single_target(self, spell_name):
@@ -46,31 +51,31 @@ class ActionHelper:
         else:
             return False
 
-    def is_frontline_empty(self, faction):
+    def is_frontline_empty(self, faction, alives = True):
         for chr in self.characters:
-            if chr.is_alive() and chr.faction == faction and chr.line == Character.FRONT_LINE:
+            if (chr.is_alive() or not alives) and chr.faction == faction and chr.line == Character.FRONT_LINE:
                 return False
         return True
 
-    def is_backline_empty(self, faction):
+    def is_backline_empty(self, faction, alives = True):
         for chr in self.characters:
-            if chr.is_alive() and chr.faction == faction and chr.line == Character.BACK_LINE:
+            if (chr.is_alive() or not alives) and chr.faction == faction and chr.line == Character.BACK_LINE:
                 return False
         return True
 
-    def is_frontline_full(self, faction):
+    def is_frontline_full(self, faction, alives = True):
         n = 0
         for chr in self.characters:
-            if chr.is_alive() and chr.faction == faction and chr.line == Character.FRONT_LINE:
+            if (chr.is_alive() or not alives) and chr.faction == faction and chr.line == Character.FRONT_LINE:
                 n += 1
         if n >= ActionHelper.MAX_IN_LINE:
             return True
         return False
 
-    def is_backline_full(self, faction):
+    def is_backline_full(self, faction, alives = True):
         n = 0
         for chr in self.characters:
-            if chr.is_alive() and chr.faction == faction and chr.line == Character.BACK_LINE:
+            if (chr.is_alive() or not alives) and chr.faction == faction and chr.line == Character.BACK_LINE:
                 n += 1
         if n >= ActionHelper.MAX_IN_LINE:
             return True

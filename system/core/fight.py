@@ -79,17 +79,27 @@ class Fight:
         else:
             self.__magic_on_target(attacker, [], spell)
 
+    def __move_first_dead_character_to_backline(self, faction):
+        for chr in self.characters:
+            if not chr.is_alive() and chr.faction == faction and chr.line == Character.FRONT_LINE:
+                chr.line = Character.BACK_LINE
+
     def __move(self, actor : Character):
         if actor.line == Character.FRONT_LINE:
             actor.line = Character.BACK_LINE
         else:
+            if self.helper.is_frontline_full(actor.faction, False):
+                self.__move_first_dead_character_to_backline(actor.faction)
             actor.line = Character.FRONT_LINE
         self.logger.on_move(actor)
 
-    def __move_all_to_frontline(self, faction : int):
+    def __move_all_alive_to_frontline(self, faction : int):
         for chr in self.characters:
             if chr.faction == faction:
-                chr.line = Character.FRONT_LINE
+                if chr.is_alive():
+                    chr.line = Character.FRONT_LINE
+                else:
+                    chr.line = Character.BACK_LINE
 
     def __processAction(self, action : Action):
         if action.type == Action.ACTION_WAIT:
@@ -130,9 +140,9 @@ class Fight:
                 return
             self.__processAction(action)
             if self.helper.is_frontline_empty(Character.BLUE_FACTION):
-                self.__move_all_to_frontline(Character.BLUE_FACTION)
+                self.__move_all_alive_to_frontline(Character.BLUE_FACTION)
             if self.helper.is_frontline_empty(Character.RED_FACTION):
-                self.__move_all_to_frontline(Character.RED_FACTION)
+                self.__move_all_alive_to_frontline(Character.RED_FACTION)
 
     def ended(self):
         alive = [0, 0]
