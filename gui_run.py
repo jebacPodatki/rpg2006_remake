@@ -2,9 +2,11 @@ import pygame
 from gui.config import *
 from gui.action_selector import *
 from gui.event_receiver import *
+from gui.widgets.battlearena import BattleArena
 from gui.widgets.console import *
 from gui.widgets.switching_menu import *
 from gui.widgets.character_hud import *
+from gui.widgets.character_portrait import *
 from gui.widgets.character_portrait import *
 
 from system.core.character import *
@@ -95,7 +97,8 @@ def main():
     ai = AIActionSelector()
     selector = InteractiveActionSelector(menu)
     logger = SystemEventReceiver(console)
-    fight = Fight([character, character2, character3, character4], library, selector, ai, logger)
+    characters = [character, character2, character3, character4]
+    fight = Fight(characters, library, selector, ai, logger)
 
     #
     hud_1 = CharacterHUD(config, character, (550, 300))
@@ -104,7 +107,10 @@ def main():
     #
     portrait = CharacterPortrait(config, character, (550, 480))
 
-    objects = [console, menu, hud_1, hud_2, portrait]
+    #
+    arena = BattleArena(config, characters)
+
+    objects = [console, menu, hud_1, hud_2, portrait, arena]
 
     while running:
         for event in pygame.event.get():
@@ -113,17 +119,7 @@ def main():
             menu.on_event(event)
 
         screen.fill((0, 0, 0))
-        pygame.draw.rect(screen, (20, 20, 20), (X - 10, Y - 10, 330, 400), 2)
         bar.draw(screen)
-        screen.blit(img1, (X, Y + 300))
-        screen.blit(img2, (X + 80, Y + 300))
-        screen.blit(img3, (X + 160, Y + 300))
-        screen.blit(img4, (X + 240, Y + 300))
-        screen.blit(img5, (X + 120, Y))
-        screen.blit(img6, (X, Y + 100))
-        screen.blit(img6, (X + 80, Y + 100))
-        screen.blit(img6, (X + 160, Y + 100))
-        screen.blit(img6, (X + 240, Y + 100))
 
         for object in objects:
             object.draw(screen)
@@ -133,6 +129,7 @@ def main():
 
         hud_1.update()
         hud_2.update()
+        arena.update()
 
         pygame.display.update()
 

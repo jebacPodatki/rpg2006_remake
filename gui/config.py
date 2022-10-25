@@ -35,3 +35,9 @@ class Config:
         self.portrait_caption_font = ''
         self.portrait_caption_font_size = 0
         self.portrait_caption_font_color = [0, 0, 0]
+        self.arena_pos = [0, 0]
+        self.arena_size = [0, 0]
+        self.arena_color = [0, 0, 0]
+        self.arena_portrait_delta_x = 0
+        self.arena_front_line_pos_delta_y = 0
+        self.arena_back_line_pos_delta_y = 0

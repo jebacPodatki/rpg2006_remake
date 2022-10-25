@@ -29,5 +29,11 @@
     "hud_rp_bar_color" : [92, 194, 162],
     "portrait_caption_font" : "comicsans",
     "portrait_caption_font_size" : 25,
-    "portrait_caption_font_color" : [200, 200, 200]
+    "portrait_caption_font_color" : [200, 200, 200],
+    "arena_pos" : [300, 270],
+    "arena_size" : [350, 500],
+    "arena_color" : [120, 120, 120],
+    "arena_portrait_delta_x" : 100,
+    "arena_front_line_pos_delta_y" : 80,
+    "arena_back_line_pos_delta_y" : 190
 }
