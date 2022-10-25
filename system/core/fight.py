@@ -20,6 +20,9 @@ class Fight:
         self.helper = ActionHelper(self.library, self.characters)
         self.spellbook = Spellbook(characters, library, self.helper)
 
+    def get_current_character(self):
+        return self.characters[self.current]
+
     def __attack_target(self, attacker, target):
         atk_factor = attacker.sheet.attack / target.sheet.defence
         atk = atk_factor * random.randint(attacker.sheet.breakage[0], attacker.sheet.breakage[1])

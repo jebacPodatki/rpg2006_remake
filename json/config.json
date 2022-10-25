@@ -30,6 +30,8 @@
     "portrait_caption_font" : "comicsans",
     "portrait_caption_font_size" : 25,
     "portrait_caption_font_color" : [200, 200, 200],
+    "portrait_caption_font_color_selected_blue" : [40, 80, 200],
+    "portrait_caption_font_color_selected_red" : [200, 80, 40],
     "arena_pos" : [300, 270],
     "arena_size" : [350, 500],
     "arena_color" : [120, 120, 120],

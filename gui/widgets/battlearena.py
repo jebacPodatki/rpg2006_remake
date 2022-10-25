@@ -48,9 +48,18 @@ class BattleArena(DrawableObjectInterface):
                      self.config.arena_pos[1] - self.config.arena_size[1] / 2,
                      self.config.arena_size[0],
                      self.config.arena_size[1])
+        self.last_selected_character = None
         self.reset()
 
     def draw(self, screen : pygame.Surface):
         pygame.draw.rect(screen, self.config.arena_color, self.rect, 2)
         for portrait in self.character_portraits:
             self.character_portraits[portrait].draw(screen)
+
+    def set_selected_character(self, character : Character):
+        if character == self.last_selected_character:
+            return
+        self.character_portraits[character].select(True)
+        if self.last_selected_character != None:
+            self.character_portraits[self.last_selected_character].select(False)
+        self.last_selected_character = character

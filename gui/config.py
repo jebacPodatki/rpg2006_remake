@@ -35,6 +35,8 @@ class Config:
         self.portrait_caption_font = ''
         self.portrait_caption_font_size = 0
         self.portrait_caption_font_color = [0, 0, 0]
+        self.portrait_caption_font_color_selected_blue = [0, 0, 0]
+        self.portrait_caption_font_color_selected_red = [0, 0, 0]
         self.arena_pos = [0, 0]
         self.arena_size = [0, 0]
         self.arena_color = [0, 0, 0]

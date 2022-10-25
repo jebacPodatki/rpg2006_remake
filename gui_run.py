@@ -87,11 +87,11 @@ def main():
     menu.set_root_node(root_node)
 
     library = Library('json/spells.json', 'json/sheets.json')
-    character = Character(library.sheets['Barsel'], True, Character.RED_FACTION)
-    character2 = Character(library.sheets['Abzare'], False, Character.BLUE_FACTION)
-    character3 = Character(library.sheets['Cersil'], True, Character.RED_FACTION)
+    character = Character(library.sheets['Barsel'], True, Character.BLUE_FACTION)
+    character2 = Character(library.sheets['Abzare'], False, Character.RED_FACTION)
+    character3 = Character(library.sheets['Cersil'], True, Character.BLUE_FACTION)
     character3.line = Character.BACK_LINE
-    character4 = Character(library.sheets['Dalian'], False, Character.BLUE_FACTION)
+    character4 = Character(library.sheets['Dalian'], False, Character.RED_FACTION)
     character4.line = Character.BACK_LINE
 
     ai = AIActionSelector()
@@ -129,6 +129,8 @@ def main():
 
         for object in objects:
             object.update()
+
+        arena.set_selected_character(fight.get_current_character())
 
         pygame.display.update()
 

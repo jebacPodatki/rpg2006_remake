@@ -11,11 +11,18 @@ class CharacterPortrait(DrawableObjectInterface):
 
     def __init__(self, config : Config, character : Character, position = (0, 0)):
         self.position = position
+        self.character = character
         self.img = pygame.image.load(character.sheet.portrait)
         font = pygame.font.SysFont(config.portrait_caption_font, config.portrait_caption_font_size)
         self.caption = font.render(character.sheet.name, 1, config.portrait_caption_font_color)
+        if character.faction == Character.BLUE_FACTION:
+            selected_color = config.portrait_caption_font_color_selected_blue
+        else:
+            selected_color = config.portrait_caption_font_color_selected_red
+        self.caption_selected = font.render(character.sheet.name, 1, selected_color)
         self.caption_position = CharacterPortrait.__calculate_caption_position(
             position, self.img.get_size(), self.caption.get_size())
+        self.selected = False
 
     def set_position(self, position = (0, 0)):
         dx = self.caption_position[0] - self.position[0]
@@ -23,6 +30,12 @@ class CharacterPortrait(DrawableObjectInterface):
         self.position = position
         self.caption_position = (position[0] + dx, position[1] + dy)
 
+    def select(self, value : bool):
+        self.selected = value
+
     def draw(self, screen : pygame.Surface):
         screen.blit(self.img, self.position)
-        screen.blit(self.caption, self.caption_position)
+        if self.selected:
+            screen.blit(self.caption_selected, self.caption_position)
+        else:
+            screen.blit(self.caption, self.caption_position)
