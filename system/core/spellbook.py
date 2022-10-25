@@ -7,6 +7,7 @@ class Spellbook:
         self.characters = characters
         self.library = library
         self.helper = helper
+
     def invoke_spell_effect(self, spell_effect : str, caster : Character, targets):
         class SpellbookLibrary:
             def summon_undeads(caster : Character, targets, spellbook : Spellbook):

@@ -34,8 +34,10 @@ class BattleArena(DrawableObjectInterface):
                 if fx == 1:
                     delta_x += self.config.arena_portrait_delta_x
                 fx *= -1
+
     def update(self):
         self.reset()
+
     def __init__(self, config : Config, characters):
         self.config = config
         self.characters = characters
@@ -45,6 +47,7 @@ class BattleArena(DrawableObjectInterface):
                      self.config.arena_size[0],
                      self.config.arena_size[1])
         self.reset()
+
     def draw(self, screen : pygame.Surface):
         pygame.draw.rect(screen, self.config.arena_color, self.rect, 2)
         for portrait in self.character_portraits:
