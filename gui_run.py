@@ -127,9 +127,8 @@ def main():
         if fight.ended() == False:
             fight.process()
 
-        hud_1.update()
-        hud_2.update()
-        arena.update()
+        for object in objects:
+            object.update()
 
         pygame.display.update()
 

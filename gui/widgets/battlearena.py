@@ -14,7 +14,7 @@ class BattleArena(DrawableObjectInterface):
         cy = self.config.arena_pos[1]
         dy_back = self.config.arena_back_line_pos_delta_y
         dy_front = self.config.arena_front_line_pos_delta_y
-        cyt = [cy - dy_back, cy - dy_front, cy, cy + dy_front, cy + dy_back]
+        cyt = [cy + dy_back, cy + dy_front, cy, cy - dy_front, cy - dy_back]
         idx = 0
         for line in lines:
             y = cyt[idx]
@@ -37,6 +37,8 @@ class BattleArena(DrawableObjectInterface):
 
     def update(self):
         self.reset()
+        for portrait in self.character_portraits:
+            self.character_portraits[portrait].update()
 
     def __init__(self, config : Config, characters):
         self.config = config
