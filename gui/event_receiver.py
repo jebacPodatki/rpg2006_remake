@@ -27,6 +27,7 @@ class SystemEventReceiver(EventReceiverInterface):
                 self.console.print('and creates ' + str(len(targets)) + ' ' + targets[0].sheet.name + 's.')
             elif len(targets) == 1:
                 self.console.print('and creates ' + targets[0].sheet.name + '.')
+
     def on_magic_block(self, character : Character):
         self.console.print(character.sheet.name + ' effectively resists magic.')
 
