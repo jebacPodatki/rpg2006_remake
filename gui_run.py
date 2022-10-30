@@ -14,6 +14,9 @@ from system.core.library import Library
 from system.core.fight import Fight
 from system.ai.ai import *
 
+from gui.input_controller import *
+from gui.switching_menu_controller import *
+
 class Attributes:
     barImg = 'pngs/bar.png'
 
@@ -112,11 +115,16 @@ def main():
 
     objects = [console, menu, hud_1, hud_2, portrait, arena]
 
+    menu_controller = SwitchingMenuController(menu)
+
+    input_controller = InputController()
+    input_controller.register_controller(menu_controller)
+
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-            menu.on_event(event)
+            input_controller.process_pygame_event(event)
 
         screen.fill((0, 0, 0))
         bar.draw(screen)
