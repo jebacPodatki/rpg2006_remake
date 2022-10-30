@@ -1,6 +1,7 @@
 import pygame
 from gui.config import *
 from gui.drawable import *
+from gui.input_interface import *
 
 class BaseNode:
     def __init__(self, name : str, parent, enabled = True):
@@ -53,7 +54,7 @@ class RootNode(Node):
     def __init__(self, name : str):
         super(RootNode, self).__init__(name, None)
 
-class SwitchingMenu(DrawableObjectInterface):
+class SwitchingMenu(DrawableObjectInterface, InputInterface):
     def __init__(self, config : Config):
         self.config = config
         self.font = pygame.font.SysFont(config.menu_font, config.menu_font_size)
@@ -126,22 +127,25 @@ class SwitchingMenu(DrawableObjectInterface):
             screen.blit(line, (self.config.menu_pos[0] + self.config.menu_indent, self.config.menu_pos[1] + delta_y))
             delta_y += self.config.menu_interline_size
 
-    def on_event(self, event):
-        if event.type == pygame.KEYDOWN:
-            if len(self.content) == 0:
-                return
-            keys = pygame.key.get_pressed()
-            if keys[pygame.K_UP]:
-                self.__set_next_available_index(-1)
-            if keys[pygame.K_DOWN] :
-                self.__set_next_available_index(1)
-            if keys[pygame.K_RETURN] :
-                if self.current_node == None:
-                    return
-                selected_node = self.current_node.get_children()[self.selected_index]
-                if selected_node.is_backnode():
-                    self.__set_current_node(self.current_node.get_parent())
-                elif selected_node.is_callable() == True:
-                    selected_node()
-                else:
-                    self.__set_current_node(selected_node)
+    def on_up(self):
+        if len(self.content) == 0:
+            return
+        self.__set_next_available_index(-1)
+
+    def on_down(self):
+        if len(self.content) == 0:
+            return
+        self.__set_next_available_index(1)
+
+    def on_select(self):
+        if len(self.content) == 0:
+            return
+        if self.current_node == None:
+            return
+        selected_node = self.current_node.get_children()[self.selected_index]
+        if selected_node.is_backnode():
+            self.__set_current_node(self.current_node.get_parent())
+        elif selected_node.is_callable() == True:
+            selected_node()
+        else:
+            self.__set_current_node(selected_node)
