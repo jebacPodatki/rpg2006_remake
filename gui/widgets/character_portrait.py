@@ -1,4 +1,5 @@
 import pygame
+from core.resource_provider import *
 from gui.config import *
 from gui.drawable import *
 from system.core.character import *
@@ -12,7 +13,7 @@ class CharacterPortrait(DrawableObjectInterface):
     def __init__(self, config : Config, character : Character, position = (0, 0)):
         self.position = position
         self.character = character
-        self.img = pygame.image.load(character.sheet.portrait)
+        self.img = ResourceProvider.get(character.sheet.portrait)
         font = pygame.font.SysFont(config.portrait_caption_font, config.portrait_caption_font_size)
         self.caption = font.render(character.sheet.name, 1, config.portrait_caption_font_color)
         if character.faction == Character.BLUE_FACTION:

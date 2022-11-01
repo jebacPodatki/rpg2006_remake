@@ -1,4 +1,5 @@
 import pygame
+from core.resource_provider import *
 from gui.config import *
 from gui.drawable import *
 
@@ -8,9 +9,9 @@ class AttributeBar(DrawableObjectInterface):
         self.color = color
         self.value = 1.0
         if short == False:
-            self.img = pygame.image.load(config.bar_image)
+            self.img = ResourceProvider.get(config.bar_image)
         else:
-            self.img = pygame.image.load(config.bar_short_image)
+            self.img = ResourceProvider.get(config.bar_short_image)
         self.width = self.img.get_width()
         self.height = self.img.get_height()
 
