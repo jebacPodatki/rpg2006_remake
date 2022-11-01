@@ -22,12 +22,12 @@ class Library:
     def __load_encounters(self, path : str):
         for s in self.__load_json(path):
             sheet = Encounter(s)
-            self.sheets[sheet.name] = sheet
+            self.encounters[sheet.name] = sheet
 
     def __init__(self, spell_path : str, sheet_path : str, encounter_path : str):
         self.spells = {}
         self.sheets = {}
-        self.encounter = {}
+        self.encounters = {}
         self.__load_spells(spell_path)
         self.__load_sheets(sheet_path)
         self.__load_encounters(encounter_path)

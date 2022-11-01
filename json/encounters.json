@@ -1,7 +1,7 @@
 [
     {
         "name" : "test",
-        "front_line" : "Abzare",
-        "back_line" : "Dalian"
+        "front_line" : ["Abzare"],
+        "back_line" : ["Dalian"]
     }
 ]

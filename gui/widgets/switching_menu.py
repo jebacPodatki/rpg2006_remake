@@ -71,8 +71,8 @@ class SwitchingMenu(DrawableObjectInterface):
                             config.menu_font_color_root[2])
         self.content = []
         self.selected_index = 0
-        self.root_node = RootNode('')
-        self.root_line = ''
+        self.root_node = None
+        self.root_line = None
         self.current_node = None
 
     def __set_next_available_index(self, step : int):
