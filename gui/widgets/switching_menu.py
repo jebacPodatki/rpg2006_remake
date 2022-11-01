@@ -1,6 +1,6 @@
 import pygame
 from gui.config import *
-from gui.drawable import *
+from gui.interfaces.drawable import *
 
 class BaseNode:
     def __init__(self, name : str, parent, enabled = True):

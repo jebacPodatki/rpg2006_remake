@@ -1,7 +1,7 @@
 import pygame
 from core.resource_provider import *
 from gui.config import *
-from gui.drawable import *
+from gui.interfaces.drawable import *
 from system.core.character import *
 
 class CharacterPortrait(DrawableObjectInterface):

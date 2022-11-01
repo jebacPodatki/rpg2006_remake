@@ -1,6 +1,6 @@
 import pygame
 from gui.config import *
-from gui.drawable import *
+from gui.interfaces.drawable import *
 
 class Console(DrawableObjectInterface):
     def __calculate_character_per_line_limit(self, console_width : int):

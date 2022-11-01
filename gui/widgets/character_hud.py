@@ -1,6 +1,6 @@
 import pygame
 from gui.config import *
-from gui.drawable import *
+from gui.interfaces.drawable import *
 from gui.widgets.attribute_bar import *
 
 from system.core.character import *

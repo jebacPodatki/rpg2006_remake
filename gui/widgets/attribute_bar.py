@@ -1,7 +1,7 @@
 import pygame
 from core.resource_provider import *
 from gui.config import *
-from gui.drawable import *
+from gui.interfaces.drawable import *
 
 class AttributeBar(DrawableObjectInterface):
     def __init__(self, config : Config, position = (0, 0), color = (0, 0, 0), short = False):
