@@ -27,16 +27,41 @@ class SystemFightController:
         if number_of_alives > 0:
             self.game_state.level += 1
 
-    def start_new_fight(self, selector : ActionSelectorInterface, logger : EventReceiverInterface):
+    def __get_encounter_for_level(self, level : int):
+        ind = 0
+        for encounter in self.library.encounters:
+            if ind == level:
+                return self.library.encounters[encounter]
+            ind += 1
+
+    def prepare_characters_for_new_fight(self):
         self.characters = []
         for player_character_name in self.game_state.player_characters:
             player_character = self.game_state.player_characters[player_character_name]
             if player_character.alive:
-                self.characters.append(Character(player_character.character_sheet, True, Character.BLUE_FACTION))
-        for sheet_name in self.library.encounters[self.game_state.level - 1]:
-            sheet = self.library.sheets[sheet_name]
-            self.characters.append(Character(sheet, False, Character.RED_FACTION))
+                character = Character(player_character.character_sheet, True, Character.BLUE_FACTION)
+                if player_character.back_line:
+                    character.line = Character.BACK_LINE
+                self.characters.append(character)
+        encounter = self.__get_encounter_for_level(self.game_state.level - 1)
+        for sheet_name in encounter.front_line:
+            character = Character(self.library.sheets[sheet_name], False, Character.RED_FACTION)
+            self.characters.append(character)
+        for sheet_name in encounter.back_line:
+            character = Character(self.library.sheets[sheet_name], False, Character.RED_FACTION)
+            character.line = Character.BACK_LINE
+            self.characters.append(character)
+        return self.characters
+
+    def start_new_fight(self, selector : ActionSelectorInterface, logger : EventReceiverInterface):
+        if len(self.characters) == 0:
+            self.prepare_new_fight()
         self.fight = Fight(self.characters, self.library, selector, AIActionSelector(), logger)
+
+    def get_current_character(self):
+        if self.fight != None:
+            return self.fight.get_current_character()
+        return None
 
     def process_current_fight(self):
         if self.fight != None:
