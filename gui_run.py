@@ -2,12 +2,14 @@ import pygame
 from gui.config import *
 from gui.action_selector import *
 from gui.event_receiver import *
+from gui.input.global_input_controller import *
 from gui.widgets.battlearena import BattleArena
 from gui.widgets.console import *
 from gui.widgets.switching_menu import *
 from gui.widgets.character_hud import *
 from gui.widgets.character_portrait import *
 from gui.widgets.character_portrait import *
+from gui.widgets.controllers.switching_menu_controller import *
 
 from system.core.character import *
 from system.core.library import Library
@@ -112,11 +114,16 @@ def main():
 
     objects = [console, menu, hud_1, hud_2, portrait, arena]
 
+    menu_controller = SwitchingMenuController(menu)
+
+    input_controller = GlobalInputController()
+    input_controller.register_controller(menu_controller)
+
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-            menu.on_event(event)
+            input_controller.process_pygame_event(event)
 
         screen.fill((0, 0, 0))
         bar.draw(screen)
