@@ -88,7 +88,7 @@ def main():
     menu = SwitchingMenu(config)
     menu.set_root_node(root_node)
 
-    library = Library('json/spells.json', 'json/sheets.json')
+    library = Library('json/spells.json', 'json/sheets.json', 'json/encounters.json')
     character = Character(library.sheets['Barsel'], True, Character.BLUE_FACTION)
     character2 = Character(library.sheets['Abzare'], False, Character.RED_FACTION)
     character3 = Character(library.sheets['Cersil'], True, Character.BLUE_FACTION)
