@@ -1,5 +1,7 @@
 {
     "window_size" : [1000, 800],
+    "fps_limit" : 30,
+    "system_update_delay" : 300,
     "console_size" : [920, 170],
     "console_pos" : [40, 600],
     "console_font" : "comicsans",

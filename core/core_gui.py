@@ -15,15 +15,19 @@ class CoreGUI:
         self.scene_manager = SceneManager(self.game_state_controller)
         self.input_controller = GlobalInputController()
         self.input_controller.register_controller(self.scene_manager)
+        self.fps_limit = config.fps_limit
+        self.system_update_delay = config.system_update_delay
 
     def start(self):
-        running = True
-        while running:
+        pygame.time.set_timer(pygame.USEREVENT, self.system_update_delay)
+        while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    running = False
+                    return
+                if event.type == pygame.USEREVENT:
+                    self.scene_manager.on_update()
                 self.input_controller.process_pygame_event(event)
             self.screen.fill((0, 0, 0))
             self.scene_manager.on_frame(self.screen)
-            self.scene_manager.on_update()
             pygame.display.update()
+            pygame.time.Clock().tick(self.fps_limit)
