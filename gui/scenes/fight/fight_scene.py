@@ -15,6 +15,7 @@ class FightScene(SceneInterface):
         self.view = FightView('json/fight_scene.json', self.fight_controller.prepare_characters_for_new_fight())
         self.controller = FightViewController(self.view)
         self.scene_controller = scene_controller
+        self.game_state_controller = game_state_controller
 
     def on_start(self):
         selector = InteractiveActionSelector(self.view.menu)
@@ -32,5 +33,6 @@ class FightScene(SceneInterface):
         self.view.arena.update() #temporary
         if self.fight_controller.get_current_character() != None:
             self.view.arena.set_selected_character(self.fight_controller.get_current_character()) #temporary
-        #if fight ended
+        if self.fight_controller.is_fight_ended():
+            self.scene_controller.next_scene(FightScene(self.scene_controller, self.game_state_controller))
         #self.scene_controller.next_scene(GameOverScene())

@@ -3,5 +3,10 @@
         "name" : "test",
         "front_line" : ["Abzare"],
         "back_line" : ["Dalian"]
+    },
+    {
+        "name" : "test2",
+        "front_line" : ["Skeleton", "Skeleton", "Skeleton", "Skeleton"],
+        "back_line" : ["Skeleton"]
     }
 ]
