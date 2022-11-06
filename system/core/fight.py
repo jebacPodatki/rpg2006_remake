@@ -121,13 +121,17 @@ class Fight:
             pass
 
     def __new_turn(self):
-        self.current += 1
-        if self.current >= len(self.characters):
-            self.current = 0
-        current_character = self.characters[self.current]
-        if current_character.is_alive():
-            current_character.stats.action_number = current_character.sheet.action_number
-            self.logger.on_new_turn(current_character, self.characters)
+        if self.ended():
+            return
+        while True:
+            self.current += 1
+            if self.current >= len(self.characters):
+                self.current = 0
+            current_character = self.characters[self.current]
+            if current_character.is_alive():
+                current_character.stats.action_number = current_character.sheet.action_number
+                self.logger.on_new_turn(current_character, self.characters)
+                return
 
     def process(self):
         if self.current == -1 or self.characters[self.current].stats.action_number == 0:
