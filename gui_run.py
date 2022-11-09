@@ -1,5 +1,5 @@
 import pygame
-from gui.config import *
+from gui.config_test import *
 from gui.action_selector import *
 from gui.event_receiver import *
 from gui.input.global_input_controller import *
@@ -50,7 +50,7 @@ def main():
     pygame.init()
     pygame.display.set_caption("RPG2006 Remake")
 
-    config = Config('json/config.json')
+    config = ConfigTest('json/config_test.json')
 
     mode = (config.window_size[0], config.window_size[1])
     screen = pygame.display.set_mode(mode)
