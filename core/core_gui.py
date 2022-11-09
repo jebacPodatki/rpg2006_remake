@@ -11,7 +11,6 @@ class CoreGUI:
         config = Config('json/config.json')
         self.screen = pygame.display.set_mode((config.window_size[0], config.window_size[1]))
         self.game_state_controller = GameStateController()
-        self.game_state_controller.new_game() #temporary
         self.scene_manager = SceneManager(self.game_state_controller)
         self.input_controller = GlobalInputController()
         self.input_controller.register_controller(self.scene_manager)
