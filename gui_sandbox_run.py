@@ -62,12 +62,12 @@ def main():
     bar.update(0.8, 0.5, 0.2)
 
     #
-    img1 = pygame.image.load('pngs/human.png')
-    img2 = pygame.image.load('pngs/elf.png')
-    img3 = pygame.image.load('pngs/dwarf.png')
-    img4 = pygame.image.load('pngs/half-demon.png')
-    img5 = pygame.image.load('pngs/necro.png')
-    img6 = pygame.image.load('pngs/skeleton.png')
+    img1 = pygame.image.load('pngs/portraits/human.png')
+    img2 = pygame.image.load('pngs/portraits/elf.png')
+    img3 = pygame.image.load('pngs/portraits/dwarf.png')
+    img4 = pygame.image.load('pngs/portraits/half-demon.png')
+    img5 = pygame.image.load('pngs/portraits/necro.png')
+    img6 = pygame.image.load('pngs/portraits/skeleton.png')
     X = 200
     Y = 100
 

@@ -26,6 +26,7 @@
     "hud_mp_bar_color" : [90, 90, 250],
     "hud_dp_bar_color" : [160, 194, 150],
     "hud_rp_bar_color" : [92, 194, 162],
+    "portraits_path" : "pngs/portraits",
     "portrait_caption_font" : "comicsans",
     "portrait_caption_font_size" : 25,
     "portrait_caption_font_color" : [200, 200, 200],

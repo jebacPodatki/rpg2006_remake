@@ -1,5 +1,6 @@
 {
     "window_size" : [1000, 800],
+    "portraits_path" : "pngs/portraits",
     "console_size" : [920, 170],
     "console_pos" : [40, 600],
     "console_font" : "comicsans",

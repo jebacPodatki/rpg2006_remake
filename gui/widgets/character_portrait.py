@@ -10,10 +10,13 @@ class CharacterPortrait(DrawableObjectInterface):
         y = base_pos[1] + img_size[1] + 4
         return (x, y)
 
+    def _get_portrait_path(self, config : Config, portrait_name : str):
+        return config.portraits_path + '/' + portrait_name
+
     def __init__(self, config : Config, character : Character, position = (0, 0)):
         self.position = position
         self.character = character
-        self.img = ResourceProvider.get(character.sheet.portrait)
+        self.img = ResourceProvider.get(self._get_portrait_path(config, character.sheet.portrait))
         font = pygame.font.SysFont(config.portrait_caption_font, config.portrait_caption_font_size)
         self.caption = font.render(character.sheet.name, 1, config.portrait_caption_font_color)
         if character.faction == Character.BLUE_FACTION:

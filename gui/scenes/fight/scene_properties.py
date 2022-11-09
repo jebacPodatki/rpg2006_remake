@@ -31,6 +31,7 @@ class SceneProperties:
         self.hud_mp_bar_color = [0, 0, 0]
         self.hud_dp_bar_color = [0, 0, 0]
         self.hud_rp_bar_color = [0, 0, 0]
+        self.portraits_path = ''
         self.portrait_caption_font = ''
         self.portrait_caption_font_size = 0
         self.portrait_caption_font_color = [0, 0, 0]

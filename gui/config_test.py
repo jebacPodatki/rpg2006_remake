@@ -5,6 +5,7 @@ from misc.decorators import *
 class ConfigTest:
     def __init__(self):
         self.window_size = [0, 0]
+        self.portraits_path = ''
         self.console_pos = [0, 0]
         self.console_size = [0, 0]
         self.console_font = ''
