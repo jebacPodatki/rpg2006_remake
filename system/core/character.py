@@ -7,6 +7,7 @@ class CharacterSheet:
     def __init__(self):
         self.name = ''
         self.portrait = ''
+        self.dead_portrait = ''
         self.strength = 10
         self.endurance = 10
         self.attack = 10

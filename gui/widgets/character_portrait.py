@@ -17,6 +17,7 @@ class CharacterPortrait(DrawableObjectInterface):
         self.position = position
         self.character = character
         self.img = ResourceProvider.get(self._get_portrait_path(config, character.sheet.portrait))
+        self.img_dead = ResourceProvider.get(self._get_portrait_path(config, character.sheet.dead_portrait))
         font = pygame.font.SysFont(config.portrait_caption_font, config.portrait_caption_font_size)
         self.caption = font.render(character.sheet.name, 1, config.portrait_caption_font_color)
         if character.faction == Character.BLUE_FACTION:
@@ -38,8 +39,11 @@ class CharacterPortrait(DrawableObjectInterface):
         self.selected = value
 
     def draw(self, screen : pygame.Surface):
-        screen.blit(self.img, self.position)
-        if self.selected:
-            screen.blit(self.caption_selected, self.caption_position)
+        if self.character.is_alive():
+            screen.blit(self.img, self.position)
+            if self.selected:
+                screen.blit(self.caption_selected, self.caption_position)
+            else:
+                screen.blit(self.caption, self.caption_position)
         else:
-            screen.blit(self.caption, self.caption_position)
+            screen.blit(self.img_dead, self.position)
