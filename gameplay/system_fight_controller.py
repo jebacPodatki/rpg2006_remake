@@ -20,6 +20,8 @@ class SystemFightController:
         for character in self.characters:
             if character.faction != SystemFightController.PLAYER_FACTION:
                 continue
+            if not character.sheet.name in self.game_state.player_characters:
+                continue
             if not character.is_alive():
                 self.game_state.player_characters[character.sheet.name].alive = False
             else:
