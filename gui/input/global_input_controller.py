@@ -25,6 +25,6 @@ class GlobalInputController:
 
     def process_pygame_event(self, pygame_event : pygame.event.Event):
         event = GlobalInputController.__define_event(pygame_event)
-        if event != InputEvent.NONE:
+        if event.event != InputEvent.NONE:
             for controller in self.controllers:
                 controller.on_event(event)
