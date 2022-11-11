@@ -3,7 +3,7 @@ from system.core.character import *
 from gui.widgets.console import *
 
 class SystemEventReceiver(EventReceiverInterface):
-    def __init__(self, console = Console):
+    def __init__(self, console : Console):
         self.console = console
 
     def on_attack(self, attacker : Character, targets):
