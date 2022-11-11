@@ -14,11 +14,11 @@ class Spellbook:
                 sheet = spellbook.library.sheets['Skeleton']
                 number = int(caster.sheet.power / 5)
                 if number > 0:
-                    skeletons = [Character(sheet, False, caster.faction) for i in range(number)]
-                    for skeleton in skeletons:
-                        spellbook.characters.append(skeleton)
+                    skeletons = []
+                    for i in range(number):
                         if self.helper.can_summon(caster) == False:
                             break
+                        spellbook.characters.append(Character(sheet, False, caster.faction))
                     return skeletons
                 return []
         return SpellbookLibrary.__dict__[spell_effect](caster, targets, self)
