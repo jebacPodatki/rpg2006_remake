@@ -14,6 +14,7 @@ class SystemFightController:
         self.game_state = game_state
         self.characters = []
         self.fight = None
+        self.last_winner = 0
 
     def __on_fight_end(self):
         number_of_alives = 0
@@ -28,6 +29,7 @@ class SystemFightController:
                 number_of_alives += 1
         if number_of_alives > 0:
             self.game_state.level += 1
+            self.last_winner = SystemFightController.PLAYER_FACTION
 
     def __get_encounter_for_level(self, level : int):
         ind = 0
@@ -37,6 +39,7 @@ class SystemFightController:
             ind += 1
 
     def prepare_characters_for_new_fight(self):
+        self.last_winner = 0
         self.characters = []
         for player_character_name in self.game_state.player_characters:
             player_character = self.game_state.player_characters[player_character_name]
@@ -71,6 +74,9 @@ class SystemFightController:
             if self.fight.ended():
                 self.__on_fight_end()
                 self.fight = None
+
+    def is_player_winner(self):
+        return self.last_winner == SystemFightController.PLAYER_FACTION
 
     def is_fight_ended(self):
         if self.fight == None:
