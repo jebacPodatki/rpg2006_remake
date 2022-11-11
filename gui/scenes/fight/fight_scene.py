@@ -32,6 +32,7 @@ class FightScene(SceneInterface):
     def on_update(self):
         self.fight_controller.process_current_fight()
         self.view.arena.update() #temporary
+        self.view.hud.update() #temporary
         if self.fight_controller.get_current_character() != None:
             self.view.arena.set_selected_character(self.fight_controller.get_current_character()) #temporary
         if self.fight_controller.is_fight_ended():

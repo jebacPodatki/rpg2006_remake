@@ -3,6 +3,7 @@ from gui.scenes.fight.scene_properties import *
 from gui.widgets.switching_menu import *
 from gui.widgets.console import *
 from gui.widgets.battlearena import *
+from gui.widgets.battle_hud import *
 
 
 class FightView(AbstractView):
@@ -15,3 +16,5 @@ class FightView(AbstractView):
         super(FightView, self).add_object(self.console)
         self.arena = BattleArena(properties, characters)
         super(FightView, self).add_object(self.arena)
+        self.hud = BattleHUD(properties, characters)
+        super(FightView, self).add_object(self.hud)
