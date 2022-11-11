@@ -14,11 +14,13 @@ class Fight:
         self.characters = characters
         self.library = library
         self.selector = [selectorA, selectorB]
-        self.current = 0
+        self.current = -1
         self.logger = logger
         self.characters.sort(key=lambda x: x.sheet.initiative, reverse=True)
         self.helper = ActionHelper(self.library, self.characters)
         self.spellbook = Spellbook(characters, library, self.helper)
+        self.round_number = 0
+        self.winner_faction = 0
 
     def get_current_character(self):
         return self.characters[self.current]
@@ -122,11 +124,18 @@ class Fight:
 
     def __new_turn(self):
         if self.ended():
+            if self.round_number > 0:
+                self.logger.on_end(self.winner_faction)
+                self.round_number = 0
             return
+        if self.round_number == 0:
+            self.logger.on_start()
+            self.round_number += 1
         while True:
             self.current += 1
             if self.current >= len(self.characters):
                 self.current = 0
+                self.round_number += 1
             current_character = self.characters[self.current]
             if current_character.is_alive():
                 current_character.stats.action_number = current_character.sheet.action_number
@@ -160,5 +169,9 @@ class Fight:
                 else:
                     alive[1] += 1
         if alive[0] == 0 or alive[1] == 0:
+            if alive[0] > 0:
+                self.winner_faction = Character.BLUE_FACTION
+            else:
+                self.winner_faction = Character.RED_FACTION
             return True
         return False

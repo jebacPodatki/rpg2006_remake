@@ -4,6 +4,13 @@ from system.core.character import *
 class ConsoleEventReceiver(EventReceiverInterface):
     COLOR = '\033[0m'
     COLOR2 = '\033[92m'
+
+    def on_start(self):
+        pass
+
+    def on_end(self, winner_faction : int):
+        pass
+
     def on_attack(self, attacker : Character, targets):
         print(ConsoleEventReceiver.COLOR, end = ' ')
         print(attacker.sheet.name + ' attacks ' + targets[0].sheet.name, end = ' ')

@@ -8,6 +8,12 @@ class FightEventReceiver(EventReceiverInterface):
         self.controller = controller
         self.event_receiver = event_receiver
 
+    def on_start(self):
+        self.event_receiver.on_start()
+
+    def on_end(self, winner_faction : int):
+        self.event_receiver.on_end(winner_faction)
+
     def on_attack(self, attacker : Character, targets):
         self.event_receiver.on_attack(attacker, targets)
 

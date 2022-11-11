@@ -1,6 +1,10 @@
 from system.core.character import Character
 
 class EventReceiverInterface:
+    def on_start(self):
+        pass
+    def on_end(self, winner_faction : int):
+        pass
     def on_attack(self, attacker : Character, targets):
         pass
     def on_damage(self, character : Character, damage : int):

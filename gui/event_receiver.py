@@ -6,6 +6,16 @@ class SystemEventReceiver(EventReceiverInterface):
     def __init__(self, console : Console):
         self.console = console
 
+    def on_start(self):
+        self.console.print_nl("FIGHT BEGINS")
+
+    def on_end(self, winner_faction : int):
+        self.console.print_nl("THE FIGHT IS OVER")
+        if winner_faction == Character.BLUE_FACTION:
+            self.console.print_nl("YOU WON!");
+        else:
+            self.console.print_nl("YOU LOOSE!");
+
     def on_attack(self, attacker : Character, targets):
         self.console.print_nl(attacker.sheet.name + ' attacks ' + targets[0].sheet.name + '. ')
 
