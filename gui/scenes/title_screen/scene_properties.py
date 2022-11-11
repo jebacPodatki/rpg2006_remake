@@ -6,6 +6,8 @@ class SceneProperties:
     def __init__(self):
         self.title_pos = [0, 0]
         self.title_image = ''
+        self.logo_pos = [0, 0]
+        self.logo_image = ''
         self.menu_pos = [0, 0]
         self.menu_font = ''
         self.menu_font_size = 0

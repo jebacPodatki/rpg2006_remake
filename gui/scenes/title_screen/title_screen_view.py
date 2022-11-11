@@ -11,3 +11,5 @@ class TitleScreenView(AbstractView):
         super(TitleScreenView, self).add_object(self.menu)
         self.title = Sprite(properties.title_image, properties.title_pos)
         super(TitleScreenView, self).add_object(self.title)
+        self.logo = Sprite(properties.logo_image, properties.logo_pos)
+        super(TitleScreenView, self).add_object(self.logo)

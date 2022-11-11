@@ -1,6 +1,8 @@
 {
     "title_image" : "pngs/title.png",
     "title_pos" : [170, 30],
+    "logo_image" : "pngs/logo.png",
+    "logo_pos" : [350, 230],
     "menu_pos" : [50, 560],
     "menu_font" : "comicsans",
     "menu_font_size" : 40,
