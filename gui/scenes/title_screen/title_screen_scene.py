@@ -5,7 +5,6 @@ from gui.interfaces.scene_controller_interface import *
 from gui.scenes.title_screen.title_screen_view import *
 from gui.scenes.title_screen.title_screen_view_controller import *
 from gui.scenes.fight.fight_scene import *
-from gui.widgets.switching_menu import *
 
 from gameplay.game_state_controller import *
 
