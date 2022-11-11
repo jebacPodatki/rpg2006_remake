@@ -3,6 +3,7 @@ from gui.interfaces.scene_interface import *
 from gui.interfaces.scene_controller_interface import *
 from gui.scenes.fight.fight_view import *
 from gui.scenes.fight.fight_view_controller import *
+from gui.scenes.gameover_screen.gameover_screen_scene import *
 from gui.action_selector import *
 from gui.event_receiver import *
 
@@ -34,5 +35,7 @@ class FightScene(SceneInterface):
         if self.fight_controller.get_current_character() != None:
             self.view.arena.set_selected_character(self.fight_controller.get_current_character()) #temporary
         if self.fight_controller.is_fight_ended():
-            self.scene_controller.next_scene(FightScene(self.scene_controller, self.game_state_controller))
-        #self.scene_controller.next_scene(GameOverScene())
+            if self.fight_controller.is_player_winner():
+                self.scene_controller.next_scene(FightScene(self.scene_controller, self.game_state_controller))
+            else:
+                self.scene_controller.next_scene(GameOverScreenScene(self.scene_controller, self.game_state_controller))
