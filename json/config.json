@@ -1,5 +1,5 @@
 {
-    "window_size" : [1000, 800],
+    "window_size" : [1200, 900],
     "fps_limit" : 30,
     "system_update_delay" : 300
 }

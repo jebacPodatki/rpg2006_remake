@@ -1,4 +1,4 @@
 {
     "sprite_image" : "pngs/game_over.png",
-    "sprite_pos" : [250, 150]
+    "sprite_pos" : [350, 200]
 }
