@@ -19,6 +19,8 @@ class FightScene(SceneInterface):
         self.scene_controller = scene_controller
         self.game_state_controller = game_state_controller
         self.fight_event_receiver = FightEventReceiver(self.controller, SystemEventReceiver(self.view.console))
+        self.fight_ended = False
+        self.fight_ended_time = 0
 
     def on_start(self):
         selector = InteractiveActionSelector(self.view.menu)
@@ -31,9 +33,13 @@ class FightScene(SceneInterface):
         self.view.draw_all(screen)
 
     def on_update(self):
-        self.fight_controller.process_current_fight()
-        if self.fight_controller.is_fight_ended():
+        if self.fight_ended and pygame.time.get_ticks() > self.fight_ended_time + 2000:
             if self.fight_controller.is_player_winner():
                 self.scene_controller.next_scene(FightScene(self.scene_controller, self.game_state_controller))
             else:
                 self.scene_controller.next_scene(GameOverScreenScene(self.scene_controller, self.game_state_controller))
+            return
+        self.fight_controller.process_current_fight()
+        if self.fight_controller.is_fight_ended() and self.fight_ended == False:
+            self.fight_ended = True
+            self.fight_ended_time = pygame.time.get_ticks()
