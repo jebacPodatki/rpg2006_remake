@@ -20,3 +20,6 @@ class FightViewController(SceneControllerInterface):
 
     def set_selected_character(self, character : Character):
         self.view.arena.set_selected_character(character)
+
+    def show_effect(self, character : Character, effect : int):
+        self.view.arena.show_effect_on_character(character, effect)
