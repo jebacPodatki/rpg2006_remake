@@ -63,3 +63,6 @@ class BattleArena(DrawableObjectInterface):
         if self.last_selected_character != None:
             self.character_portraits[self.last_selected_character].select(False)
         self.last_selected_character = character
+
+    def show_effect_on_character(self, character : Character, effect : int):
+        self.character_portraits[character].add_effect(effect)
