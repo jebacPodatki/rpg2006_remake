@@ -124,9 +124,6 @@ class Fight:
 
     def __new_turn(self):
         if self.ended():
-            if self.round_number > 0:
-                self.logger.on_end(self.winner_faction)
-                self.round_number = 0
             return
         if self.round_number == 0:
             self.logger.on_start()
@@ -159,6 +156,9 @@ class Fight:
                 self.__move_all_alive_to_frontline(Character.BLUE_FACTION)
             if self.helper.is_frontline_empty(Character.RED_FACTION):
                 self.__move_all_alive_to_frontline(Character.RED_FACTION)
+        if self.ended() and self.round_number > 0:
+            self.logger.on_end(self.winner_faction)
+            self.round_number = 0
 
     def ended(self):
         alive = [0, 0]
