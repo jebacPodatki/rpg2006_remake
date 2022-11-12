@@ -48,6 +48,7 @@ class FightEventReceiver(EventReceiverInterface):
 
     def on_new_turn(self, current_character : Character, characters):
         self.controller.update_hud()
+        self.controller.update_arena()
         self.controller.set_selected_character(current_character)
         self.event_receiver.on_new_turn(current_character, characters)
 
