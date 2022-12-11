@@ -1,6 +1,9 @@
 [
     {
         "name" : "Abzare",
+        "race" : "Human",
+        "main_class" : "Warrior",
+        "level" : 1,
         "portrait" : "human.png",
         "dead_portrait" : "human_dead.png",
         "strength" : 10,
@@ -25,6 +28,9 @@
     },
     {
         "name" : "Barsel",
+        "race" : "Human",
+        "main_class" : "Warrior",
+        "level" : 1,
         "portrait" : "human.png",
         "dead_portrait" : "human_dead.png",
         "strength" : 10,
@@ -49,6 +55,9 @@
     },
     {
         "name" : "Cersil",
+        "race" : "Elf",
+        "main_class" : "Wizard",
+        "level" : 1,
         "portrait" : "elf.png",
         "dead_portrait" : "elf_dead.png",
         "strength" : 10,
@@ -73,6 +82,9 @@
     },
     {
         "name" : "Dalian",
+        "race" : "Elf",
+        "main_class" : "Archer",
+        "level" : 1,
         "portrait" : "elf.png",
         "dead_portrait" : "elf_dead.png",
         "strength" : 10,
@@ -97,6 +109,9 @@
     },
     {
         "name" : "Skeleton",
+        "race" : "Undead",
+        "main_class" : "",
+        "level" : 1,
         "portrait" : "skeleton.png",
         "dead_portrait" : "skeleton_dead.png",
         "strength" : 10,

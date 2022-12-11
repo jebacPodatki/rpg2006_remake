@@ -6,6 +6,9 @@ from misc.decorators import *
 class CharacterSheet:
     def __init__(self):
         self.name = ''
+        self.race = ''
+        self.main_class = ''
+        self.level = 0
         self.portrait = ''
         self.dead_portrait = ''
         self.strength = 10
