@@ -4,7 +4,7 @@ from gui.interfaces.scene_interface import *
 from gui.interfaces.scene_controller_interface import *
 from gui.scenes.title_screen.title_screen_view import *
 from gui.scenes.title_screen.title_screen_view_controller import *
-from gui.scenes.fight.fight_scene import *
+from gui.scenes.create_party.create_party_scene import *
 
 from gameplay.game_state_controller import *
 
@@ -22,7 +22,7 @@ class TitleScreenScene(SceneInterface):
                 self.scene_controller = scene_controller
             def __call__(self):
                 self.game_state_controller.new_game()
-                self.scene_controller.next_scene(FightScene(self.scene_controller, self.game_state_controller))
+                self.scene_controller.next_scene(CreatePartyScene(self.scene_controller, self.game_state_controller))
         class ActionInvokerExitGame:
             def __init__(self):
                 pass

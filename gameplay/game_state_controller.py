@@ -8,6 +8,3 @@ class GameStateController:
 
     def new_game(self):
         self.game_state = GameState()
-        #temporary
-        self.game_state.add_player_character(self.library.sheets['Barsel'], False)
-        self.game_state.add_player_character(self.library.sheets['Cersil'], True)
