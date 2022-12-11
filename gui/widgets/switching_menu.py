@@ -109,9 +109,13 @@ class SwitchingMenu(DrawableObjectInterface):
         self.root_line = self.font.render(self.current_node.name, 1, self.color_root)
         self.__set_next_available_index(1)
 
-    def set_root_node(self, root_node : RootNode):
+    def set_root_node(self, root_node : RootNode, keep_current_index = False):
         self.root_node = root_node
+        if keep_current_index == True:
+            index = self.selected_index
         self.__set_current_node(self.root_node)
+        if keep_current_index == True:
+            self.selected_index = index
 
     def draw(self, screen : pygame.Surface):
         if self.root_node == None:
