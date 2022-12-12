@@ -10,12 +10,12 @@ from gameplay.game_state_controller import *
 from gameplay.party import *
 
 class CreatePartyScene(SceneInterface):
-    def __init__(self, scene_controller : SceneControllerInterface, game_state_controller : GameStateController):
+    def __init__(self, scene_controller : SceneControllerInterface, game_state_controller : GameStateController, party : Party):
         self.view = CreatePartyView('json/create_party_scene.json')
         self.controller = CreatePartyViewController(self.view)
         self.scene_controller = scene_controller
         self.game_state_controller = game_state_controller
-        self.party = Party()
+        self.party = party
 
     def on_start(self):
         class ActionInvokerCreateCharacter:
