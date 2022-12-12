@@ -15,3 +15,9 @@ class SceneProperties:
         self.menu_font_color_disabled = [0, 0, 0]
         self.menu_interline_size = 0
         self.menu_indent = 40
+        self.text_field_size = [0, 0]
+        self.text_field_font = ''
+        self.text_field_font_size = 0
+        self.text_field_font_color = [0, 0, 0]
+        self.text_field_max_length = 0
+        self.portraits_path = ''

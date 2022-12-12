@@ -40,3 +40,10 @@ class CreatePartyViewController(SceneControllerInterface):
         self.start_functor = start_functor
         self.exit_functor = exit_functor
         self.update_menu_partially(party)
+
+    def update_portraits(self, party : Party):
+        n = 0
+        for character_line in party.characters:
+            for character in character_line:
+                self.view.portraits[n].set_character(character)
+                n += 1

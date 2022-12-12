@@ -2,6 +2,7 @@ from gui.interfaces.abstract_view import *
 from gui.scenes.create_party.scene_properties import *
 from gui.widgets.switching_menu import *
 from gui.widgets.sprite import *
+from gui.widgets.character_sheet_short import *
 
 class CreatePartyView(AbstractView):
     def __init__(self, properties_path : str):
@@ -11,3 +12,13 @@ class CreatePartyView(AbstractView):
         super(CreatePartyView, self).add_object(self.menu)
         self.title = Sprite(properties.title_image, properties.title_pos)
         super(CreatePartyView, self).add_object(self.title)
+        pos_x = 110
+        pos_y = 230
+        delta_x = 250
+        self.portraits = [CharacterSheetShort(properties, None, (pos_x, pos_y)),
+                          CharacterSheetShort(properties, None, (pos_x + delta_x, pos_y)),
+                          CharacterSheetShort(properties, None, (pos_x + 2 * delta_x, pos_y)),
+                          CharacterSheetShort(properties, None, (pos_x + 3 * delta_x, pos_y))
+        ]
+        for portrait in self.portraits:
+            super(CreatePartyView, self).add_object(portrait)

@@ -26,6 +26,6 @@ class TextField(DrawableObjectInterface):
 
     def draw(self, screen : pygame.Surface):
         if self.border:
-            pygame.draw.rect(screen, (150, 150, 150), self.rect, 2)
+            pygame.draw.rect(screen, (120, 120, 120), self.rect, 2)
         if self.text_line != None:
             screen.blit(self.text_line, (self.position[0] + 5, self.position[1] + 5))
