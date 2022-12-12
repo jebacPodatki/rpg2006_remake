@@ -4,10 +4,10 @@ from gui.interfaces.scene_interface import *
 from gui.interfaces.scene_controller_interface import *
 from gui.scenes.create_party.create_party_view import *
 from gui.scenes.create_party.create_party_view_controller import *
-from gui.scenes.create_party.party import *
 from gui.scenes.fight.fight_scene import *
 
 from gameplay.game_state_controller import *
+from gameplay.party import *
 
 class CreatePartyScene(SceneInterface):
     def __init__(self, scene_controller : SceneControllerInterface, game_state_controller : GameStateController):

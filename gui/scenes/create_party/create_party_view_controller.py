@@ -1,8 +1,9 @@
 from gui.scenes.create_party.create_party_view import *
-from gui.scenes.create_party.party import *
 from gui.interfaces.scene_controller_interface import *
 from gui.widgets.controllers.switching_menu_controller import *
 from gui.input.input_event import *
+
+from gameplay.party import *
 
 class CreatePartyViewController(SceneControllerInterface):
     def __init__(self, view : CreatePartyView):
