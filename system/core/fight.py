@@ -25,6 +25,11 @@ class Fight:
     def get_current_character(self):
         return self.characters[self.current]
 
+    def __check_critical_hit(self, attacker):
+        if random.randint(1, 100) <= attacker.sheet.critical_hit_chance:
+            return True
+        return False
+
     def __attack_target(self, attacker, target):
         atk_factor = attacker.sheet.attack / target.sheet.defence
         atk = atk_factor * random.randint(attacker.sheet.breakage[0], attacker.sheet.breakage[1])
@@ -32,11 +37,14 @@ class Fight:
         if target.stats.dp <= 0:
             dmg_factor = attacker.sheet.strength / target.sheet.endurance
             dmg = int(dmg_factor * random.randint(attacker.sheet.dmg[0], attacker.sheet.dmg[1]))
+            critical_hit = self.__check_critical_hit(attacker)
+            if critical_hit:
+                dmg *= attacker.sheet.critical_hit_dmg_factor
             dmg_reduced = dmg - target.sheet.armor
             if dmg_reduced < 0:
                 dmg_reduced = 0
             target.stats.hp -= dmg_reduced
-            self.logger.on_damage(target, dmg_reduced, dmg - dmg_reduced)
+            self.logger.on_damage(target, dmg_reduced, dmg - dmg_reduced, critical_hit)
             if target.stats.hp < 0:
                 self.logger.on_death(target)
             else:
@@ -67,7 +75,7 @@ class Fight:
             if dmg_reduced < 0:
                 dmg_reduced = 0
             target.stats.hp -= dmg_reduced
-            self.logger.on_damage(target, dmg_reduced, dmg - dmg_reduced)
+            self.logger.on_damage(target, dmg_reduced, dmg - dmg_reduced, False)
             if target.stats.hp < 0:
                 self.logger.on_death(target)
             else:

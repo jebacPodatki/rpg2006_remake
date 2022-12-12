@@ -19,7 +19,9 @@ class SystemEventReceiver(EventReceiverInterface):
     def on_attack(self, attacker : Character, targets):
         self.console.print_nl(attacker.sheet.name + ' attacks ' + targets[0].sheet.name + '. ')
 
-    def on_damage(self, character : Character, damage : int, armor_reduction : int):
+    def on_damage(self, character : Character, damage : int, armor_reduction : int, critical : bool):
+        if critical:
+            self.console.print('CRITICAL HIT! ')
         if armor_reduction > 0:
             self.console.print(character.sheet.name + ' taken ' + str(damage) + ' damage (' + str(armor_reduction) + ' reduced).')
         else:
