@@ -7,7 +7,7 @@ class EventReceiverInterface:
         pass
     def on_attack(self, attacker : Character, targets):
         pass
-    def on_damage(self, character : Character, damage : int):
+    def on_damage(self, character : Character, damage : int, armor_reduction : int):
         pass
     def on_block(self, character : Character):
         pass

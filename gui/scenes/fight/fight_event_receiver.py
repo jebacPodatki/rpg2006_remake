@@ -18,9 +18,9 @@ class FightEventReceiver(EventReceiverInterface):
         self.controller.show_effect(attacker, CharacterPortrait.EFFECT_MOVE_FORWARD)
         self.event_receiver.on_attack(attacker, targets)
 
-    def on_damage(self, character : Character, damage : int):
+    def on_damage(self, character : Character, damage : int, armor_reduction : int):
         self.controller.show_effect(character, CharacterPortrait.EFFECT_BLOOD)
-        self.event_receiver.on_damage(character, damage)
+        self.event_receiver.on_damage(character, damage, armor_reduction)
 
     def on_block(self, character : Character):
         self.controller.show_effect(character, CharacterPortrait.EFFECT_BLOOD)

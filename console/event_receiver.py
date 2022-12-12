@@ -15,7 +15,7 @@ class ConsoleEventReceiver(EventReceiverInterface):
         print(ConsoleEventReceiver.COLOR, end = ' ')
         print(attacker.sheet.name + ' attacks ' + targets[0].sheet.name, end = ' ')
 
-    def on_damage(self, character : Character, damage : int):
+    def on_damage(self, character : Character, damage : int, armor_reduction : int):
         print('and deals ' + str(damage) + ' damage. ' + character.sheet.name + ' has ' + str(character.stats.hp) + ' HP now.')
 
     def on_block(self, character : Character):
