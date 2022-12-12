@@ -23,6 +23,10 @@
         "mp" : 100,
         "attack_area" : "single_enemy_frontline",
         "distant" : false,
+        "weapon_name" : "Sword",
+        "armor" : 10,
+        "critical_hit_chance" : 5,
+        "critical_hit_dmg_factor" : 2,
         "spells" : ["Magic bolt"],
         "spells_ai_chance" : [30]
     },
@@ -50,6 +54,10 @@
         "mp" : 100,
         "attack_area" : "single_enemy_frontline",
         "distant" : false,
+        "weapon_name" : "Sword",
+        "armor" : 10,
+        "critical_hit_chance" : 5,
+        "critical_hit_dmg_factor" : 2,
         "spells" : ["Magic bolt"],
         "spells_ai_chance" : [30]
     },
@@ -77,6 +85,10 @@
         "mp" : 300,
         "attack_area" : "single_enemy_frontline",
         "distant" : false,
+        "weapon_name" : "Knife",
+        "armor" : 0,
+        "critical_hit_chance" : 2,
+        "critical_hit_dmg_factor" : 3,
         "spells" : ["Raise deads", "Fireball"],
         "spells_ai_chance" : [20, 20]
     },
@@ -104,6 +116,10 @@
         "mp" : 100,
         "attack_area" : "single_enemy_frontline",
         "distant" : false,
+        "weapon_name" : "Bow",
+        "armor" : 5,
+        "critical_hit_chance" : 9,
+        "critical_hit_dmg_factor" : 2,
         "spells" : ["Magic bolt"],
         "spells_ai_chance" : [30]
     },
@@ -131,6 +147,10 @@
         "mp" : 100,
         "attack_area" : "single_enemy_frontline",
         "distant" : false,
+        "weapon_name" : "Spear",
+        "armor" : 0,
+        "critical_hit_chance" : 2,
+        "critical_hit_dmg_factor" : 2,
         "spells" : ["Magic bolt"],
         "spells_ai_chance" : [30]
     }

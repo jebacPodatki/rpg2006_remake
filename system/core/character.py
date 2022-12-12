@@ -28,6 +28,10 @@ class CharacterSheet:
         self.mp = 100
         self.attack_area = ActionTarget.TARGET_SINGLE_ENEMY_FRONTLINE
         self.distant = False
+        self.weapon_name = ''
+        self.armor = 0
+        self.critical_hit_chance = 0
+        self.critical_hit_dmg_factor = 1
         self.spells = ['Magic bolt']
         self.spells_ai_chance = [30]
 
