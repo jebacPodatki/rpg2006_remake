@@ -1,0 +1,14 @@
+[
+    {
+        "name" : "Human",
+        "classes" : ["Warrior", "Sorcerer"]
+    },
+    {
+        "name" : "Elf",
+        "classes" : ["Swordmaster", "Wizard"]
+    },
+    {
+        "name" : "Dwarf",
+        "classes" : ["Guard", "Berserk"]
+    }
+]

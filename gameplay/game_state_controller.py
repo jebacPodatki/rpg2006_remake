@@ -4,7 +4,7 @@ from system.core.library import *
 class GameStateController:
     def __init__(self):
         self.game_state = None
-        self.library = Library('json/spells.json', 'json/sheets.json', 'json/encounters.json')
+        self.library = Library('json/spells.json', 'json/sheets.json', 'json/encounters.json', 'json/races.json')
 
     def new_game(self):
         self.game_state = GameState()
