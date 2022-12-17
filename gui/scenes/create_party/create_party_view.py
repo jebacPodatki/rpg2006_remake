@@ -15,10 +15,10 @@ class CreatePartyView(AbstractView):
         pos_x = 110
         pos_y = 230
         delta_x = 250
-        self.portraits = [CharacterSheetShort(properties, None, (pos_x, pos_y)),
-                          CharacterSheetShort(properties, None, (pos_x + delta_x, pos_y)),
-                          CharacterSheetShort(properties, None, (pos_x + 2 * delta_x, pos_y)),
-                          CharacterSheetShort(properties, None, (pos_x + 3 * delta_x, pos_y))
+        self.character_sheets = [CharacterSheetShort(properties, None, (pos_x, pos_y)),
+                                 CharacterSheetShort(properties, None, (pos_x + delta_x, pos_y)),
+                                 CharacterSheetShort(properties, None, (pos_x + 2 * delta_x, pos_y)),
+                                 CharacterSheetShort(properties, None, (pos_x + 3 * delta_x, pos_y))
         ]
-        for portrait in self.portraits:
-            super(CreatePartyView, self).add_object(portrait)
+        for character_sheet in self.character_sheets:
+            super(CreatePartyView, self).add_object(character_sheet)

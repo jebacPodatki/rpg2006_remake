@@ -37,7 +37,7 @@ class CreatePartyScene(SceneInterface):
                     sheet = self.game_state_controller.library.sheets['Abzare']
                 self.party.characters[self.party_position[0]][self.party_position[1]] = sheet
                 self.controller.update_menu_partially(self.party)
-                self.controller.update_portraits(self.party)
+                self.controller.update_sheets(self.party)
         class ActionInvokerDeleteCharacter:
             def __init__(self, controller : CreatePartyViewController, party : Party, party_position = (0, 0)):
                 self.controller = controller
@@ -46,7 +46,7 @@ class CreatePartyScene(SceneInterface):
             def __call__(self):
                 self.party.characters[self.party_position[0]][self.party_position[1]] = None
                 self.controller.update_menu_partially(self.party)
-                self.controller.update_portraits(self.party)
+                self.controller.update_sheets(self.party)
         class ActionInvokerStartJourney:
             def __init__(self, game_state_controller : GameStateController, scene_controller : SceneControllerInterface,
                          party : Party):
