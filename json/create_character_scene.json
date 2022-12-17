@@ -1,0 +1,20 @@
+{
+    "title_image" : "pngs/create_character.png",
+    "title_pos" : [240, 30],
+    "menu_pos" : [50, 620],
+    "menu_font" : "comicsans",
+    "menu_font_size" : 30,
+    "menu_font_color_root" : [40, 80, 200],
+    "menu_font_color_selected" : [240, 240, 240],
+    "menu_font_color_unselected" : [100, 100, 100],
+    "menu_font_color_disabled" : [20, 20, 20],
+    "menu_interline_size" : 30,
+    "menu_indent" : 20,
+    "text_field_size" : [45, 30],
+    "text_field_font" : "comicsans",
+    "text_field_font_size" : 25,
+    "text_field_font_color" : [200, 200, 200],
+    "text_field_max_length" : 13,
+    "portraits_path" : "pngs/portraits",
+    "character_sheet_pos" : [610, 230]
+}
