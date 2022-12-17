@@ -20,10 +20,12 @@ class FightEventReceiver(EventReceiverInterface):
 
     def on_damage(self, character : Character, damage : int, armor_reduction : int, critical : bool):
         self.controller.show_effect(character, CharacterPortrait.EFFECT_BLOOD)
+        self.controller.update_hud()
         self.event_receiver.on_damage(character, damage, armor_reduction, critical)
 
     def on_block(self, character : Character):
         self.controller.show_effect(character, CharacterPortrait.EFFECT_BLOOD)
+        self.controller.update_hud()
         self.event_receiver.on_block(character)
 
     def on_cast_spell(self, attacker : Character, targets, spell_name : str):
@@ -36,6 +38,7 @@ class FightEventReceiver(EventReceiverInterface):
 
     def on_magic_block(self, character : Character):
         self.controller.show_effect(character, CharacterPortrait.EFFECT_BLOOD)
+        self.controller.update_hud()
         self.event_receiver.on_magic_block(character)
 
     def on_wait(self, character : Character):
