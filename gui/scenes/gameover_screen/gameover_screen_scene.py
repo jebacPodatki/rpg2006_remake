@@ -2,7 +2,8 @@ import pygame
 from gui.interfaces.scene_interface import *
 from gui.interfaces.scene_controller_interface import *
 from gui.scenes.gameover_screen.gameover_screen_view import *
-from gui.scenes.title_screen.title_screen_scene import *
+
+import gui.scenes.title_screen.title_screen_scene as title_scene
 
 from gameplay.game_state_controller import *
 
@@ -17,7 +18,7 @@ class GameOverScreenScene(SceneInterface):
 
     def on_event(self, event : InputEvent):
         if event.event == InputEvent.SELECT_PRESSED:
-            self.scene_controller.set_initial_scene()
+            self.scene_controller.next_scene(title_scene.TitleScreenScene(self.scene_controller, self.game_state_controller))
 
     def on_frame(self, screen : pygame.Surface):
         self.view.draw_all(screen)

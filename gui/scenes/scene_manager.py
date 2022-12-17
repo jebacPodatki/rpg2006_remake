@@ -2,7 +2,8 @@ import pygame
 from gui.input.input_event import *
 from gui.input.input_controller_interface import *
 from gui.interfaces.scene_controller_interface import *
-from gui.scenes.title_screen.title_screen_scene import *
+
+import gui.scenes.title_screen.title_screen_scene as screen_scene
 
 from gameplay.game_state_controller import *
 
@@ -19,8 +20,7 @@ class SceneManager(SceneControllerInterface, InputControllerInterface):
     def __init__(self, game_state_controller : GameStateController):
         self.current_scene = None
         self.game_state_controller = game_state_controller
-        self.title_scene = TitleScreenScene(self, self.game_state_controller)
-        self.set_initial_scene()
+        self.next_scene(screen_scene.TitleScreenScene(self, self.game_state_controller))
 
     def on_frame(self, screen : pygame.Surface):
         self.current_scene.on_frame(screen)

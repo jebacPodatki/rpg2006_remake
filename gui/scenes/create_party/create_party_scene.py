@@ -4,7 +4,9 @@ from gui.interfaces.scene_interface import *
 from gui.interfaces.scene_controller_interface import *
 from gui.scenes.create_party.create_party_view import *
 from gui.scenes.create_party.create_party_view_controller import *
-from gui.scenes.fight.fight_scene import *
+
+import gui.scenes.fight.fight_scene as fight_scene
+import gui.scenes.title_screen.title_screen_scene as title_scene
 
 from gameplay.game_state_controller import *
 from gameplay.party import *
@@ -58,12 +60,13 @@ class CreatePartyScene(SceneInterface):
                 for character in self.party.characters[1]:
                     if character != None:
                         self.game_state_controller.game_state.add_player_character(character, True)
-                self.scene_controller.next_scene(FightScene(self.scene_controller, self.game_state_controller))
+                self.scene_controller.next_scene(fight_scene.FightScene(self.scene_controller, self.game_state_controller))
         class ActionInvokerExit:
-            def __init__(self, scene_controller : SceneControllerInterface):
+            def __init__(self, game_state_controller : GameStateController, scene_controller : SceneControllerInterface):
+                self.game_state_controller = game_state_controller
                 self.scene_controller = scene_controller
             def __call__(self):
-                self.scene_controller.set_initial_scene()
+                self.scene_controller.next_scene(title_scene.TitleScreenScene(self.scene_controller, self.game_state_controller))
         create_character_invokers = [
             ActionInvokerCreateCharacter(self.game_state_controller, self.controller, self.party, (0, 0)),
             ActionInvokerCreateCharacter(self.game_state_controller, self.controller, self.party, (0, 1)),
@@ -77,7 +80,7 @@ class CreatePartyScene(SceneInterface):
             ActionInvokerDeleteCharacter(self.controller, self.party, (1, 1))
         ]
         start_invoker = ActionInvokerStartJourney(self.game_state_controller, self.scene_controller, self.party)
-        exit_invoker = ActionInvokerExit(self.scene_controller)
+        exit_invoker = ActionInvokerExit(self.game_state_controller, self.scene_controller)
         self.controller.update_menu(self.party, create_character_invokers, delete_character_invokers, start_invoker, exit_invoker)
 
     def on_event(self, event : InputEvent):
