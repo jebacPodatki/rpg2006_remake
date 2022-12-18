@@ -1,10 +1,10 @@
 from gameplay.game_state import *
 
 from system.core.library import *
-from system.core.action.selector import *
+from system.core.action.action_selector import *
 from system.core.fight import *
 from system.ai.ai import *
-from system.event.event_receiver import *
+from system.event.fight_event_receiver import *
 
 class SystemFightController:
     PLAYER_FACTION = Character.BLUE_FACTION
@@ -58,7 +58,7 @@ class SystemFightController:
             self.characters.append(character)
         return self.characters
 
-    def start_new_fight(self, selector : ActionSelectorInterface, logger : EventReceiverInterface):
+    def start_new_fight(self, selector : ActionSelectorInterface, logger : FightEventReceiverInterface):
         if len(self.characters) == 0:
             self.prepare_new_fight()
         self.fight = Fight(self.characters, self.library, selector, AIActionSelector(), logger)

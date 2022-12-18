@@ -1,7 +1,7 @@
-from system.event.event_receiver import *
+from system.event.fight_event_receiver import *
 from system.core.character import *
 
-class ConsoleEventReceiver(EventReceiverInterface):
+class ConsoleEventReceiver(FightEventReceiverInterface):
     COLOR = '\033[0m'
     COLOR2 = '\033[92m'
 

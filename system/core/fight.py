@@ -4,9 +4,9 @@ from system.core.character import *
 from system.core.library import Library
 from system.core.action.action import *
 from system.core.action.helper import *
-from system.core.action.selector import *
+from system.core.action.action_selector import *
 from system.core.spellbook import *
-from system.event.event_receiver import EventReceiverInterface
+from system.event.fight_event_receiver import FightEventReceiverInterface
 
 class Fight:
     def __init__(self, characters, library : Library, selectorA : ActionSelectorInterface,

@@ -1,5 +1,5 @@
 from system.core.action.action import *
-from system.core.action.selector import *
+from system.core.action.action_selector import *
 from system.core.action.helper import *
 from system.core.character import *
 from gui.widgets.switching_menu import *

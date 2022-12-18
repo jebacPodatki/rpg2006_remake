@@ -1,9 +1,9 @@
-from system.event.event_receiver import *
+from system.event.fight_event_receiver import *
 from system.core.character import *
 from gui.scenes.fight.fight_view_controller import *
 from gui.event_receiver import *
 
-class FightEventReceiver(EventReceiverInterface):
+class FightEventReceiver(FightEventReceiverInterface):
     def __init__(self, controller : FightViewController, event_receiver : SystemEventReceiver):
         self.controller = controller
         self.event_receiver = event_receiver

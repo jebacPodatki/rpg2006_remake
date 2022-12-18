@@ -1,8 +1,8 @@
-from system.event.event_receiver import *
+from system.event.fight_event_receiver import *
 from system.core.character import *
 from gui.widgets.console import *
 
-class SystemEventReceiver(EventReceiverInterface):
+class SystemEventReceiver(FightEventReceiverInterface):
     def __init__(self, console : Console):
         self.console = console
 

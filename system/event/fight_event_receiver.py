@@ -1,6 +1,6 @@
 from system.core.character import Character
 
-class EventReceiverInterface:
+class FightEventReceiverInterface:
     def on_start(self):
         pass
     def on_end(self, winner_faction : int):
