@@ -37,6 +37,10 @@ class CharacterSheetFull(DrawableObjectInterface):
             self.attack_number_label.set_text(str(character.attack_number))
             self.damage_label.set_text(str(character.dmg[0]) + ' - ' + str(character.dmg[1]))
             self.breakage_label.set_text(str(character.breakage[0]) + ' - ' + str(character.breakage[1]))
+            self.critical_hit_label.set_text(
+                str(character.critical_hit_chance) + '% / x' + str(character.critical_hit_dmg_factor))
+            self.armor_label.set_text(character.armor_name)
+            self.armor_reduction_label.set_text(str(character.armor))
             for i in range(len(self.spell_labels)):
                 if i < len(character.spells):
                     self.spell_labels[i].set_text(character.spells[i])
@@ -63,10 +67,13 @@ class CharacterSheetFull(DrawableObjectInterface):
             self.rp_bar.set_value(0)
             self.mp_bar.set_caption('')
             self.mp_bar.set_value(0)
-            self.weapon_label.set_text('-')
-            self.attack_number_label.set_text('-')
-            self.damage_label.set_text('-')
-            self.breakage_label.set_text('-')
+            self.weapon_label.set_text('')
+            self.attack_number_label.set_text('')
+            self.damage_label.set_text('')
+            self.breakage_label.set_text('')
+            self.critical_hit_label.set_text('')
+            self.armor_label.set_text('')
+            self.armor_reduction_label.set_text('')
             for spell_label in self.spell_labels:
                 spell_label.set_text('')
 
@@ -119,7 +126,8 @@ class CharacterSheetFull(DrawableObjectInterface):
         bar_area_pos_y = 250
         bar_area_pos_y_delta = 20
         weapon_area_pos_y = 345
-        spell_area_pos_y = 465
+        armor_area_pos_y = 485
+        spell_area_pos_y = 550
         self.name_label = TextField(config, (position[0] + basic_info_pos_x, position[1]), color, False)
         self.level_label = TextField(config, (position[0] + basic_info_right_pos_x, position[1]), color, False)
         self.race_label = TextField(config, (position[0] + basic_info_pos_x, position[1] + basic_info_pos_y), color, False)
@@ -158,6 +166,12 @@ class CharacterSheetFull(DrawableObjectInterface):
             config, 'Damage', (position[0] + margin, position[1] + weapon_area_pos_y + 2 * delta_y2), color)
         self.breakage_label = self.__create_secondary_attribute_label(
             config, 'Breakage', (position[0] + margin, position[1] + weapon_area_pos_y + 3 * delta_y2), color)
+        self.critical_hit_label = self.__create_secondary_attribute_label(
+            config, 'Critical hit', (position[0] + margin, position[1] + weapon_area_pos_y + 4 * delta_y2), color)
+        self.armor_label = self.__create_secondary_attribute_label(
+            config, 'Armor:', (position[0], position[1] + armor_area_pos_y), color)
+        self.armor_reduction_label = self.__create_secondary_attribute_label(
+            config, 'Reduction', (position[0] + margin, position[1] + armor_area_pos_y + delta_y2), color)
         self.__create_secondary_attribute_label(
             config, 'Spells:', (position[0], position[1] + spell_area_pos_y), color)
         self.spell_labels = []
@@ -177,7 +191,9 @@ class CharacterSheetFull(DrawableObjectInterface):
         pygame.draw.line(screen, (30, 30, 30),
                          (self.position[0] + 30, self.position[1] + 335), (self.position[0] + 280, self.position[1] + 335), 3)
         pygame.draw.line(screen, (30, 30, 30),
-                         (self.position[0] + 30, self.position[1] + 450), (self.position[0] + 280, self.position[1] + 450), 3)
+                         (self.position[0] + 30, self.position[1] + 478), (self.position[0] + 280, self.position[1] + 478), 3)
+        pygame.draw.line(screen, (30, 30, 30),
+                         (self.position[0] + 30, self.position[1] + 543), (self.position[0] + 280, self.position[1] + 543), 3)
         if self.portrait != None:
             self.portrait.draw(screen)
         for label in self.labels:
