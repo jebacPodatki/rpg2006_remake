@@ -16,5 +16,14 @@
     "text_field_font_color" : [200, 200, 200],
     "text_field_max_length" : 13,
     "portraits_path" : "pngs/portraits",
-    "character_sheet_pos" : [610, 230]
+    "character_sheet_pos" : [630, 220],
+    "bar_image" : "pngs/bar.png",
+    "bar_short_image" : "pngs/bar_ss.png",
+    "bar_font" : "liberation",
+    "bar_font_size" : 21,
+    "bar_font_color" : [200, 200, 200],
+    "sheet_hp_bar_color" : [160, 40, 40],
+    "sheet_mp_bar_color" : [40, 40, 160],
+    "sheet_dp_bar_color" : [80, 124, 70],
+    "sheet_rp_bar_color" : [32, 104, 112]
 }
