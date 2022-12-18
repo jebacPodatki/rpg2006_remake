@@ -19,7 +19,7 @@ class BaseNode:
 
 class LeafNode(BaseNode):
     def __init__(self, name : str, parent, functor = None, enabled = True):
-        super(LeafNode, self).__init__(name, parent, enabled)
+        super().__init__(name, parent, enabled)
         self.__functor = functor
     def __call__(self):
         if self.__functor != None:
@@ -29,13 +29,13 @@ class LeafNode(BaseNode):
 
 class BackNode(BaseNode):
     def __init__(self, parent):
-        super(BackNode, self).__init__('<- Back', parent)
+        super().__init__('<- Back', parent)
     def is_backnode(self):
         return True
 
 class Node(BaseNode):
     def __init__(self, name : str, parent, enabled = True):
-        super(Node, self).__init__(name, parent, enabled)
+        super().__init__(name, parent, enabled)
     def add_leaf_child(self, name : str, functor, enabled = True):
         child = LeafNode(name, self, functor, enabled)
         self.get_children().append(child)
@@ -51,7 +51,7 @@ class Node(BaseNode):
 
 class RootNode(Node):
     def __init__(self, name : str):
-        super(RootNode, self).__init__(name, None)
+        super().__init__(name, None)
 
 class SwitchingMenu(DrawableObjectInterface):
     def __init__(self, config : Config):

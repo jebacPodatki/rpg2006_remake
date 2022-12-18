@@ -6,12 +6,12 @@ from gui.widgets.character_sheet_short import *
 
 class CreatePartyView(AbstractView):
     def __init__(self, properties_path : str):
-        super(CreatePartyView, self).__init__()
+        super().__init__()
         properties = SceneProperties(properties_path)
         self.menu = SwitchingMenu(properties)
-        super(CreatePartyView, self).add_object(self.menu)
+        self.add_object(self.menu)
         self.title = Sprite(properties.title_image, properties.title_pos)
-        super(CreatePartyView, self).add_object(self.title)
+        self.add_object(self.title)
         pos_x = 110
         pos_y = 230
         delta_x = 250
@@ -21,4 +21,4 @@ class CreatePartyView(AbstractView):
                                  CharacterSheetShort(properties, None, (pos_x + 3 * delta_x, pos_y))
         ]
         for character_sheet in self.character_sheets:
-            super(CreatePartyView, self).add_object(character_sheet)
+            self.add_object(character_sheet)

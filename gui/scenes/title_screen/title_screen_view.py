@@ -5,11 +5,11 @@ from gui.widgets.sprite import *
 
 class TitleScreenView(AbstractView):
     def __init__(self, properties_path : str):
-        super(TitleScreenView, self).__init__()
+        super().__init__()
         properties = SceneProperties(properties_path)
         self.menu = SwitchingMenu(properties)
-        super(TitleScreenView, self).add_object(self.menu)
+        self.add_object(self.menu)
         self.title = Sprite(properties.title_image, properties.title_pos)
-        super(TitleScreenView, self).add_object(self.title)
+        self.add_object(self.title)
         self.logo = Sprite(properties.logo_image, properties.logo_pos)
-        super(TitleScreenView, self).add_object(self.logo)
+        self.add_object(self.logo)
