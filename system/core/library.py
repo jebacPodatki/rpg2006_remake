@@ -39,3 +39,14 @@ class Library:
         self.__load_sheets(sheet_path)
         self.__load_encounters(encounter_path)
         self.__load_races(races_path)
+
+    def get_class_sheet(self, race_name : str, class_name : str):
+        if not race_name in self.races:
+            return None
+        race = self.races[race_name]
+        if not class_name in race.classes:
+            return None
+        sheet_name = race_name + '_' + class_name
+        if not sheet_name in self.sheets:
+            return None
+        return self.sheets[sheet_name]

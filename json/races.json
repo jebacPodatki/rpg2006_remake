@@ -5,10 +5,6 @@
     },
     {
         "name" : "Elf",
-        "classes" : ["Swordmaster", "Wizard"]
-    },
-    {
-        "name" : "Dwarf",
-        "classes" : ["Guard", "Berserk"]
+        "classes" : ["Warrior", "Wizard"]
     }
 ]
