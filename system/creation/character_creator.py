@@ -53,6 +53,7 @@ class CharacterCreator:
                 return False
             race_name = self.options[option_id]
             self.sheet.race = race_name
+            self.sheet.portrait = self.creator.library.races[race_name].portrait
             return True
 
     class ChooseClassStage(CreationStageInterface):
