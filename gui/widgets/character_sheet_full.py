@@ -9,6 +9,8 @@ from system.core.character import *
 
 class CharacterSheetFull(DrawableObjectInterface):
     def __get_portrait_path(self, config : Config, portrait_name : str):
+        if portrait_name == '':
+            portrait_name = 'blank.png'
         return config.portraits_path + '/' + portrait_name
 
     def set_character(self, character : CharacterSheet):
