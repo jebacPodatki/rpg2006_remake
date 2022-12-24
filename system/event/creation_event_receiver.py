@@ -13,15 +13,15 @@ class ChooseStringInterface:
         pass
 
 class CreationEventReceiverInterface:
-    def on_selecting_race_stage(self, controller : ChooseOptionInterface, sheet : CharacterSheet, race_options):
+    def on_selecting_race_stage(self, choice_controller : ChooseOptionInterface, sheet : CharacterSheet, race_options):
         pass
-    def on_selecting_class_stage(self, controller : ChooseOptionInterface, sheet : CharacterSheet, class_options):
+    def on_selecting_class_stage(self, choice_controller : ChooseOptionInterface, sheet : CharacterSheet, class_options):
         pass
-    def on_selecting_name_stage(self, controller : ChooseStringInterface, sheet : CharacterSheet):
+    def on_selecting_name_stage(self, choice_controller : ChooseStringInterface, sheet : CharacterSheet):
         pass
     def on_creation_finished(self, sheet : CharacterSheet):
         pass
-    def on_wrong_choice(self, controller : ChooseOptionInterface):
+    def on_wrong_choice(self, choice_controller : ChooseOptionInterface):
         pass
-    def on_wrong_name(self, controller : ChooseStringInterface, error : str):
+    def on_wrong_name(self, choice_controller : ChooseStringInterface, error : str):
         pass

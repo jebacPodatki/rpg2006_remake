@@ -23,25 +23,25 @@ class CCreator(CreationEventReceiverInterface):
     def on_wrong_name(self, error : str):
         print('wrong name: ' + error)
 
-    def on_selecting_race_stage(self, controller : ChooseOptionInterface, sheet : CharacterSheet, races):
+    def on_selecting_race_stage(self, choice_controller : ChooseOptionInterface, sheet : CharacterSheet, races):
         print('Select race: ')
         i = 0
         for race in races:
             print(str(i) + ' = ' + race)
             i += 1
-        controller.choose_option(int(input()))
+        choice_controller.choose_option(int(input()))
 
-    def on_selecting_class_stage(self, controller : ChooseOptionInterface, sheet : CharacterSheet, classes):
+    def on_selecting_class_stage(self, choice_controller : ChooseOptionInterface, sheet : CharacterSheet, classes):
         print('Select class: ')
         i = 0
         for cls in classes:
             print(str(i) + ' = ' + cls)
             i += 1
-        controller.choose_option(int(input()))
+        choice_controller.choose_option(int(input()))
 
-    def on_selecting_name_stage(self, controller : ChooseStringInterface, sheet : CharacterSheet):
+    def on_selecting_name_stage(self, choice_controller : ChooseStringInterface, sheet : CharacterSheet):
         print('Type character name: ')
-        controller.choose_string(input())
+        choice_controller.choose_string(input())
 
     def on_creation_finished(self, sheet : CharacterSheet):
         print('----')
