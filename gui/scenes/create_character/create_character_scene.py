@@ -22,18 +22,7 @@ class CreateCharacterScene(SceneInterface):
         self.character_sheet = sheet
         self.new_party.characters[character_pos[0]][character_pos[1]] = self.character_sheet
 
-    def __init__(self, scene_controller : SceneControllerInterface, game_state_controller : GameStateController, party : Party,
-                 character_pos = (0, 0)):
-        self.view = CreateCharacterView('json/create_character_scene.json')
-        self.controller = CreateCharacterViewController(self.view)
-        self.scene_controller = scene_controller
-        self.game_state_controller = game_state_controller
-        self.party = party
-        self.new_party = copy.deepcopy(party)
-        self.character_sheet = None
-        self.__prepare_new_party(character_pos)
-
-    def on_start(self):
+    def __init_view_controller(self):
         class ActionInvokerAccept:
             def __init__(self, game_state_controller : GameStateController, scene_controller : SceneControllerInterface,
                          party : Party):
@@ -54,7 +43,22 @@ class CreateCharacterScene(SceneInterface):
                     party_scene.CreatePartyScene(self.scene_controller, self.game_state_controller, self.party))
         accept_invoker = ActionInvokerAccept(self.game_state_controller, self.scene_controller, self.new_party)
         exit_invoker = ActionInvokerExit(self.game_state_controller, self.scene_controller, self.party)
-        self.controller.update_menu(accept_invoker, exit_invoker)
+        self.controller = CreateCharacterViewController(self.view, accept_invoker, exit_invoker)
+
+    def __init__(self, scene_controller : SceneControllerInterface, game_state_controller : GameStateController, party : Party,
+                 character_pos = (0, 0)):
+        self.view = CreateCharacterView('json/create_character_scene.json')
+        self.controller = None
+        self.scene_controller = scene_controller
+        self.game_state_controller = game_state_controller
+        self.party = party
+        self.new_party = copy.deepcopy(party)
+        self.character_sheet = None
+        self.__init_view_controller()
+        self.__prepare_new_party(character_pos)
+
+    def on_start(self):
+        self.controller.update_menu()
         self.controller.update_sheet(self.character_sheet)
 
     def on_event(self, event : InputEvent):
