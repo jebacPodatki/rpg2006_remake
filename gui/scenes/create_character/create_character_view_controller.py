@@ -27,9 +27,9 @@ class CreateCharacterViewController(SceneControllerInterface):
         self.menu_controller.on_event(event)
 
     def update_menu(self):
-        root_node = RootNode('Accept character')
-        root_node.add_leaf_child('Yes', self.accept_character_functor)
-        root_node.add_leaf_child('No', self.exit_functor)
+        root_node = RootNode('Finish character creation')
+        root_node.add_leaf_child('Continue', self.accept_character_functor)
+        root_node.add_leaf_child('Back', self.exit_functor)
         self.view.menu.set_root_node(root_node)
 
     def update_menu_with_options(self, choice_controller : ChooseOptionInterface, title : str, options = []):
