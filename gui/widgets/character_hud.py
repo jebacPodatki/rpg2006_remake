@@ -11,7 +11,10 @@ class CharacterHUD(DrawableObjectInterface):
             self.dp_bar.set_value(self.character.stats.dp / self.character.sheet.dp)
             self.rp_bar.set_value(self.character.stats.rp / self.character.sheet.rp)
             self.hp_bar.set_value(self.character.stats.hp / self.character.sheet.hp)
-            self.mp_bar.set_value(self.character.stats.mp / self.character.sheet.mp)
+            if self.character.sheet.mp > 0:
+                self.mp_bar.set_value(self.character.stats.mp / self.character.sheet.mp)
+            else:
+                self.mp_bar.set_value(0)
         else:
             self.dp_bar.set_value(0)
             self.rp_bar.set_value(0)
