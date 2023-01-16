@@ -2,7 +2,7 @@
     {
         "name" : "Human",
         "portrait" : "human.png",
-        "classes" : ["Mercenary", "Bowman", "Rogue", "Priest", "Sorcerer", "Duelist"]
+        "classes" : ["Mercenary", "Scout", "Rogue", "Priest", "Sorcerer", "Duelist"]
     },
     {
         "name" : "Elf",
