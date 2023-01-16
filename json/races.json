@@ -2,11 +2,16 @@
     {
         "name" : "Human",
         "portrait" : "human.png",
-        "classes" : ["Warrior", "Sorcerer"]
+        "classes" : ["Mercenary", "Bowman", "Rogue", "Priest", "Sorcerer", "Duelist"]
     },
     {
         "name" : "Elf",
         "portrait" : "elf.png",
-        "classes" : ["Warrior", "Wizard"]
+        "classes" : ["Knight", "Archer", "Blade Dancer", "Wizard", "Druid"]
+    },
+    {
+        "name" : "Dwarf",
+        "portrait" : "dwarf.png",
+        "classes" : ["Warrior", "Crossbowman", "Vanguard", "Runic Berserker", "Diviner"]
     }
 ]
