@@ -156,7 +156,7 @@
         "critical_hit_dmg_factor" : 2,
         "armor_name" : "Priest tunic",
         "armor" : 0,
-        "spells" : ["Magic bolt"],
+        "spells" : ["Heal"],
         "spells_ai_chance" : [30]
     },
     {
@@ -316,7 +316,7 @@
         "critical_hit_dmg_factor" : 3,
         "armor_name" : "Bark tunic",
         "armor" : 0,
-        "spells" : ["Magic bolt"],
+        "spells" : ["Heal"],
         "spells_ai_chance" : [30]
     },
     {

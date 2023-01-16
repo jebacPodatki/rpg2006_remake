@@ -22,5 +22,13 @@
         "effect" : "",
         "mp_cost" : 80,
         "target" : "all_enemies"
+    },
+    {
+        "name" : "Heal",
+        "impact" : [0, 0],
+        "dmg" : [10, 30],
+        "effect" : "heal",
+        "mp_cost" : 100,
+        "target" : "single_ally"
     }
 ]

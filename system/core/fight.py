@@ -62,7 +62,7 @@ class Fight:
 
     def __magic_on_target(self, attacker, target, spell):
         if spell.effect != '':
-            actors = self.spellbook.invoke_spell_effect(spell.effect, attacker, target)
+            actors = self.spellbook.invoke_spell_effect(spell, spell.effect, attacker, target)
             self.logger.on_spell_effect(actors, spell.effect)
             return
         atk_factor = attacker.sheet.power / target.sheet.will

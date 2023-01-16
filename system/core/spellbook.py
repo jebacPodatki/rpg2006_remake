@@ -1,5 +1,7 @@
+import random
 from system.core.character import *
 from system.core.library import Library
+from system.core.spell import *
 from system.core.action.helper import *
 
 class Spellbook:
@@ -8,9 +10,9 @@ class Spellbook:
         self.library = library
         self.helper = helper
 
-    def invoke_spell_effect(self, spell_effect : str, caster : Character, targets):
+    def invoke_spell_effect(self, spell : Spell, spell_effect : str, caster : Character, target : Character):
         class SpellbookLibrary:
-            def summon_undeads(caster : Character, targets, spellbook : Spellbook):
+            def summon_undeads(spell : Spell, caster : Character, targets, spellbook : Spellbook):
                 sheet = spellbook.library.sheets['Skeleton']
                 number = int(caster.sheet.power / 5)
                 if number > 0:
@@ -21,4 +23,13 @@ class Spellbook:
                         spellbook.characters.append(Character(sheet, False, caster.faction))
                     return skeletons
                 return []
-        return SpellbookLibrary.__dict__[spell_effect](caster, targets, self)
+
+            def heal(spell : Spell, caster : Character, target, spellbook : Spellbook):
+                heal_factor = caster.sheet.power / 20
+                heal_value = int(heal_factor * random.randint(spell.dmg[0], spell.dmg[1]))
+                target.stats.hp += heal_value
+                if target.stats.hp > target.sheet.hp:
+                    target.stats.hp = target.sheet.hp
+                return [target]
+
+        return SpellbookLibrary.__dict__[spell_effect](spell, caster, target, self)

@@ -34,6 +34,7 @@ class FightEventReceiver(FightEventReceiverInterface):
 
     def on_spell_effect(self, targets, effect : str):
         self.controller.update_arena()
+        self.controller.update_hud()
         self.event_receiver.on_spell_effect(targets, effect)
 
     def on_magic_block(self, character : Character):

@@ -32,7 +32,7 @@ class SystemEventReceiver(FightEventReceiverInterface):
 
     def on_cast_spell(self, attacker : Character, targets, spell_name : str):
         if len(targets) == 1:
-            self.console.print_nl(attacker.sheet.name + ' casts ' + spell_name + ' against ' + targets[0].sheet.name + ' ')
+            self.console.print_nl(attacker.sheet.name + ' casts ' + spell_name + ' on ' + targets[0].sheet.name + ' ')
         else:
             self.console.print_nl(attacker.sheet.name + ' casts ' + spell_name + ' ')
 
@@ -42,6 +42,8 @@ class SystemEventReceiver(FightEventReceiverInterface):
                 self.console.print('and creates ' + str(len(targets)) + ' ' + targets[0].sheet.name + 's.')
             elif len(targets) == 1:
                 self.console.print('and creates ' + targets[0].sheet.name + '.')
+        elif effect == 'heal':
+            self.console.print('and heals ' + targets[0].sheet.name)
 
     def on_magic_block(self, character : Character):
         self.console.print(character.sheet.name + ' effectively resists magic.')
